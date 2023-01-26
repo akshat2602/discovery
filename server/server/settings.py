@@ -102,7 +102,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -171,14 +171,17 @@ SWAGGER_SETTINGS = {
 
 # Jazzmin Settings
 JAZZMIN_SETTINGS = {
-    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    # title of the window
+    # (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Admin Panel",
-    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    # Title on the brand (19 chars max)
+    # (defaults to current_admin_site.site_header if absent or None)
     "site_brand": "Server",
     "site_header": "Server",
     # CSS classes that are applied to the logo above
     "site_logo_classes": "img-circle",
-    # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
+    # Relative path to a favicon for your site,
+    # will default to site_logo if absent (ideally 32x32 px)
     "site_icon": None,
     # "related_modal_active": True,
     # Welcome text on the login screen
