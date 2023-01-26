@@ -12,11 +12,11 @@ name: Lint Code Base
 on:
     push:
         branches:
-            - main
+            - master
             - dev
 
     pull_request:
-        branches: [dev, main]
+        branches: [dev, master]
 
 ###############
 # Set the Job #
