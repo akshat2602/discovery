@@ -169,6 +169,51 @@ SWAGGER_SETTINGS = {
 }
 
 
+# Logging Settings
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    },
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s | %(name)s | %(asctime)s | %(message)s",  # noqa
+        },
+        "simple": {"format": "%(levelname)s %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "console_prod": {
+            "level": "INFO",
+            "filters": ["require_debug_false"],
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "filters": {
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
+        },
+        "require_debug_false": {
+            "()": "django.utils.log.RequireDebugFalse",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
+    },
+}
+
 # Jazzmin Settings
 JAZZMIN_SETTINGS = {
     # title of the window
