@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "storages",
     "dj_rest_auth",
     "drf_yasg",
+    "jobAPI",
 ]
 
 MIDDLEWARE = [
@@ -185,8 +186,14 @@ LOGGING = {
         "simple": {"format": "%(levelname)s %(message)s"},
     },
     "handlers": {
-        "console": {
+        "console_debug": {
             "level": "DEBUG",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "console": {
+            "level": "INFO",
             "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "verbose",
