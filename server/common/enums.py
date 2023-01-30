@@ -22,12 +22,3 @@ class AssignmentTypeChoice(enum.enum):
 
     LIVECODING = 1
     TAKEHOME = 2
-
-
-class ApplicationStepChoice(enum.enum):
-    """Enum for job posting steps."""
-
-    LIVECODING_ASSIGNMENT = 1
-    TAKEHOME_ASSIGNMENT = 2
-    INTERVIEW = 3
-    OFFER = 4
