@@ -31,19 +31,16 @@ services:
     container_name: localstack
     environment:
       - DEBUG=1
-      - LOCALSTACK_HOSTNAME=localhost
       - AWS_ACCESS_KEY_ID=xyz
       - AWS_SECRET_ACCESS_KEY=aaa
       - AWS_DEFAULT_REGION=ap-south-1
       - DOCKER_HOST=unix:///var/run/docker.sock
-      - DATA_DIR=/tmp/localstack/data
-      - SERVICES=s3
-    image: localstack/localstack:latest
+    image: localstack/localstack
     ports:
       - "4566:4566"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./aws:/etc/localstack/init/ready.d
+      - ./.aws/buckets.sh:/etc/localstack/init/ready.d/buckets.sh
 
 volumes:
   run_vol:
