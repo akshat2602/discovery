@@ -38,9 +38,6 @@ class JobPosting(models.Model):
     fk_created_by = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="job_postings"
     )
-    # steps = models.ArrayField(
-    #     models.IntegerField(choices=[(tag, tag.value) for tag in ApplicationStepChoice])
-    # )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
