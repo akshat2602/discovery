@@ -4,3 +4,4 @@ extend-ignore = E302
 exclude =
     .git,
     __pycache__,
+    migrations,
