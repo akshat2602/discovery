@@ -34,7 +34,8 @@ class JobPostingStepsAdmin(admin.ModelAdmin):
 class CandidateApplicationAdmin(admin.ModelAdmin):
     list_display = [
         "email",
-        "name",
+        "fname",
+        "lname",
         "fk_job_posting",
         "rejected",
         "applied_at",
