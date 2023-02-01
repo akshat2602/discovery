@@ -77,7 +77,8 @@ class CandidateApplication(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100)
+    fname = models.CharField(max_length=100)
+    lname = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
     fk_job_posting = models.ForeignKey(
