@@ -5,6 +5,7 @@ import uuid
 
 
 # Create your models here.
+# TODO: @Burhan Verbose names for fields for all models
 
 
 class JobPosting(models.Model):
