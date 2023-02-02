@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status as http_status
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
+from django.core.exceptions import ValidationError
 
 
 from common.utils import CustomErrorSerializer, error_message
@@ -8,10 +9,11 @@ from .serializers import JobPostingCreateSerializer, JobPostingFetchSerializer
 from .models import JobPosting
 
 # Create your views here.
-
-
+# TODO: @Burhan Job Posting Step CRUD
+# TODO: @Burhan Filter route for job postings which will filter on status and created by
+# TODO: @Akshat Candidate Application CRUD
 class JobPostingViewSet(viewsets.ViewSet):
-    # TODO: Add permission class for checking if Job Posting is created by HR
+    # TODO: @Akshat Add permission class for checking if Job Posting is created by HR
 
     @swagger_auto_schema(
         operation_description="Create a new job posting",
@@ -39,6 +41,7 @@ class JobPostingViewSet(viewsets.ViewSet):
         responses={
             http_status.HTTP_200_OK: JobPostingFetchSerializer,
             http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
         },
     )
     def retrieve(self, request, pk=None):
@@ -51,6 +54,11 @@ class JobPostingViewSet(viewsets.ViewSet):
             return Response(
                 error_message("Job Posting not found", http_status.HTTP_404_NOT_FOUND),
                 status=http_status.HTTP_404_NOT_FOUND,
+            )
+        except ValidationError:
+            return Response(
+                error_message("Invalid ID", http_status.HTTP_400_BAD_REQUEST),
+                status=http_status.HTTP_400_BAD_REQUEST,
             )
 
         fields = request.query_params.getlist("fields", "")
@@ -66,7 +74,6 @@ class JobPostingViewSet(viewsets.ViewSet):
         operation_description="Fetch all job postings",
         responses={
             http_status.HTTP_200_OK: JobPostingFetchSerializer,
-            http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
         },
     )
     def list(self, request):
@@ -88,28 +95,25 @@ class JobPostingViewSet(viewsets.ViewSet):
         responses={
             http_status.HTTP_200_OK: JobPostingCreateSerializer,
             http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
         },
     )
     def update(self, request, pk=None):
         """
         Update a job posting
         """
-        try:
-            posting_id = request.data["id"]
-
-        except KeyError:
-            return Response(
-                error_message(
-                    "Please specify ID for updation", http_status.HTTP_404_NOT_FOUND
-                ),
-                status=http_status.HTTP_404_NOT_FOUND,
-            )
+        posting_id = pk
         try:
             query = JobPosting.objects.get(pk=posting_id)
         except JobPosting.DoesNotExist:
             return Response(
                 error_message("Job Posting not found", http_status.HTTP_404_NOT_FOUND),
                 status=http_status.HTTP_404_NOT_FOUND,
+            )
+        except ValidationError:
+            return Response(
+                error_message("Invalid ID", http_status.HTTP_400_BAD_REQUEST),
+                status=http_status.HTTP_400_BAD_REQUEST,
             )
         serialized = JobPostingCreateSerializer(query, data=request.data, partial=True)
 
@@ -127,28 +131,26 @@ class JobPostingViewSet(viewsets.ViewSet):
         responses={
             http_status.HTTP_204_NO_CONTENT: "Job Posting deleted successfully",
             http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
         },
     )
     def destroy(self, request, pk=None):
         """
         Delete a job posting
         """
-        try:
-            posting_id = request.data["id"]
+        posting_id = pk
 
-        except KeyError:
-            return Response(
-                error_message(
-                    "Please specify ID for deletion", http_status.HTTP_404_NOT_FOUND
-                ),
-                status=http_status.HTTP_404_NOT_FOUND,
-            )
         try:
             query = JobPosting.objects.get(pk=posting_id)
         except JobPosting.DoesNotExist:
             return Response(
                 error_message("Job Posting not found", http_status.HTTP_404_NOT_FOUND),
                 status=http_status.HTTP_404_NOT_FOUND,
+            )
+        except ValidationError:
+            return Response(
+                error_message("Invalid ID", http_status.HTTP_400_BAD_REQUEST),
+                status=http_status.HTTP_400_BAD_REQUEST,
             )
         query.delete()
         return Response(status=http_status.HTTP_204_NO_CONTENT)
