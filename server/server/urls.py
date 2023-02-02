@@ -19,6 +19,7 @@ from django.urls import path, re_path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from jobAPI import urls as jobAPI_urls
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -54,5 +55,6 @@ urlpatterns += [
     path("admin/", admin.site.urls),
     # Auth endpoints
     re_path(r"^auth/", include("dj_rest_auth.urls")),
-    # url(r'^auth/', include('djoser.urls.jwt')),
+    # Job Posting endpoints
+    re_path(r"^job/", include(jobAPI_urls)),
 ]
