@@ -20,9 +20,9 @@ def validate_doc(value):
 
 def error_message(serializer, status_code):
     """Error message for serializer"""
-    if isinstance(serializer, serializers.BaseSerializer):
+    if isinstance(serializer, str):
         return CustomErrorSerializer(
-            {"status": status_code, "message": "Not found"}
+            {"status": status_code, "message": serializer}
         ).data
 
     return CustomErrorSerializer(
