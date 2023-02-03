@@ -299,7 +299,7 @@ class JobPostingStepViewSet(viewsets.ViewSet):
 
         try:
             query = JobPostingSteps.objects.get(pk=posting_step_id)
-        except JobPosting.DoesNotExist:
+        except JobPostingSteps.DoesNotExist:
             return Response(
                 error_message(
                     "Job Posting Step not found", http_status.HTTP_404_NOT_FOUND
