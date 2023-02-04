@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 import uuid
+from common.utils import validate_doc, resume_upload_path
 
 
 # Create your models here.
@@ -70,6 +71,7 @@ class JobPostingSteps(models.Model):
     class Meta:
         verbose_name = "Job Posting Step"
         verbose_name_plural = "Job Posting Steps"
+        unique_together = ("fk_job_posting", "step_number")
 
 
 class CandidateApplication(models.Model):
@@ -86,12 +88,12 @@ class CandidateApplication(models.Model):
         to=JobPosting, on_delete=models.CASCADE, related_name="candidates"
     )
     rejected = models.BooleanField(default=False)
-    resume = models.FileField(upload_to="resumes/")
+    resume = models.FileField(upload_to=resume_upload_path, validators=[validate_doc])
     applied_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name + " - " + self.fk_job_posting.title
+        return self.fname + "-" + self.lname + "-" + self.fk_job_posting.title
 
     class Meta:
         verbose_name = "Candidate Application"
@@ -113,10 +115,12 @@ class CandidateStatus(models.Model):
 
     def __str__(self):
         return (
-            self.fk_job_posting_candidate.name
-            + " - "
+            self.fk_job_posting_candidate.fname
+            + "-"
+            + self.fk_job_posting_candidate.lname
+            + "-"
             + self.fk_job_posting_candidate.fk_job_posting.title
-            + " - "
+            + "-"
             + self.fk_job_step.ApplicationStepChoice(self.fk_job_step.step).label
         )
 
