@@ -28,7 +28,10 @@ class JobPostingAdmin(admin.ModelAdmin):
 
 
 class JobPostingStepsAdmin(admin.ModelAdmin):
-    list_display = ["fk_job_posting", "step", "created_at"]
+    list_display = ["step_number", "fk_job_posting", "step", "created_at"]
+    list_filter = ["fk_job_posting", "step"]
+    sortable_by = ["step_number"]
+    ordering = ["step_number", "fk_job_posting"]
 
 
 class CandidateApplicationAdmin(admin.ModelAdmin):
