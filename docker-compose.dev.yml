@@ -19,7 +19,7 @@ services:
       sh -c "sh migrations.sh && python manage.py runserver 0.0.0.0:8000"
     depends_on:
       - db
-      # - localstack
+      - localstack
 
   db:
     container_name: db
@@ -27,20 +27,20 @@ services:
     env_file:
       - .env.dev
   
-  # localstack:
-  #   container_name: localstack
-  #   environment:
-  #     - DEBUG=1
-  #     - AWS_ACCESS_KEY_ID=xyz
-  #     - AWS_SECRET_ACCESS_KEY=aaa
-  #     - AWS_DEFAULT_REGION=ap-south-1
-  #     - DOCKER_HOST=unix:///var/run/docker.sock
-  #   image: localstack/localstack
-  #   ports:
-  #     - "4566:4566"
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - ./.aws/buckets.sh:/etc/localstack/init/ready.d/buckets.sh
+  localstack:
+    container_name: localstack
+    environment:
+      # - DEBUG=1
+      - AWS_ACCESS_KEY_ID=xyz
+      - AWS_SECRET_ACCESS_KEY=aaa
+      - AWS_DEFAULT_REGION=ap-south-1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./.aws/buckets.sh:/etc/localstack/init/ready.d/buckets.sh
 
 volumes:
   run_vol:
