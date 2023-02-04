@@ -10,14 +10,18 @@ from .serializers import (
     JobPostingFetchSerializer,
     JobPostingStepsCreateSerializer,
     JobPostingStepsFetchSerializer,
+    CandidateApplicationCreateSerializer,
+    CandidateApplicationFetchSerializer,
 )
-from .models import JobPosting, JobPostingSteps
+from .models import JobPosting, JobPostingSteps, CandidateApplication
 
 # Create your views here.
 # TODO: @Burhan Filter route for job postings which will filter on status and created by
-# TODO: @Akshat Candidate Application CRUD
 class JobPostingViewSet(viewsets.ViewSet):
-    # TODO: @Akshat Add permission class for checking if Job Posting is created by HR
+    # TODO: @Akshat - Add authentication for creation, updation and
+    # deletion of job postings
+    # TODO: @Akshat - Add permissions for creation, updation and
+    # deletion of job postings
 
     @swagger_auto_schema(
         operation_description="Create a new job posting",
@@ -133,7 +137,7 @@ class JobPostingViewSet(viewsets.ViewSet):
     @swagger_auto_schema(
         operation_description="Delete a job posting",
         responses={
-            http_status.HTTP_204_NO_CONTENT: "Job Posting deleted successfully",
+            http_status.HTTP_204_NO_CONTENT: "",
             http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
             http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
         },
@@ -161,6 +165,9 @@ class JobPostingViewSet(viewsets.ViewSet):
 
 
 class JobPostingStepViewSet(viewsets.ViewSet):
+    # TODO: @Akshat - Add authentication for all endpoints
+    # TODO: @Akshat - Add permission classes for all endpoints
+
     @swagger_auto_schema(
         operation_description="Create a new job posting step",
         responses={
@@ -285,7 +292,7 @@ class JobPostingStepViewSet(viewsets.ViewSet):
     @swagger_auto_schema(
         operation_description="Delete a job posting step",
         responses={
-            http_status.HTTP_204_NO_CONTENT: "Job Posting step deleted successfully",
+            http_status.HTTP_204_NO_CONTENT: "",
             http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
             http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
         },
@@ -302,6 +309,165 @@ class JobPostingStepViewSet(viewsets.ViewSet):
             return Response(
                 error_message(
                     "Job Posting Step not found", http_status.HTTP_404_NOT_FOUND
+                ),
+                status=http_status.HTTP_404_NOT_FOUND,
+            )
+        except ValidationError:
+            return Response(
+                error_message("Invalid ID", http_status.HTTP_400_BAD_REQUEST),
+                status=http_status.HTTP_400_BAD_REQUEST,
+            )
+        query.delete()
+        return Response(status=http_status.HTTP_204_NO_CONTENT)
+
+
+class CandidateApplicationViewSet(viewsets.ViewSet):
+
+    # TODO: @Akshat - Add authentication for fetching
+    # TODO: @Akshat - Add permission for updating and deleting
+    @swagger_auto_schema(
+        operation_description="Create a new candidate application",
+        responses={
+            http_status.HTTP_201_CREATED: CandidateApplicationCreateSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
+        },
+    )
+    def create(self, request):
+        """
+        Create a new candidate application
+        """
+        serialized = CandidateApplicationCreateSerializer(data=request.data)
+        if serialized.is_valid():
+            serialized.save()
+            return Response(serialized.data, status=http_status.HTTP_201_CREATED)
+
+        return Response(
+            error_message(serialized, http_status.HTTP_400_BAD_REQUEST),
+            status=http_status.HTTP_400_BAD_REQUEST,
+        )
+
+    @swagger_auto_schema(
+        operation_description="Fetch a candidate application",
+        responses={
+            http_status.HTTP_200_OK: CandidateApplicationFetchSerializer,
+            http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
+        },
+    )
+    def retrieve(self, request, pk=None):
+        """
+        Fetch a candidate application
+        """
+        try:
+            candidate_application = CandidateApplication.objects.get(pk=pk)
+        except CandidateApplication.DoesNotExist:
+            return Response(
+                error_message(
+                    "Candidate Application not found", http_status.HTTP_404_NOT_FOUND
+                ),
+                status=http_status.HTTP_404_NOT_FOUND,
+            )
+        except ValidationError:
+            return Response(
+                error_message("Invalid ID", http_status.HTTP_400_BAD_REQUEST),
+                status=http_status.HTTP_400_BAD_REQUEST,
+            )
+
+        fields = request.query_params.getlist("fields", "")
+
+        if fields:
+            serialized = CandidateApplicationFetchSerializer(
+                candidate_application, fields=fields
+            )
+        else:
+            serialized = CandidateApplicationFetchSerializer(candidate_application)
+
+        return Response(serialized.data, status=http_status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        operation_description="Fetch all candidate applications",
+        responses={
+            http_status.HTTP_200_OK: CandidateApplicationFetchSerializer,
+        },
+    )
+    def list(self, request):
+        """
+        Fetch all candidate applications
+        """
+        candidate_applications = CandidateApplication.objects.all()
+        fields = request.query_params.getlist("fields", "")
+
+        if fields:
+            serialized = CandidateApplicationFetchSerializer(
+                candidate_applications, fields=fields, many=True
+            )
+        else:
+            serialized = CandidateApplicationFetchSerializer(
+                candidate_applications, many=True
+            )
+
+        return Response(serialized.data, status=http_status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        operation_description="Update a candidate application",
+        responses={
+            http_status.HTTP_200_OK: CandidateApplicationCreateSerializer,
+            http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
+        },
+    )
+    def update(self, request, pk=None):
+        """
+        Update a candidate application
+        """
+        application_id = pk
+        try:
+            query = CandidateApplication.objects.get(pk=application_id)
+        except CandidateApplication.DoesNotExist:
+            return Response(
+                error_message(
+                    "Candidate Application not found", http_status.HTTP_404_NOT_FOUND
+                ),
+                status=http_status.HTTP_404_NOT_FOUND,
+            )
+        except ValidationError:
+            return Response(
+                error_message("Invalid ID", http_status.HTTP_400_BAD_REQUEST),
+                status=http_status.HTTP_400_BAD_REQUEST,
+            )
+        serialized = CandidateApplicationCreateSerializer(
+            query, data=request.data, partial=True
+        )
+
+        if serialized.is_valid():
+            serialized.save()
+            return Response(serialized.data, status=http_status.HTTP_200_OK)
+
+        return Response(
+            error_message(serialized, http_status.HTTP_400_BAD_REQUEST),
+            status=http_status.HTTP_400_BAD_REQUEST,
+        )
+
+    @swagger_auto_schema(
+        operation_description="Delete a candidate application",
+        responses={
+            http_status.HTTP_204_NO_CONTENT: "",
+            http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
+        },
+    )
+    def destroy(self, request, pk=None):
+        """
+        Delete a candidate application
+        """
+        application_id = pk
+
+        try:
+            query = CandidateApplication.objects.get(pk=application_id)
+        except CandidateApplication.DoesNotExist:
+            return Response(
+                error_message(
+                    "Candidate Application not found", http_status.HTTP_404_NOT_FOUND
                 ),
                 status=http_status.HTTP_404_NOT_FOUND,
             )
