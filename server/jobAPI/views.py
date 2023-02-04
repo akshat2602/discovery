@@ -12,6 +12,7 @@ from .serializers import (
     JobPostingStepsFetchSerializer,
     CandidateApplicationCreateSerializer,
     CandidateApplicationFetchSerializer,
+    JobPostingFilterSerializer,
 )
 from .models import JobPosting, JobPostingSteps, CandidateApplication
 
@@ -80,6 +81,7 @@ class JobPostingViewSet(viewsets.ViewSet):
         return Response(serialized.data, status=http_status.HTTP_200_OK)
 
     @swagger_auto_schema(
+        query_serializer=JobPostingFilterSerializer,
         operation_description="Fetch all job postings",
         responses={
             http_status.HTTP_200_OK: JobPostingFetchSerializer,
