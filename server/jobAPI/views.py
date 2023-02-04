@@ -15,6 +15,7 @@ from .serializers import (
 )
 from .models import JobPosting, JobPostingSteps, CandidateApplication
 
+
 # Create your views here.
 # TODO: @Burhan Filter route for job postings which will filter on status and created by
 class JobPostingViewSet(viewsets.ViewSet):
@@ -88,14 +89,19 @@ class JobPostingViewSet(viewsets.ViewSet):
         """
         Fetch all job postings
         """
+        status = request.query_params.get("status")
+        created_by = request.query_params.get("created_by")
         postings = JobPosting.objects.all()
+        if status:
+            postings = postings.filter(status=status)
+        if created_by:
+            postings = postings.filter(fk_created_by=created_by)
         fields = request.query_params.getlist("fields", "")
 
         if fields:
             serialized = JobPostingFetchSerializer(postings, fields=fields, many=True)
         else:
             serialized = JobPostingFetchSerializer(postings, many=True)
-
         return Response(serialized.data, status=http_status.HTTP_200_OK)
 
     @swagger_auto_schema(
@@ -322,7 +328,6 @@ class JobPostingStepViewSet(viewsets.ViewSet):
 
 
 class CandidateApplicationViewSet(viewsets.ViewSet):
-
     # TODO: @Akshat - Add authentication for fetching
     # TODO: @Akshat - Add permission for updating and deleting
     @swagger_auto_schema(
