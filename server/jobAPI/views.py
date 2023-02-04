@@ -14,7 +14,6 @@ from .serializers import (
 from .models import JobPosting, JobPostingSteps
 
 # Create your views here.
-# TODO: @Burhan Job Posting Step CRUD
 # TODO: @Burhan Filter route for job postings which will filter on status and created by
 # TODO: @Akshat Candidate Application CRUD
 class JobPostingViewSet(viewsets.ViewSet):
