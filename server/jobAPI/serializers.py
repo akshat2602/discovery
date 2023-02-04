@@ -97,3 +97,8 @@ class CandidateStatusFetchSerializer(serializers.ModelSerializer):
         model = CandidateStatus
         fields = ["job_posting", "candidate", "step"]
         read_only_fields = ("id", "created_at", "updated_at")
+
+
+class JobPostingFilterSerializer(serializers.Serializer):
+    status = serializers.IntegerField()
+    created_by = serializers.IntegerField()
