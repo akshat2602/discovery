@@ -242,6 +242,12 @@ AWS_MEDIA_LOCATION = "media"
 MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_MEDIA_LOCATION}/"
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
+
+# Celery Settings
+CELERY_BROKER_URL = "redis://celery-redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://celery-redis:6379/0"
+
+
 # Jazzmin Settings
 JAZZMIN_SETTINGS = {
     # title of the window

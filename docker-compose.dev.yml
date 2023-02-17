@@ -42,6 +42,25 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./.aws/buckets.sh:/etc/localstack/init/ready.d/buckets.sh
 
+  celery-redis:
+    container_name: redis
+    image: redis:alpine
+
+  celery:
+    container_name: celery
+    restart: always
+    build:
+      context: ./server
+    command: celery -A server worker -l info
+    volumes:
+      - ./server:/server
+    env_file:
+      - .env.dev
+    depends_on:
+      - db
+      - celery-redis
+      - server
+
 volumes:
   run_vol:
     driver_opts:
