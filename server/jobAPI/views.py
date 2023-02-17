@@ -18,7 +18,6 @@ from .models import JobPosting, JobPostingSteps, CandidateApplication
 
 
 # Create your views here.
-# TODO: @Burhan Filter route for job postings which will filter on status and created by
 class JobPostingViewSet(viewsets.ViewSet):
     # TODO: @Akshat - Add authentication for creation, updation and
     # deletion of job postings

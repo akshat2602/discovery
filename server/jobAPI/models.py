@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
 import uuid
 from common.utils import validate_doc, resume_upload_path
@@ -110,6 +111,7 @@ class CandidateApplication(models.Model):
     resume = models.FileField(
         upload_to=resume_upload_path, validators=[validate_doc], verbose_name="Resume"
     )
+    resume_keywords = models.ArrayField(models.CharField(max_length=100), blank=True)
     applied_at = models.DateTimeField(auto_now_add=True, verbose_name="Applied At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
 

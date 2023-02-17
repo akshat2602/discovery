@@ -13,3 +13,6 @@ def create_status(sender, instance, created, **kwargs):
             fk_job_posting_candidate=instance,
             fk_job_step=step_instance,
         )
+
+        # TODO: Call a celery task to send an email to the candidate
+        # TODO: Call a celery task to extract keywords from the resume
