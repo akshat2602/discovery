@@ -111,7 +111,9 @@ class CandidateApplication(models.Model):
     resume = models.FileField(
         upload_to=resume_upload_path, validators=[validate_doc], verbose_name="Resume"
     )
-    resume_keywords = models.ArrayField(models.CharField(max_length=100), blank=True)
+    resume_keywords = ArrayField(
+        models.CharField(max_length=100), blank=True, null=True
+    )
     applied_at = models.DateTimeField(auto_now_add=True, verbose_name="Applied At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
 
