@@ -28,6 +28,23 @@ services:
     image: postgres
     env_file:
       - .env
+  
+  client:
+    container_name: client
+    build: ./client
+    stdin_open: true
+    tty: true
+    working_dir: /src
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/src
+    command: >
+      sh -c "npm install -g npm@latest && npm install && npm run build && npm run start"
+    depends_on:
+      - server
+      - db
+
 
 volumes:
   run_vol:
