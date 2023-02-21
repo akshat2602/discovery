@@ -1,1 +1,1 @@
-# Discovery-API
+# Discovery
