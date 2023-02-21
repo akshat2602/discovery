@@ -51,8 +51,9 @@ jobs:
                   DEFAULT_BRANCH: master
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-                  LINTER_RULES_PATH: /
-                  PYTHON_BLACK_CONFIG_FILE: server/pyproject.toml
-                  PYTHON_FLAKE8_CONFIG_FILE: server/.flake8
+                  PYTHON_BLACK_CONFIG_FILE: pyproject.toml
+                  PYTHON_FLAKE8_CONFIG_FILE: .flake8
                   VALIDATE_PYTHON_BLACK: true
                   VALIDATE_PYTHON_FLAKE8: true
+                  JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.json
+                  JAVASCRIPT_DEFAULT_STYLE: prettier
