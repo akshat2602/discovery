@@ -33,7 +33,7 @@ def error_message(serializer, status_code):
 def resume_upload_path(instance, filename):
     """Resume upload path"""
     ext = os.path.splitext(filename)[1]
-    path = "resumes/job_{}/candidate_{}.{}".format(
+    path = "resumes/job_{}/candidate_{}{}".format(
         instance.fk_job_posting.id, instance.id, ext
     )
 
