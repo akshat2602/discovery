@@ -6,8 +6,9 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 # Create app directory
 WORKDIR /src
-COPY requirements/requirements.txt ./requirements/requirements.txt
-RUN pip install --no-cache-dir -r ./requirements/requirements.txt 
+COPY requirements/requirements-celery.txt ./requirements/requirements-celery.txt
+RUN pip install --no-cache-dir -r ./requirements/requirements-celery.txt 
+RUN python -m spacy download en_core_web_trf
 
 # ---- Copy Files/Build ----
 FROM base

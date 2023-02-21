@@ -5,6 +5,7 @@ services:
     container_name: server
     build:
       context: ./server
+      dockerfile: ./Dockerfile
     working_dir: /src
     ports:
       - "8000:8000"
@@ -51,6 +52,7 @@ services:
     restart: always
     build:
       context: ./server
+      dockerfile: ./Celery.Dockerfile
     command: celery -A server worker -l info
     volumes:
       - ./server:/server
