@@ -3,37 +3,23 @@ import {
 	withDefaultColorScheme,
 	theme as baseTheme,
 } from '@chakra-ui/react';
-import { Input } from './components/input.theme';
 import { mode } from '@chakra-ui/theme-tools';
-import { Button } from './components/button.theme';
-import { Container } from './components/container.theme';
-import { Select } from './components/select.theme';
 export const customTheme = extendTheme(
 	{
 		fonts: {
-			body: 'poppins',
+			body: 'montserrat',
+			heading: 'montserrat',
 		},
 		colors: {
 			primary: {
-				50: '#f5e7ff',
-				100: '#dabcf8',
-				200: '#c091ef',
-				300: '#a765e7',
-				400: '#8e39df',
-				500: '#7420c6',
-				600: '#5a189a',
-				700: '#40106f',
-				800: '#270844',
-				900: '#10011b',
+				50: '#00ADB5',
 			},
-			border: 'purple.300',
+			border: '#00ADB5',
 			dark: {
-				100: '#303030',
-				200: '#202020',
+				50: '#303841',
 			},
 			light: {
-				100: '#FFFFFF',
-				200: '#F8F9FB',
+				50: '#3A4750',
 			},
 		},
 		styles: {
@@ -45,12 +31,6 @@ export const customTheme = extendTheme(
 					color: mode('gray.400', 'whiteAlpha.400')(props),
 				},
 			}),
-		},
-		components: {
-			Input,
-			Button,
-			Container,
-			Select,
 		},
 	},
 	withDefaultColorScheme({ colorScheme: 'primary' }),
