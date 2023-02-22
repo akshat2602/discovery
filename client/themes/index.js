@@ -3,7 +3,11 @@ import {
 	withDefaultColorScheme,
 	theme as baseTheme,
 } from '@chakra-ui/react';
+// import { Input } from './components/input.theme';
 import { mode } from '@chakra-ui/theme-tools';
+// import { Button } from './components/button.theme';
+// import { Container } from './components/container.theme';
+// import { Select } from './components/select.theme';
 export const customTheme = extendTheme(
 	{
 		fonts: {
@@ -32,6 +36,12 @@ export const customTheme = extendTheme(
 				},
 			}),
 		},
+		// components: {
+		// 	Input,
+		// 	Button,
+		// 	Container,
+		// 	Select,
+		// },
 	},
 	withDefaultColorScheme({ colorScheme: 'primary' }),
 );
