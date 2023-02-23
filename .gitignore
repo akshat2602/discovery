@@ -18,3 +18,9 @@ coverage.xml
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+
+# Mac stuff
+.DS_Store
+
+# Go Binary
+bin

@@ -2,7 +2,7 @@ version: "3"
 
 services:
   server:
-    container_name: server
+    container_name: discovery_server
     build:
       context: ./server
     working_dir: /src
@@ -24,13 +24,26 @@ services:
       - db
 
   db:
-    container_name: db
+    container_name: discovery_db
     image: postgres
     env_file:
       - .env
-  
+
+  dockspawn:
+    container_name: discovery_dockspawn
+    build: ./dockspawn
+    working_dir: /src
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dockspawn:/src
+    env_file:
+      - .env
+    command: >
+      sh -c "go build -v -o bin/server && /src/bin/server"
+
   client:
-    container_name: client
+    container_name: discovery_client
     build: ./client
     stdin_open: true
     tty: true
