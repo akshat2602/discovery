@@ -2,7 +2,7 @@ version: "3"
 
 services:
   server:
-    container_name: server
+    container_name: discovery_server
     build:
       context: ./server
     working_dir: /src
@@ -22,13 +22,27 @@ services:
       - localstack
 
   db:
-    container_name: db
+    container_name: discovery_db
     image: postgres
     env_file:
       - .env.dev
-  
+
+  dockspawn:
+    container_name: discovery_dockspawn
+    build: ./dockspawn
+    working_dir: /src
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dockspawn:/src
+    env_file:
+      - .env.dev
+    command: >
+      sh -c "go build -v -o bin/server && /src/bin/server"
+
+
   localstack:
-    container_name: localstack
+    container_name: discovery_localstack
     environment:
       # - DEBUG=1
       - AWS_ACCESS_KEY_ID=xyz
@@ -43,7 +57,7 @@ services:
       - ./.aws/buckets.sh:/etc/localstack/init/ready.d/buckets.sh
   
   client:
-    container_name: client
+    container_name: discovery_client
     build: ./client
     stdin_open: true
     tty: true
