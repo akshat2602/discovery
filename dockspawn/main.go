@@ -1,13 +1,13 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"time"
 
 	"github.com/akshat2602/discovery/dockspawn/cmd/terminal"
 	"github.com/akshat2602/discovery/dockspawn/cmd/ws"
 	"github.com/akshat2602/discovery/dockspawn/pkg/helper"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -17,10 +17,11 @@ func main() {
 		terminal.ServeTerminal(cs, w, r)
 	})
 	s := &http.Server{
+		Addr:         "localhost:8080",
 		Handler:      cs,
 		ReadTimeout:  time.Second * 10,
 		WriteTimeout: time.Second * 10,
 	}
-	log.Printf("listening on %s", "localhost:8000")
+	helper.Logger.Info("listening on", zap.String("address", s.Addr))
 	s.ListenAndServe()
 }
