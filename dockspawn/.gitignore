@@ -1,0 +1,5 @@
+# Go Binary
+bin
+
+# Go vendor dependencies
+vendor
