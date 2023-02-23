@@ -24,7 +24,7 @@ type WSFileData struct {
 	Content  string `json:"content"`
 }
 
-func handleFileChange(w http.ResponseWriter, r *http.Request) {
+func HandleFileChange(w http.ResponseWriter, r *http.Request) {
 	wsc, err := websocket.Accept(w, r, &websocket.AcceptOptions{InsecureSkipVerify: true})
 	if err != nil {
 		helper.Logger.Sugar().Info("Failed to accept websocket connection: %v", err)
@@ -68,11 +68,11 @@ func handleFileChange(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
-func handleReadFile(w http.ResponseWriter, r *http.Request) {
+func HandleFileRead(w http.ResponseWriter, r *http.Request) {
 
 	file, err := os.Open("hello.txt")
 	if err != nil {
-		fmt.Println("File reading error", err)
+		helper.Logger.Sugar().Info("Error: %v", err)
 		return
 	}
 	defer file.Close()
@@ -80,17 +80,18 @@ func handleReadFile(w http.ResponseWriter, r *http.Request) {
 	for {
 		n, err := file.Read(data)
 		if err == io.EOF {
-			break
+			helper.Logger.Sugar().Info("Error: %v", err)
+			return
 		}
 		if err != nil {
-			fmt.Println("File reading error", err)
+			helper.Logger.Sugar().Info("Error: %v", err)
 			return
 		}
 		w.Write(data[:n])
 	}
 }
 
-func handleFileCreate(w http.ResponseWriter, r *http.Request) {
+func HandleFileCreate(w http.ResponseWriter, r *http.Request) {
 	path := "./"
 	file_name := "testFile.txt"
 	f, err := os.Create(path + file_name)
@@ -100,15 +101,26 @@ func handleFileCreate(w http.ResponseWriter, r *http.Request) {
 	defer f.Close()
 	fmt.Println(f.Name())
 }
-func handleContainerCreation(w http.ResponseWriter, r *http.Request) {
+func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		panic(err)
+		helper.Logger.Sugar().Info("Error: %v", err)
+		return
 	}
 	defer cli.Close()
 	pwd, err := os.Getwd()
+
+	if err != nil {
+		helper.Logger.Sugar().Info("Error: %v", err)
+		return
+	}
 	err = os.Mkdir(pwd+"/uuid", os.ModePerm)
+
+	if err != nil {
+		helper.Logger.Sugar().Info("Error while creating directory: %v", err)
+		return
+	}
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
 		Image: "tempfile:latest",
 	}, &container.HostConfig{
@@ -121,31 +133,42 @@ func handleContainerCreation(w http.ResponseWriter, r *http.Request) {
 		},
 	}, nil, nil, "test_container")
 	if err != nil {
-		panic(err)
+		helper.Logger.Sugar().Info("Error: %v", err)
+		return
 	}
 
 	if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
-		panic(err)
+		helper.Logger.Sugar().Info("Error: %v", err)
+		return
 	}
 
 	statusCh, errCh := cli.ContainerWait(ctx, resp.ID, container.WaitConditionNotRunning)
 	select {
 	case err := <-errCh:
 		if err != nil {
-			panic(err)
+			helper.Logger.Sugar().Info("Error: %v", err)
+			return
 		}
 	case <-statusCh:
 	}
 
 	out, err := cli.ContainerLogs(ctx, resp.ID, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {
-		panic(err)
+		helper.Logger.Sugar().Info("Error: %v", err)
+		return
 	}
 
 	stdcopy.StdCopy(os.Stdout, os.Stderr, out)
 }
-
-func getFileDirectoryStructure(directory_path string) ([]byte, error) {
+func HandleFileDirectoryStructure(w http.ResponseWriter, r *http.Request) {
+	file_directory_structure, err := GetFileDirectoryStructure("directory_path")
+	if err != nil {
+		helper.Logger.Sugar().Info("Error while reading file directory structure: %v", err)
+		return
+	}
+	w.Write(file_directory_structure)
+}
+func GetFileDirectoryStructure(directory_path string) ([]byte, error) {
 	app := "tree"
 
 	arg0 := "-f"
@@ -155,7 +178,6 @@ func getFileDirectoryStructure(directory_path string) ([]byte, error) {
 	stdout, err := cmd.Output()
 
 	if err != nil {
-		fmt.Println(err.Error())
 		return nil, err
 	}
 
