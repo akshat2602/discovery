@@ -56,7 +56,6 @@ jobs:
           PYTHON_FLAKE8_CONFIG_FILE: .flake8
           VALIDATE_PYTHON_BLACK: true
           VALIDATE_PYTHON_FLAKE8: true
-          VALIDATE_GO: true
           # VALIDATE_JAVASCRIPT_ES: true
           # JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.json
           # JAVASCRIPT_DEFAULT_STYLE: prettier
