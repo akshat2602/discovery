@@ -18,7 +18,7 @@ func main() {
 		terminal.ServeTerminal(w, r)
 	})
 	s := &http.Server{
-		Addr:         "localhost:8080",
+		Addr:         ":8080",
 		Handler:      cs,
 		ReadTimeout:  time.Second * 10,
 		WriteTimeout: time.Second * 10,

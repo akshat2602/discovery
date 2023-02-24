@@ -13,7 +13,7 @@ import (
 func ServeTerminal(w http.ResponseWriter, r *http.Request) {
 	wsc, err := websocket.Accept(w, r, &websocket.AcceptOptions{InsecureSkipVerify: true})
 	if err != nil {
-		helper.Logger.Sugar().Info("Failed to accept websocket connection: %v", err)
+		helper.Logger.Sugar().Info("Failed to accept websocket connection: ", err)
 		return
 	}
 	// defer c.Close(websocket.StatusInternalError, "The sky is falling")
