@@ -42,4 +42,8 @@ func main() {
 	}
 	helper.Logger.Sugar().Info("Listening on", s.Addr)
 	s.ListenAndServe()
+	err := s.ListenAndServe()
+	if err != nil {
+		helper.Logger.Sugar().Error(err)
+	}
 }
