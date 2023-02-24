@@ -35,11 +35,12 @@ services:
       - "8080:8080"
     volumes:
       - ./dockspawn:/src
+      - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - .env.dev
     command: >
       sh -c "go build -v -o bin/server && /src/bin/server"
-
+    privileged: true
 
   localstack:
     container_name: discovery_localstack
