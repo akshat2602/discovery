@@ -3,7 +3,6 @@ package files
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -15,13 +14,31 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
-	"github.com/docker/docker/pkg/stdcopy"
 	"nhooyr.io/websocket"
 )
+
+// TODO: Change these structs to private structs
+// TODO: Properly define the return values for the responses
+// TODO: Restrict access to the routes based on the Method of request
 
 type WSFileData struct {
 	FilePath string `json:"file_path"`
 	Content  string `json:"content"`
+}
+type RequestFileReadBody struct {
+	FilePath string `json:"file_path"`
+	FileName string `json:"file_name"`
+}
+type RequestFileCreateBody struct {
+	FilePath string `json:"file_path"`
+	FileName string `json:"file_name"`
+}
+
+type RequestContainerCreationBody struct {
+	Image         string `json:"image"`
+	UUID          string `json:"uuid"`
+	ContainerName string `json:"container_name"`
+	ImageVersion  string `json:"image_version"`
 }
 
 func HandleFileChange(w http.ResponseWriter, r *http.Request) {
@@ -68,11 +85,18 @@ func HandleFileChange(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
 func HandleFileRead(w http.ResponseWriter, r *http.Request) {
 
-	file, err := os.Open("hello.txt")
+	var rfrb = RequestFileReadBody{}
+	err := json.NewDecoder(r.Body).Decode(&rfrb)
 	if err != nil {
-		helper.Logger.Sugar().Info("Error: %v", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	file, err := os.Open(rfrb.FilePath + "/" + rfrb.FileName)
+	if err != nil {
+		helper.Logger.Sugar().Info("Error: ", err)
 		return
 	}
 	defer file.Close()
@@ -80,27 +104,38 @@ func HandleFileRead(w http.ResponseWriter, r *http.Request) {
 	for {
 		n, err := file.Read(data)
 		if err == io.EOF {
-			helper.Logger.Sugar().Info("Error: %v", err)
+			helper.Logger.Sugar().Info("Error: ", err)
 			return
 		}
 		if err != nil {
-			helper.Logger.Sugar().Info("Error: %v", err)
+			helper.Logger.Sugar().Info("Error: ", err)
 			return
 		}
+
 		w.Write(data[:n])
 	}
 }
 
 func HandleFileCreate(w http.ResponseWriter, r *http.Request) {
-	path := "./"
-	file_name := "testFile.txt"
-	f, err := os.Create(path + file_name)
+	if r.Method != "POST" {
+		helper.Logger.Sugar().Info("Error: Method not allowed")
+		w.Write([]byte("Error: Method not allowed"))
+		return
+	}
+	var rfcb = RequestFileCreateBody{}
+	err := json.NewDecoder(r.Body).Decode(&rfcb)
 	if err != nil {
-		log.Fatal(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	f, err := os.Create(rfcb.FilePath + "/" + rfcb.FileName)
+	if err != nil {
+		log.Printf(err.Error())
 	}
 	defer f.Close()
-	fmt.Println(f.Name())
+	w.Write([]byte("File created successfully"))
 }
+
 func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
@@ -110,28 +145,38 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 	}
 	defer cli.Close()
 	pwd, err := os.Getwd()
-
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	host_machine_pwd := os.Getenv("DOCKER_HOST_FILE_DIRECTORY_ROOT")
+	var rccb = RequestContainerCreationBody{}
+	err = json.NewDecoder(r.Body).Decode(&rccb)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 	if err != nil {
 		helper.Logger.Sugar().Info("Error: %v", err)
 		return
 	}
-	err = os.Mkdir(pwd+"/uuid", os.ModePerm)
-
+	err = os.Mkdir(pwd+"/"+rccb.UUID, os.ModePerm)
+	helper.Logger.Sugar().Info("PWD: ", pwd)
 	if err != nil {
 		helper.Logger.Sugar().Info("Error while creating directory: %v", err)
 		return
 	}
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
-		Image: "tempfile:latest",
+		Image: rccb.Image + ":" + rccb.ImageVersion,
 	}, &container.HostConfig{
 		Mounts: []mount.Mount{
 			{
 				Type:   mount.TypeBind,
-				Source: pwd + "/uuid",
+				Source: host_machine_pwd + "/" + rccb.UUID,
 				Target: "/app",
 			},
 		},
-	}, nil, nil, "test_container")
+	}, nil, nil, rccb.ContainerName)
 	if err != nil {
 		helper.Logger.Sugar().Info("Error: %v", err)
 		return
@@ -141,24 +186,8 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 		helper.Logger.Sugar().Info("Error: %v", err)
 		return
 	}
+	w.Write([]byte(resp.ID))
 
-	statusCh, errCh := cli.ContainerWait(ctx, resp.ID, container.WaitConditionNotRunning)
-	select {
-	case err := <-errCh:
-		if err != nil {
-			helper.Logger.Sugar().Info("Error: %v", err)
-			return
-		}
-	case <-statusCh:
-	}
-
-	out, err := cli.ContainerLogs(ctx, resp.ID, types.ContainerLogsOptions{ShowStdout: true})
-	if err != nil {
-		helper.Logger.Sugar().Info("Error: %v", err)
-		return
-	}
-
-	stdcopy.StdCopy(os.Stdout, os.Stderr, out)
 }
 func HandleFileDirectoryStructure(w http.ResponseWriter, r *http.Request) {
 	file_directory_structure, err := GetFileDirectoryStructure("directory_path")
