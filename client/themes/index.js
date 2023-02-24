@@ -11,14 +11,14 @@ import { mode } from '@chakra-ui/theme-tools';
 export const customTheme = extendTheme(
 	{
 		fonts: {
-			body: 'montserrat',
-			heading: 'montserrat',
+			body: 'poppins',
+			heading: 'poppins',
 		},
 		colors: {
 			primary: {
 				50: '#00ADB5',
 			},
-			border: '#00ADB5',
+			border: '#646D73',
 			dark: {
 				50: '#303841',
 			},
@@ -29,10 +29,10 @@ export const customTheme = extendTheme(
 		styles: {
 			global: (props) => ({
 				body: {
-					bg: mode('#f8f9fb', '#202020')(props),
+					bg: mode('#303841', '#303841')(props),
 				},
 				'*::placeholder': {
-					color: mode('gray.400', 'whiteAlpha.400')(props),
+					color: mode('#3A4750', '#3A4750')(props),
 				},
 			}),
 		},
