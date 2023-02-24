@@ -1,6 +1,6 @@
 import { Flex, Heading, Input, Button } from "@chakra-ui/react";
 
-const login = () => {
+export default function Login() {
   return (
     <Flex h="100vh" alignItems="center" justify="center">
       <Flex
@@ -35,6 +35,4 @@ const login = () => {
       </Flex>
     </Flex>
   );
-};
-
-export default login;
+}

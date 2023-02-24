@@ -54,7 +54,7 @@ const Sidebar = ({ isOpen, setSideBarOpen }) => {
             display={isOpen ? "flex" : "none"}
             src={logo.src}
             height={"18px"}
-            alt="discovery"
+            alt="logo"
           ></Image>
           <Image
             display={isOpen ? "flex" : "none"}
