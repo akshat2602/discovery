@@ -2,6 +2,8 @@ import { Button, Flex, Box, Text, Divider, IconButton } from "@chakra-ui/react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { BsShareFill } from "react-icons/bs";
 import { useRouter } from "next/router";
+import Popup from "@/components/ApplyJobPopup";
+import ApplyJobPopup from "@/components/ApplyJobPopup";
 
 const jobDescription = () => {
   const router = useRouter();
@@ -81,11 +83,7 @@ const jobDescription = () => {
           </Text>
         </Box>
       </Box>
-      <Button bgColor={"primary.50"} width="170px" my={4} py={2}>
-        <Text fontSize={16} fontWeight={"medium"} color={"white"} noOfLines={1}>
-          Apply
-        </Text>
-      </Button>
+      <ApplyJobPopup />
     </Flex>
   );
 };
