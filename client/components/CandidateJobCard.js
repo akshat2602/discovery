@@ -6,16 +6,16 @@ import Link from "next/link";
 
 const CandidateJobCard = () => {
   return (
-    <Link href={"/jobDescription"}>
-      <Card
-        rounded={12}
-        borderTopColor="primary.50"
-        bgColor={"light.50"}
-        width={240}
-        p={4}
-        margin={2}
-        height={140}
-      >
+    <Card
+      rounded={12}
+      borderTopColor="primary.50"
+      bgColor={"light.50"}
+      width={240}
+      p={4}
+      margin={2}
+      height={140}
+    >
+      <Link href={"/jobdescription"}>
         <Flex direction={"column"} w="100%">
           <Text
             fontSize={16}
@@ -71,8 +71,8 @@ const CandidateJobCard = () => {
             </Flex>
           </Flex>
         </Flex>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 };
 
