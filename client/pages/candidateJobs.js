@@ -52,7 +52,12 @@ const candidateJobs = () => {
           <Input type="text" textColor={"white"} fontWeight="medium" />
         </InputGroup>
       </Center>
-      <SimpleGrid minChildWidth="240px" alignContent={"center"} ml={8}>
+      <SimpleGrid
+        minChildWidth="240px"
+        alignContent={"center"}
+        ml={8}
+        spacing="2"
+      >
         <CandidateJobCard />
         <CandidateJobCard />
         <CandidateJobCard />
