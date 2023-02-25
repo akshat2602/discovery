@@ -42,7 +42,7 @@ export default function JobPostings() {
             >
               Welcome Back, Post a new Job!
             </Text>
-            <Link href={"/createJobPosting"}>
+            <Link href={"/createjobposting"}>
               <Button bgColor={"primary.50"} width="170px">
                 Post
               </Button>
