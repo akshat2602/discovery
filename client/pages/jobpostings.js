@@ -12,6 +12,7 @@ import {
 import Head from "next/head";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const checkBoxes = ["Active", "Inactive"];
 
@@ -41,9 +42,11 @@ export default function JobPostings() {
             >
               Welcome Back, Post a new Job!
             </Text>
-            <Button bgColor={"primary.50"} width="170px">
-              Post
-            </Button>
+            <Link href={"/createJobPosting"}>
+              <Button bgColor={"primary.50"} width="170px">
+                Post
+              </Button>
+            </Link>
           </Flex>
           <Divider my={2} borderColor={"border"}></Divider>
           <Flex>
