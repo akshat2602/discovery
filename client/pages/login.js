@@ -1,4 +1,4 @@
-import { Flex, Heading, Input, Button, Center } from "@chakra-ui/react";
+import { Flex, Text, Input, Button, Center } from "@chakra-ui/react";
 import Link from "next/link";
 
 export default function Login() {
@@ -11,9 +11,11 @@ export default function Login() {
         borderRadius={8}
         boxShadow="lg"
       >
-        <Heading mb={6} textColor={"white"}>
-          Login
-        </Heading>
+        <Center>
+          <Text mb={6} textColor={"white"} fontSize={"24"}>
+            Login
+          </Text>
+        </Center>
         <Input
           placeholder="johndoe@gmail.com"
           type="email"
