@@ -7,8 +7,8 @@ import { mode } from "@chakra-ui/theme-tools";
 export const customTheme = extendTheme(
   {
     fonts: {
-      body: "poppins",
-      heading: "poppins",
+      body: "Poppins, sans-serif",
+      heading: "Poppins, sans-serif",
     },
     colors: {
       primary: {

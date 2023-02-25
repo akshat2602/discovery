@@ -1,4 +1,5 @@
-import { Flex, Heading, Input, Button } from "@chakra-ui/react";
+import { Flex, Heading, Input, Button, Center } from "@chakra-ui/react";
+import Link from "next/link";
 
 export default function Login() {
   return (
@@ -29,9 +30,13 @@ export default function Login() {
           textColor={"white"}
           mb={6}
         />
-        <Button bgColor="primary.50" mb={8}>
-          Log In
-        </Button>
+        <Center>
+          <Link href={"/jobpostings"}>
+            <Button bgColor="primary.50" mb={8}>
+              Log In
+            </Button>
+          </Link>
+        </Center>
       </Flex>
     </Flex>
   );
