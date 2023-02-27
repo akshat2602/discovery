@@ -10,11 +10,11 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { BsSearch } from "react-icons/bs";
-import CandidateJobCard from "../components/candidateJobCard";
+import CandidateJobCard from "../components/CandidateJobCard";
 import discovery from "../public/discovery.svg";
 import logo from "../public/logo.svg";
 
-const candidateJobs = () => {
+const CandidateJobs = () => {
   return (
     <>
       <Flex
@@ -69,4 +69,4 @@ const candidateJobs = () => {
   );
 };
 
-export default candidateJobs;
+export default CandidateJobs;
