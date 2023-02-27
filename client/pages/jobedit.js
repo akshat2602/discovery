@@ -32,7 +32,7 @@ const jobStepUnit = () => {
     }
   );
 };
-const jobEdit = () => {
+const JobEdit = () => {
   const router = useRouter();
   const [jobSteps, setJobSteps] = useState([
     {
@@ -216,4 +216,4 @@ const jobEdit = () => {
   );
 };
 
-export default jobEdit;
+export default JobEdit;

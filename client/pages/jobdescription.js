@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Popup from "@/components/ApplyJobPopup";
 import ApplyJobPopup from "@/components/ApplyJobPopup";
 
-const jobDescription = () => {
+const JobDescription = () => {
   const router = useRouter();
   return (
     <Flex direction={"column"} align="center" padding={4}>
@@ -88,4 +88,4 @@ const jobDescription = () => {
   );
 };
 
-export default jobDescription;
+export default JobDescription;
