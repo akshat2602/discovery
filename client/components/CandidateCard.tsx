@@ -17,7 +17,7 @@ const CandidateCard: React.FC<candidateCardProps> = ({ name, email }) => {
     <Box
       rounded={12}
       borderTop={"2px"}
-      borderTopColor="primary.50"
+      borderTopColor="primary.400"
       bgColor={"light.50"}
       my={2}
       width="100%"
@@ -28,7 +28,6 @@ const CandidateCard: React.FC<candidateCardProps> = ({ name, email }) => {
           <Text
             fontSize={16}
             fontWeight={"medium"}
-            color={"white"}
             noOfLines={2}
             textOverflow={"ellipsis"}
             mb={1}
@@ -39,7 +38,6 @@ const CandidateCard: React.FC<candidateCardProps> = ({ name, email }) => {
             mb={1}
             fontSize={12}
             fontWeight={"light"}
-            color={"white"}
             noOfLines={1}
             textOverflow={"ellipsis"}
           >
@@ -51,19 +49,19 @@ const CandidateCard: React.FC<candidateCardProps> = ({ name, email }) => {
           background="none"
           _hover={{ background: "whiteAlpha.100" }}
           icon={<BsLink size={28} />}
-          color="primary.50"
+          color="primary.400"
           onClick={() => {}}
         />
         <Switch
           isChecked={isChecked}
           onChange={handleChange}
           size="sm"
-          borderColor={"primary.50"}
+          borderColor={"primary.400"}
         />
         <Text
           fontSize={13}
           fontWeight={"light"}
-          color={isChecked ? "primary.50" : "white"}
+          color={isChecked ? "primary.400" : "white"}
         >
           {isChecked ? "Remove" : "Shortlist"}
         </Text>

@@ -5,7 +5,7 @@ import CandidateCard from "./CandidateCard";
 const ListOfCandidates: React.FC = () => {
   return (
     <Flex direction="column" width={"100%"} align="center" mt={10}>
-      <Text fontSize={20} color={"white"} mb={4}>
+      <Text fontSize={20} mb={4}>
         List of Candidates
       </Text>
 
