@@ -1,14 +1,13 @@
+import { Flex, Text, Divider, IconButton } from "@chakra-ui/react";
+import { BsArrowLeftShort } from "react-icons/bs";
+import { useRouter } from "next/router";
 import {
   Button,
   Card,
   Center,
   Container,
-  Divider,
-  Flex,
   FormControl,
   FormLabel,
-  Hide,
-  IconButton,
   Input,
   Menu,
   MenuButton,
@@ -16,14 +15,14 @@ import {
   MenuList,
   Stack,
   Switch,
-  Text,
   Textarea,
 } from "@chakra-ui/react";
 import { FiChevronDown, FiPlus } from "react-icons/fi";
-import React, { useState } from "react";
-
 import { BsFillTrashFill } from "react-icons/bs";
-import Sidebar from "../components/SideBar";
+import { useState } from "react";
+import Head from "next/head";
+
+import ListOfCandidates from "../../../../components/ListOfCandidates";
 
 const jobStepUnit = () => {
   return Object.assign(
@@ -35,9 +34,8 @@ const jobStepUnit = () => {
     }
   );
 };
-
-const CreateJobPosting: React.FC = () => {
-  const [isOpen, setSideBarOpen] = useState(false);
+const JobEdit: React.FC = () => {
+  const router = useRouter();
   const [jobSteps, setJobSteps] = useState([
     {
       roundName: "",
@@ -45,44 +43,48 @@ const CreateJobPosting: React.FC = () => {
       isCompleted: false,
     },
   ]);
-
   return (
     <>
-      <Flex w="100%">
-        <Hide below="sm">
-          <Sidebar isOpen={isOpen} setSideBarOpen={setSideBarOpen} />
-        </Hide>
+      <Head>
+        <title>Edit Job Posting</title>
+      </Head>
+      <Flex direction={"column"} align="center" padding={4}>
         <Flex w={"100%"} marginX={12} marginY={8} direction={"column"}>
-          <Text fontSize={30} fontWeight={"bold"} color={"white"} noOfLines={1}>
-            Create a new Job!
-          </Text>
-
+          <Flex>
+            <IconButton
+              aria-label="Back"
+              background="none"
+              _hover={{ background: "none" }}
+              icon={<BsArrowLeftShort size={24} />}
+              color="primary.400"
+              onClick={() => router.back()}
+            />
+            <Text fontSize={30} fontWeight={"bold"} noOfLines={1}>
+              Edit Job Details
+            </Text>
+          </Flex>
           <Divider my={2} borderColor={"border"}></Divider>
           <Container height={8} />
           <FormControl>
-            <FormLabel fontSize={20} color={"white"}>
-              Job Title
-            </FormLabel>
+            <FormLabel fontSize={20}>Job Title</FormLabel>
             <Input
               type={"text"}
               placeholder={"Software Development Engineer"}
-              textColor={"white"}
+              text
               size={"md"}
               _placeholder={{ color: "gray.500" }}
             />
           </FormControl>
           <Container height={8} />
           <FormControl>
-            <FormLabel fontSize={20} color={"white"}>
-              Job Description
-            </FormLabel>
+            <FormLabel fontSize={20}>Job Description</FormLabel>
             <Textarea
               borderRadius={6}
               placeholder={"This is a placeholder job description."}
               size="md"
               height={"auto"}
               rows={10}
-              textColor={"white"}
+              text
               _placeholder={{ color: "gray.500" }}
             />
           </FormControl>
@@ -109,21 +111,18 @@ const CreateJobPosting: React.FC = () => {
           </Flex>
           <Container height={8} />
           <FormControl>
-            <FormLabel fontSize={20} color={"white"}>
-              Interview Rounds
-            </FormLabel>
+            <FormLabel fontSize={20}>Interview Rounds</FormLabel>
             {jobSteps.map((step, index) => {
               return (
                 <Card
                   key={index}
                   rounded={12}
                   borderTop={"2px"}
-                  borderTopColor="primary.50"
+                  borderTopColor="primary.400"
                   bgColor={"light.50"}
                   mb={2}
                 >
                   <Text
-                    color={"white"}
                     paddingTop={4}
                     paddingRight={8}
                     paddingLeft={8}
@@ -141,7 +140,7 @@ const CreateJobPosting: React.FC = () => {
                     <Input
                       type={"text"}
                       value={jobSteps[index].roundName}
-                      textColor={"white"}
+                      text
                       size={"md"}
                       placeholder={"Enter round name"}
                       _placeholder={{ color: "gray.500" }}
@@ -152,7 +151,7 @@ const CreateJobPosting: React.FC = () => {
                     />
                     <Container width={8} />
                     <Stack direction={"row"}>
-                      <Text color={"white"}>Active</Text>
+                      <Text>Active</Text>
                       <Switch
                         isChecked={jobSteps[index].isActive}
                         colorScheme={"teal"}
@@ -165,7 +164,7 @@ const CreateJobPosting: React.FC = () => {
                     </Stack>
                     <Container width={8} />
                     <Stack direction={"row"}>
-                      <Text color={"white"}>Completed</Text>
+                      <Text>Completed</Text>
                       <Switch
                         isChecked={jobSteps[index].isCompleted}
                         colorScheme={"teal"}
@@ -178,7 +177,7 @@ const CreateJobPosting: React.FC = () => {
                     </Stack>
                     <Container width={8} />
                     <IconButton
-                      aria-label="Delete Round"
+                      aria-label="Delete"
                       icon={<BsFillTrashFill />}
                       color={"red.500"}
                       fontSize={30}
@@ -204,10 +203,13 @@ const CreateJobPosting: React.FC = () => {
               </Button>
             </Center>
           </FormControl>
+
+          <ListOfCandidates />
           <Container height={8} />
+
           <Center>
-            <Button bgColor={"primary.50"} width="170px">
-              Publish
+            <Button bgColor={"primary.400"} width="170px">
+              Save Edit
             </Button>
           </Center>
         </Flex>
@@ -216,4 +218,4 @@ const CreateJobPosting: React.FC = () => {
   );
 };
 
-export default CreateJobPosting;
+export default JobEdit;

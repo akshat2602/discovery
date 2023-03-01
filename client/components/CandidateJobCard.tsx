@@ -8,7 +8,7 @@ const CandidateJobCard = () => {
   return (
     <Card
       rounded={12}
-      borderTopColor="primary.50"
+      borderTopColor="primary.400"
       bgColor={"light.50"}
       width={240}
       p={4}
@@ -20,7 +20,6 @@ const CandidateJobCard = () => {
           <Text
             fontSize={16}
             fontWeight={"medium"}
-            color={"white"}
             noOfLines={2}
             textOverflow={"ellipsis"}
             mb={1}
@@ -31,7 +30,6 @@ const CandidateJobCard = () => {
             mb={1}
             fontSize={12}
             fontWeight={"light"}
-            color={"white"}
             noOfLines={1}
             textOverflow={"ellipsis"}
           >
@@ -45,7 +43,6 @@ const CandidateJobCard = () => {
                 ml={2}
                 fontSize={10}
                 fontWeight={"light"}
-                color={"white"}
                 noOfLines={2}
                 textOverflow={"ellipsis"}
               >
@@ -60,7 +57,6 @@ const CandidateJobCard = () => {
                 ml={2}
                 fontSize={10}
                 fontWeight={"light"}
-                color={"white"}
                 noOfLines={2}
                 textOverflow={"ellipsis"}
               >

@@ -1,9 +1,6 @@
-import {
-  extendTheme,
-  withDefaultColorScheme,
-  theme as baseTheme,
-} from "@chakra-ui/react";
+import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
+
 export const customTheme = extendTheme(
   {
     fonts: {
@@ -12,7 +9,16 @@ export const customTheme = extendTheme(
     },
     colors: {
       primary: {
-        50: "#00ADB5",
+        50: "#eefafa",
+        100: "#bae9eb",
+        200: "#79d4d8",
+        300: "#20b7be",
+        400: "#00ADB5",
+        500: "#008b91",
+        600: "#00757b",
+        700: "#005e63",
+        800: "#005054",
+        900: "#003a3d",
       },
       border: "#646D73",
       dark: {
@@ -26,6 +32,7 @@ export const customTheme = extendTheme(
       global: (props) => ({
         body: {
           bg: mode("#303841", "#303841")(props),
+          color: "#FFFFFF",
         },
         "*::placeholder": {
           color: mode("#3A4750", "#3A4750")(props),

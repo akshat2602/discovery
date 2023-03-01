@@ -8,17 +8,17 @@ import Link from "next/link";
 
 const JobCard = () => {
   return (
-    <Link href={"/jobedit"}>
+    <Link href={`/dashboard/jobs/${1}`}>
       <Card
         rounded={12}
         borderTop={"2px"}
-        borderTopColor="primary.50"
+        borderTopColor="primary.400"
         bgColor={"light.50"}
         mb={2}
       >
         <Flex direction={"column"}>
           <Flex px={4} py={1} align="center" justify={"space-between"}>
-            <Text fontSize={16} fontWeight={"medium"} color={"white"}>
+            <Text fontSize={16} fontWeight={"medium"}>
               Intern - Product Management Intern
             </Text>
             <IconButton
@@ -26,7 +26,7 @@ const JobCard = () => {
               background="none"
               _hover={{ background: "whiteAlpha.100" }}
               icon={<FiEdit />}
-              color="primary.50"
+              color="primary.400"
               onClick={() => {}}
             />
           </Flex>
@@ -38,7 +38,6 @@ const JobCard = () => {
                 ml={1}
                 fontSize={12}
                 fontWeight={"light"}
-                color={"white"}
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
@@ -51,7 +50,6 @@ const JobCard = () => {
                 ml={1}
                 fontSize={12}
                 fontWeight={"light"}
-                color={"white"}
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
@@ -64,7 +62,6 @@ const JobCard = () => {
                 ml={1}
                 fontSize={12}
                 fontWeight={"light"}
-                color={"white"}
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
