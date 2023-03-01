@@ -1,4 +1,4 @@
-import { Button, Flex, Box, Text, Divider, IconButton } from "@chakra-ui/react";
+import { Flex, Box, Text, Divider, IconButton } from "@chakra-ui/react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { BsShareFill } from "react-icons/bs";
 import { useRouter } from "next/router";
