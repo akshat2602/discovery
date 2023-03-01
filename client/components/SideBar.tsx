@@ -9,13 +9,12 @@ import {
   Menu,
   Icon,
   Link,
-  Image,
 } from "@chakra-ui/react";
 import profileIcon from "../public/profile.svg";
-import discovery from "../public/discovery.svg";
-import logo from "../public/logo.svg";
 import { FiMenu, FiBriefcase } from "react-icons/fi";
 import { useState } from "react";
+import Logo from "./Util/Logo";
+import Discovery from "./Util/Discovery";
 
 interface sideBarProps {
   isOpen: boolean;
@@ -58,20 +57,8 @@ const Sidebar: React.FC<sideBarProps> = ({ isOpen, setSideBarOpen }) => {
               isOpen ? setSideBarOpen(false) : setSideBarOpen(true);
             }}
           />
-          <Image
-            style={isOpen ? { display: "flex" } : { display: "none" }}
-            src={logo.src}
-            height={"1.125"}
-            alt="logo"
-          ></Image>
-          <Image
-            margin-left={1}
-            margin-top={1}
-            style={isOpen ? { display: "flex" } : { display: "none" }}
-            src={discovery.src}
-            height={"1.125"}
-            alt="discovery"
-          ></Image>
+          <Logo isOpen={isOpen} />
+          <Discovery isOpen={isOpen} />
         </Flex>
         <Flex mt={30} flexDir="column" w={isOpen ? "170px" : "40px"}>
           <Menu>
