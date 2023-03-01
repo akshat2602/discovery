@@ -15,14 +15,14 @@ const JobDescription: React.FC = () => {
             background="none"
             _hover={{ background: "none" }}
             icon={<BsArrowLeftShort size={24} />}
-            color="primary.50"
+            color="primary.400"
             onClick={() => router.back()}
           />
           <Flex direction={"column"} align={"center"}>
-            <Text fontSize={18} fontWeight={"semibold"} color={"white"}>
+            <Text fontSize={18} fontWeight={"semibold"}>
               Senior Software Engineer
             </Text>
-            <Text fontSize={10} fontWeight={"hairline"} color={"white"}>
+            <Text fontSize={10} fontWeight={"hairline"}>
               San Francisco, CA
             </Text>
           </Flex>
@@ -31,23 +31,17 @@ const JobDescription: React.FC = () => {
             background="none"
             _hover={{ background: "none" }}
             icon={<BsShareFill size={16} />}
-            color="primary.50"
+            color="primary.400"
             onClick={() => {}}
           />
         </Flex>
         <Divider borderColor={"border"} mt="3" />
         <Box overscroll={"auto"}>
-          <Text
-            fontSize={12}
-            fontWeight={"thin"}
-            color={"white"}
-            textAlign="start"
-            padding={2}
-          >
-            Join the Media Infrastructure team and find out! We're responsible
-            for storing, processing and serving 100PB+ worth of user generated
-            media to our users in a reliable, cost effective, safe and secure
-            way. As a Media Infrastructure engineer, you will be directly
+          <Text fontSize={12} fontWeight={"thin"} textAlign="start" padding={2}>
+            Join the Media Infrastructure team and find out! We`&apos;`re
+            responsible for storing, processing and serving 100PB+ worth of user
+            generated media to our users in a reliable, cost effective, safe and
+            secure way. As a Media Infrastructure engineer, you will be directly
             responsible for the end to end journey of media on Discord. You will
             also create the building blocks our product teams are using to
             launch new features allowing our users to express themselves with
@@ -66,8 +60,8 @@ const JobDescription: React.FC = () => {
             <br />- Experience solving complex distributed system problems
             <br />- Experience operating systems handling 1M+ qps
             <br />- Familiar with open source software, and not afraid to dig
-            into the source code of a library to find the answer you're looking
-            for
+            into the source code of a library to find the answer you`&apos;`re
+            looking for
             <br />- Comfortable making tradeoffs when leading projects to ensure
             constant progress
             <br />

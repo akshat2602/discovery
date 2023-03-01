@@ -12,7 +12,7 @@ const Login: React.FC = () => {
         boxShadow="lg"
       >
         <Center>
-          <Text mb={6} textColor={"white"} fontSize={"24"}>
+          <Text mb={6} fontSize={"24"}>
             Login
           </Text>
         </Center>
@@ -21,7 +21,6 @@ const Login: React.FC = () => {
           type="email"
           variant="filled"
           bgColor={"dark.50"}
-          textColor={"white"}
           mb={3}
         />
         <Input
@@ -29,12 +28,11 @@ const Login: React.FC = () => {
           type="password"
           variant="filled"
           bgColor={"dark.50"}
-          textColor={"white"}
           mb={6}
         />
         <Center>
           <Link href={"/jobpostings"}>
-            <Button bgColor="primary.50" mb={8}>
+            <Button bgColor="primary.400" mb={8}>
               Log In
             </Button>
           </Link>
