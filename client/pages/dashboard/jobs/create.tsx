@@ -53,7 +53,7 @@ const CreateJobPosting: React.FC = () => {
       </Head>
       <DashboardLayout>
         <Flex w="100%">
-          <Flex w={"100%"} marginX={12} marginY={8} direction={"column"}>
+          <Flex w={"100%"} marginX={5} marginY={8} direction={"column"}>
             <Text fontSize={30} fontWeight={"bold"} noOfLines={1}>
               Create a new Job!
             </Text>
@@ -65,7 +65,6 @@ const CreateJobPosting: React.FC = () => {
               <Input
                 type={"text"}
                 placeholder={"Software Development Engineer"}
-                text
                 size={"md"}
                 _placeholder={{ color: "gray.500" }}
               />
@@ -79,18 +78,13 @@ const CreateJobPosting: React.FC = () => {
                 size="md"
                 height={"auto"}
                 rows={10}
-                text
                 _placeholder={{ color: "gray.500" }}
               />
             </FormControl>
             <Container height={8} />
             <Flex direction={"row"} justify={"center"}>
               <Menu>
-                <MenuButton
-                  backgroundColor={"light.50"}
-                  as={Button}
-                  rightIcon={<FiChevronDown />}
-                >
+                <MenuButton as={Button} rightIcon={<FiChevronDown />}>
                   Job Location
                 </MenuButton>
                 <MenuList>
@@ -114,7 +108,7 @@ const CreateJobPosting: React.FC = () => {
                     rounded={12}
                     borderTop={"2px"}
                     borderTopColor="primary.400"
-                    bgColor={"light.50"}
+                    bgColor={"light.400"}
                     mb={2}
                   >
                     <Text
@@ -135,7 +129,6 @@ const CreateJobPosting: React.FC = () => {
                       <Input
                         type={"text"}
                         value={jobSteps[index].roundName}
-                        text
                         size={"md"}
                         placeholder={"Enter round name"}
                         _placeholder={{ color: "gray.500" }}
@@ -174,7 +167,7 @@ const CreateJobPosting: React.FC = () => {
                       <IconButton
                         aria-label="Delete Round"
                         icon={<BsFillTrashFill />}
-                        color={"red.500"}
+                        // color={"red.500"}
                         fontSize={30}
                         onClick={() => {
                           jobSteps.splice(index, 1);
@@ -188,7 +181,7 @@ const CreateJobPosting: React.FC = () => {
               <Container height={4} />
               <Center>
                 <Button
-                  bgColor={"border"}
+                  // bgColor={"border"}
                   leftIcon={<FiPlus size={24} />}
                   onClick={() => {
                     setJobSteps([...jobSteps, jobStepUnit()]);
@@ -200,9 +193,7 @@ const CreateJobPosting: React.FC = () => {
             </FormControl>
             <Container height={8} />
             <Center>
-              <Button bgColor={"primary.400"} width="170px">
-                Publish
-              </Button>
+              <Button width="170px">Publish</Button>
             </Center>
           </Flex>
         </Flex>

@@ -1,7 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import React from "react";
 import {
-  IconButton,
   Divider,
   Avatar,
   Heading,
@@ -9,25 +8,25 @@ import {
   Menu,
   Icon,
   Link,
+  Button,
 } from "@chakra-ui/react";
 import profileIcon from "../../public/profile.svg";
-import { FiMenu, FiBriefcase } from "react-icons/fi";
+import { FiBriefcase } from "react-icons/fi";
 import { useState } from "react";
 import Logo from "../Util/Logo";
 import Discovery from "../Util/Discovery";
 
 const SideBar: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState(1);
-  const [isOpen, setSideBarOpen] = useState(true);
 
   return (
     <Flex
       bg="light.50"
-      pos="sticky"
+      pos="fixed"
       // left="5"
       h="100vh"
+      p={"0.25rem"}
       // marginTop="2.5vh"
-      w={isOpen ? "220px" : "90px"}
       // rounded={24}
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       flexDir="column"
@@ -35,47 +34,30 @@ const SideBar: React.FC = () => {
       align={"center"}
     >
       <Flex
-        p="6px"
+        // m={"2rem"}
         flexDir="column"
-        w="100%"
+        // w="100%"
         alignItems={"flex-start"}
         as="nav"
-        ml={5}
       >
         <Flex flexDirection="row" align={"center"} mt={5}>
-          <IconButton
-            aria-label="Menu"
-            background="none"
-            _hover={{ background: "none" }}
-            icon={<FiMenu />}
-            color="white"
-            onClick={() => {
-              isOpen ? setSideBarOpen(false) : setSideBarOpen(true);
-            }}
-          />
-          <Logo isOpen={isOpen} />
-          <Discovery isOpen={isOpen} />
+          <Logo />
+          <Discovery fontSize={24} />
         </Flex>
 
-        <Flex mt={30} flexDir="column" w={isOpen ? "170px" : "40px"}>
+        <Flex marginY={12} flexDir="column">
           <Menu>
-            <Link
-              backgroundColor={selectedItem == 1 ? "primary.400" : "none"}
-              p={3}
-              borderRadius={8}
-              _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
-              w={"100%"}
-            >
-              <Flex align={"center"} w="100%" height={"8px"} pt={2} pb={2}>
-                <Icon as={FiBriefcase} fontSize={"18px"} />
-                <Text
-                  ml={5}
-                  display={isOpen ? "flex" : "none"}
-                  fontSize={18}
-                  fontWeight={"medium"}
+            <Link href="/dashboard/jobs" _hover={{ textDecor: "none" }}>
+              <Flex align={"center"} height={"1rem"} pt={2} pb={2}>
+                <Button
+                  leftIcon={<FiBriefcase />}
+                  backgroundColor={selectedItem == 1 ? "dark.400" : "none"}
+                  p={4}
+                  borderRadius={8}
+                  w={"100%"}
                 >
                   Jobs
-                </Text>
+                </Button>
               </Flex>
             </Link>
           </Menu>
@@ -83,22 +65,23 @@ const SideBar: React.FC = () => {
       </Flex>
 
       <Flex
-        p="6px"
+        // m={"2rem"}
         flexDir="column"
-        w="100%"
-        height={"70px"}
+        // w="100%"
+        // height={"70px"}
         alignItems={"center"}
-        mb={4}
+        mb={2}
       >
         <Divider borderColor={"border"} />
         <Flex mt={4} align="center">
+          {/* TODO: Fix upar neeche profile icon */}
           <Avatar size="sm" src={profileIcon.src} />
-          <Flex flexDir="column" ml={4} display={isOpen ? "flex" : "none"}>
+          <Flex flexDir="column" ml={4}>
             <Heading
               fontSize="18"
               color={"white"}
               fontWeight={"medium"}
-              maxWidth="130px"
+              // maxWidth="130px"
               textOverflow={"clip"}
               noOfLines={1}
             >
@@ -107,7 +90,7 @@ const SideBar: React.FC = () => {
             <Text
               fontSize="12"
               fontWeight={"thin"}
-              maxWidth="130px"
+              // maxWidth="130px"
               textOverflow={"clip"}
               noOfLines={1}
             >

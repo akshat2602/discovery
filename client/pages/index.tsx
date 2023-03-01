@@ -24,11 +24,16 @@ const Home: React.FC = () => {
       </Head>
       <Box minH={"100vh"}>
         <Flex align={"center"} justify="center" h="100vh">
-          <Grid templateColumns={"repeat(2,1fr)"} h="100%" maxH="100vh">
+          <Grid
+            templateColumns={"repeat(2,1fr)"}
+            h="100%"
+            w="100%"
+            maxH="100vh"
+          >
             <GridItem colSpan={1}>
               <Flex justify="center" align="center" h="100%">
-                <Logo isOpen={true} height={200} width={200} />
-                <Discovery isOpen={true} fontSize={100} />
+                <Logo height={200} width={200} />
+                <Discovery fontSize={100} />
               </Flex>
             </GridItem>
             <GridItem colSpan={1}>
@@ -38,8 +43,12 @@ const Home: React.FC = () => {
                     <Text fontSize={"3xl"} textAlign={"center"}>
                       Welcome to Discovery!
                     </Text>
-                    <Link href="/dashboard">
-                      <Button size="lg" variant={"outline"}>
+                    <Link href="/dashboard/jobs">
+                      <Button
+                        size="lg"
+                        variant={"outline"}
+                        colorScheme="primary"
+                      >
                         Start hiring today!
                       </Button>
                     </Link>
