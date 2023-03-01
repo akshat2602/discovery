@@ -2,23 +2,16 @@ import { Button, Flex, Box, Text, Divider, IconButton } from "@chakra-ui/react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { BsShareFill } from "react-icons/bs";
 import { useRouter } from "next/router";
-import Popup from "@/components/ApplyJobPopup";
-import ApplyJobPopup from "@/components/ApplyJobPopup";
+import ApplyJobPopup from "../components/ApplyJobPopup";
 
-const JobDescription = () => {
+const JobDescription: React.FC = () => {
   const router = useRouter();
   return (
     <Flex direction={"column"} align="center" padding={4}>
-      <Box
-        width={"80vw"}
-        flex="1"
-        rounded={24}
-        bgColor="light.50"
-        p={4}
-        align={"center"}
-      >
+      <Box width={"80vw"} flex="1" rounded={24} bgColor="light.50" p={4}>
         <Flex align={"center"} justify={"space-between"}>
           <IconButton
+            aria-label="Back Button"
             background="none"
             _hover={{ background: "none" }}
             icon={<BsArrowLeftShort size={24} />}
@@ -34,6 +27,7 @@ const JobDescription = () => {
             </Text>
           </Flex>
           <IconButton
+            aria-label="Share Button"
             background="none"
             _hover={{ background: "none" }}
             icon={<BsShareFill size={16} />}
@@ -42,7 +36,7 @@ const JobDescription = () => {
           />
         </Flex>
         <Divider borderColor={"border"} mt="3" />
-        <Box overscroll={true}>
+        <Box overscroll={"auto"}>
           <Text
             fontSize={12}
             fontWeight={"thin"}
@@ -59,7 +53,7 @@ const JobDescription = () => {
             launch new features allowing our users to express themselves with
             media.
             <br />
-            <br /> What you'll be
+            <br /> What you`&apos;`ll be
             <br />- Solve incredibly hard scaling challenges
             <br />- Ensure our systems are fast, reliable and efficient
             <br />- Collaborate with product teams to add new features
