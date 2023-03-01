@@ -48,7 +48,7 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <Box mt="2%" marginX={12} zIndex={10} px="0.5%">
+    <Box mt="2%" marginX={5} zIndex={10}>
       <HStack>
         {renderBreadCrumb()}
         <Spacer />
