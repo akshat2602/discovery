@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   Flex,
   Text,
@@ -8,6 +7,7 @@ import {
   InputLeftElement,
   Input,
   Center,
+  Image,
 } from "@chakra-ui/react";
 import { BsSearch } from "react-icons/bs";
 import CandidateJobCard from "../components/CandidateJobCard";
@@ -24,8 +24,8 @@ const CandidateJobs: React.FC = () => {
         mt={4}
         mb="2"
       >
-        <Image src={logo.src} height={"1.125"} alt="logo"></Image>
-        <Image src={discovery.src} height={"1.125"} alt="discovery"></Image>
+        <Image src={logo.src} height={"18"} alt="logo"></Image>
+        <Image src={discovery.src} height={"18"} alt="discovery"></Image>
       </Flex>
       <Text
         fontSize={30}
@@ -34,7 +34,7 @@ const CandidateJobs: React.FC = () => {
         noOfLines={1}
         align={"center"}
       >
-        Welcome, Let`&apos;` Find Your Job!
+        Welcome, Let's Find Your Job!
       </Text>
       <Divider my={2} borderColor={"border"}></Divider>
       <Center>
