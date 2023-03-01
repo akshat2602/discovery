@@ -47,7 +47,7 @@ const JobEdit: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Edit Job Posting</title>
+        <title>Discovery | Edit Job Posting</title>
       </Head>
       <DashboardLayout>
         <Flex marginX={5} marginY={8} direction={"column"} align="center">

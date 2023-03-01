@@ -49,7 +49,7 @@ const CreateJobPosting: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Create Job Posting</title>
+        <title>Discovery | Create Job Posting</title>
       </Head>
       <DashboardLayout>
         <Flex w="100%">
