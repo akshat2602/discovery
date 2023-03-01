@@ -59,17 +59,17 @@ const Sidebar: React.FC<sideBarProps> = ({ isOpen, setSideBarOpen }) => {
             }}
           />
           <Image
-            display={isOpen ? "flex" : "none"}
+            style={isOpen ? { display: "flex" } : { display: "none" }}
             src={logo.src}
-            height={"18px"}
+            height={"1.125"}
             alt="logo"
           ></Image>
           <Image
-            display={isOpen ? "flex" : "none"}
+            margin-left={1}
+            margin-top={1}
+            style={isOpen ? { display: "flex" } : { display: "none" }}
             src={discovery.src}
-            height={"18px"}
-            ml={1}
-            mt={1}
+            height={"1.125"}
             alt="discovery"
           ></Image>
         </Flex>
