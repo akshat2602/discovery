@@ -22,7 +22,7 @@ const PostedJobs: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Posted Jobs</title>
+        <title>Discovery | Posted Jobs</title>
       </Head>
       <DashboardLayout>
         <Flex w="100%">

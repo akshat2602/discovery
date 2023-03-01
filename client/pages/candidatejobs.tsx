@@ -23,8 +23,8 @@ const CandidateJobs: React.FC = () => {
         mt={4}
         mb="2"
       >
-        <Logo isOpen={true} height={35} width={35} />
-        <Discovery isOpen={true} fontSize={36} />
+        <Logo height={35} width={35} />
+        <Discovery fontSize={36} />
       </Flex>
       <Text fontSize={30} fontWeight={"bold"} noOfLines={1} align={"center"}>
         Welcome, Let&lsquo;s Find Your Job!
@@ -41,7 +41,7 @@ const CandidateJobs: React.FC = () => {
           <InputLeftElement pointerEvents="none">
             <BsSearch color="white" />
           </InputLeftElement>
-          <Input type="text" text fontWeight="medium" />
+          <Input type="text" fontWeight="medium" />
         </InputGroup>
       </Center>
       <SimpleGrid
