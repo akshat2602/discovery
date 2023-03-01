@@ -3,6 +3,10 @@ import { mode } from "@chakra-ui/theme-tools";
 
 export const customTheme = extendTheme(
   {
+    config: {
+      initialColorMode: "dark",
+      useSystemColorMode: false,
+    },
     fonts: {
       body: "Poppins, sans-serif",
       heading: "Poppins, sans-serif",
@@ -32,7 +36,6 @@ export const customTheme = extendTheme(
       global: (props) => ({
         body: {
           bg: mode("#303841", "#303841")(props),
-          color: "#FFFFFF",
         },
         "*::placeholder": {
           color: mode("#3A4750", "#3A4750")(props),
