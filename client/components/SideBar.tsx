@@ -16,7 +16,14 @@ import discovery from "../public/discovery.svg";
 import logo from "../public/logo.svg";
 import { FiMenu, FiBriefcase } from "react-icons/fi";
 import { useState } from "react";
-const Sidebar = ({ isOpen, setSideBarOpen }) => {
+
+interface sideBarProps {
+  isOpen: boolean;
+  // setSideBarOpen is React useState Function
+  setSideBarOpen: Function;
+}
+
+const Sidebar: React.FC<sideBarProps> = ({ isOpen, setSideBarOpen }) => {
   const [selectedItem, setSelectedItem] = useState(1);
   return (
     <Flex
@@ -42,6 +49,7 @@ const Sidebar = ({ isOpen, setSideBarOpen }) => {
       >
         <Flex flexDirection="row" align={"center"} mt={5}>
           <IconButton
+            aria-label="Menu"
             background="none"
             _hover={{ background: "none" }}
             icon={<FiMenu />}

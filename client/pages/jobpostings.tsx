@@ -16,7 +16,7 @@ import Link from "next/link";
 
 const checkBoxes = ["Active", "Inactive"];
 
-export default function JobPostings() {
+const JobPostings: React.FC = () => {
   const [isOpen, setSideBarOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState([false, false]);
 
@@ -63,7 +63,6 @@ export default function JobPostings() {
                 height={"300px"}
                 bgColor="light.50"
                 p={4}
-                align={"center"}
               >
                 <Text
                   fontSize={16}
@@ -107,4 +106,6 @@ export default function JobPostings() {
       </Flex>
     </>
   );
-}
+};
+
+export default JobPostings;
