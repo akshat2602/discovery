@@ -1,7 +1,7 @@
 import { Flex, Text, Input, Button, Center } from "@chakra-ui/react";
 import Link from "next/link";
 
-export default function Login() {
+const Login: React.FC = () => {
   return (
     <Flex h="100vh" alignItems="center" justify="center">
       <Flex
@@ -42,4 +42,6 @@ export default function Login() {
       </Flex>
     </Flex>
   );
-}
+};
+
+export default Login;

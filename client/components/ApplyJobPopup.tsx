@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-export default function ApplyJobPopup() {
+const ApplyJobPopup: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   function handleOpen() {
     setIsOpen(true);
@@ -123,4 +123,6 @@ export default function ApplyJobPopup() {
       </Modal>
     </>
   );
-}
+};
+
+export default ApplyJobPopup;
