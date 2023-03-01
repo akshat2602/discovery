@@ -1,9 +1,10 @@
+import type { NextPage } from "next";
+import Image from "next/image";
 import {
   Flex,
   Text,
   Divider,
   SimpleGrid,
-  Image,
   InputGroup,
   InputLeftElement,
   Input,
@@ -14,7 +15,7 @@ import CandidateJobCard from "../components/CandidateJobCard";
 import discovery from "../public/discovery.svg";
 import logo from "../public/logo.svg";
 
-const CandidateJobs = () => {
+const CandidateJobs: React.FC = () => {
   return (
     <>
       <Flex
@@ -24,8 +25,8 @@ const CandidateJobs = () => {
         mt={4}
         mb="2"
       >
-        <Image src={logo.src} height={"18px"}></Image>
-        <Image src={discovery.src} height={"18px"}></Image>
+        <Image src={logo.src} height={"1.125"} alt="logo"></Image>
+        <Image src={discovery.src} height={"1.125"} alt="discovery"></Image>
       </Flex>
       <Text
         fontSize={30}
@@ -34,7 +35,7 @@ const CandidateJobs = () => {
         noOfLines={1}
         align={"center"}
       >
-        Welcome, Let's Find Your Job!
+        Welcome, Let`&apos;` Find Your Job!
       </Text>
       <Divider my={2} borderColor={"border"}></Divider>
       <Center>
@@ -45,10 +46,9 @@ const CandidateJobs = () => {
           borderColor={"light.50"}
           bgColor={"light.50"}
         >
-          <InputLeftElement
-            pointerEvents="none"
-            children={<BsSearch color="white" />}
-          />
+          <InputLeftElement pointerEvents="none">
+            <BsSearch color="white" />
+          </InputLeftElement>
           <Input type="text" textColor={"white"} fontWeight="medium" />
         </InputGroup>
       </Center>

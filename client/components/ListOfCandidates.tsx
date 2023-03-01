@@ -1,8 +1,8 @@
-import { Divider, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import CandidateCard from "./CandidateCard";
 
-const ListOfCandidates = () => {
+const ListOfCandidates: React.FC = () => {
   return (
     <Flex direction="column" width={"100%"} align="center" mt={10}>
       <Text fontSize={20} color={"white"} mb={4}>
