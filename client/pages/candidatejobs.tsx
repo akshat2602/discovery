@@ -7,12 +7,11 @@ import {
   InputLeftElement,
   Input,
   Center,
-  Image,
 } from "@chakra-ui/react";
 import { BsSearch } from "react-icons/bs";
 import CandidateJobCard from "../components/CandidateJobCard";
-import discovery from "../public/discovery.svg";
-import logo from "../public/logo.svg";
+import Discovery from "../components/Util/Discovery";
+import Logo from "../components/Util/Logo";
 
 const CandidateJobs: React.FC = () => {
   return (
@@ -24,8 +23,8 @@ const CandidateJobs: React.FC = () => {
         mt={4}
         mb="2"
       >
-        <Image src={logo.src} height={"18"} alt="logo"></Image>
-        <Image src={discovery.src} height={"18"} alt="discovery"></Image>
+        <Logo isOpen={true} height={35} width={35} />
+        <Discovery isOpen={true} fontSize={36} />
       </Flex>
       <Text
         fontSize={30}
@@ -34,7 +33,7 @@ const CandidateJobs: React.FC = () => {
         noOfLines={1}
         align={"center"}
       >
-        Welcome, Let's Find Your Job!
+        Welcome, Let&lsquo;s Find Your Job!
       </Text>
       <Divider my={2} borderColor={"border"}></Divider>
       <Center>
