@@ -1,7 +1,7 @@
 import Head from "next/head";
 import JobPostings from "./jobpostings";
 
-export default function Home() {
+const Home: React.FC = () => {
   return (
     <>
       <Head>
@@ -13,4 +13,6 @@ export default function Home() {
       <JobPostings />
     </>
   );
-}
+};
+
+export default Home;

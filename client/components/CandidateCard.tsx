@@ -1,7 +1,13 @@
 import { Box, Text, Switch, Flex, IconButton } from "@chakra-ui/react";
 import { BsLink } from "react-icons/bs";
 import { useState } from "react";
-const CandidateCard = ({ name, email }) => {
+
+interface candidateCardProps {
+  name: String;
+  email: String;
+}
+
+const CandidateCard: React.FC<candidateCardProps> = ({ name, email }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   function handleChange() {
@@ -41,6 +47,7 @@ const CandidateCard = ({ name, email }) => {
           </Text>
         </Flex>
         <IconButton
+          aria-label="icon-button"
           background="none"
           _hover={{ background: "whiteAlpha.100" }}
           icon={<BsLink size={28} />}
