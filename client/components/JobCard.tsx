@@ -22,6 +22,7 @@ const JobCard = () => {
               Intern - Product Management Intern
             </Text>
             <IconButton
+              aria-label="Edit"
               background="none"
               _hover={{ background: "whiteAlpha.100" }}
               icon={<FiEdit />}

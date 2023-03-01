@@ -20,7 +20,7 @@ import {
 import { FiChevronDown, FiPlus } from "react-icons/fi";
 import { BsFillTrashFill } from "react-icons/bs";
 import { useState } from "react";
-import ListOfCandidates from "@/components/ListOfCandidates";
+import ListOfCandidates from "../components/ListOfCandidates";
 
 const jobStepUnit = () => {
   return Object.assign(
@@ -32,7 +32,7 @@ const jobStepUnit = () => {
     }
   );
 };
-const JobEdit = () => {
+const JobEdit: React.FC = () => {
   const router = useRouter();
   const [jobSteps, setJobSteps] = useState([
     {
@@ -46,6 +46,7 @@ const JobEdit = () => {
       <Flex w={"100%"} marginX={12} marginY={8} direction={"column"}>
         <Flex>
           <IconButton
+            aria-label="Back"
             background="none"
             _hover={{ background: "none" }}
             icon={<BsArrowLeftShort size={24} />}
@@ -177,6 +178,7 @@ const JobEdit = () => {
                   </Stack>
                   <Container width={8} />
                   <IconButton
+                    aria-label="Delete"
                     icon={<BsFillTrashFill />}
                     color={"red.500"}
                     fontSize={30}
