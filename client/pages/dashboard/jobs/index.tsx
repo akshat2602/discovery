@@ -26,15 +26,13 @@ const PostedJobs: React.FC = () => {
       </Head>
       <DashboardLayout>
         <Flex w="100%">
-          <Flex w={"100%"} marginX={12} marginY={8} direction={"column"}>
+          <Flex w={"100%"} marginX={5} marginY={8} direction={"column"}>
             <Flex justify={"space-between"} align={"center"}>
               <Text fontSize={30} fontWeight={"bold"} noOfLines={1}>
                 Welcome Back, Post a new Job!
               </Text>
               <Link href={"/dashboard/jobs/create"}>
-                <Button bgColor={"primary.400"} width="170px">
-                  Post
-                </Button>
+                <Button width="170px">Post</Button>
               </Link>
             </Flex>
             <Divider my={2} borderColor={"border"}></Divider>

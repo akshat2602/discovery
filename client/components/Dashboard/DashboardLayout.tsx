@@ -13,10 +13,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   return (
     <Box>
       <Grid templateColumns={"repeat(24,1fr)"}>
-        <GridItem colSpan={1}>
+        <GridItem colSpan={3}>
           <SideBar />
         </GridItem>
-        <GridItem colSpan={23} mr="2%" ml="1%">
+        <GridItem colSpan={21} mr="2%" ml="1%">
           <NavBar />
           {children}
         </GridItem>

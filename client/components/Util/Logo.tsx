@@ -4,16 +4,14 @@ import logo from "../../public/logo.svg";
 import Link from "next/link";
 
 interface LogoProps {
-  isOpen?: boolean;
   height?: number;
   width?: number;
 }
 
-const Logo: React.FC<LogoProps> = ({ isOpen, height, width }) => {
+const Logo: React.FC<LogoProps> = ({ height, width }) => {
   return (
     <Link href="/">
       <Image
-        style={isOpen ? { display: "flex" } : { display: "none" }}
         src={logo.src}
         height={height ? height : "25"}
         width={width ? width : "25"}
