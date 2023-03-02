@@ -18,7 +18,6 @@ from .models import JobPosting, JobPostingSteps, CandidateApplication
 
 
 # Create your views here.
-# TODO: @Burhan Filter route for job postings which will filter on status and created by
 class JobPostingViewSet(viewsets.ViewSet):
     # TODO: @Akshat - Add authentication for creation, updation and
     # deletion of job postings
@@ -27,6 +26,7 @@ class JobPostingViewSet(viewsets.ViewSet):
 
     @swagger_auto_schema(
         operation_description="Create a new job posting",
+        request_body=JobPostingCreateSerializer,
         responses={
             http_status.HTTP_201_CREATED: JobPostingCreateSerializer,
             http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
@@ -178,6 +178,7 @@ class JobPostingStepViewSet(viewsets.ViewSet):
 
     @swagger_auto_schema(
         operation_description="Create a new job posting step",
+        request_body=JobPostingStepsCreateSerializer,
         responses={
             http_status.HTTP_201_CREATED: JobPostingStepsCreateSerializer,
             http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
@@ -236,7 +237,7 @@ class JobPostingStepViewSet(viewsets.ViewSet):
         return Response(serialized.data, status=http_status.HTTP_200_OK)
 
     @swagger_auto_schema(
-        operation_description="Fetch all job postings",
+        operation_description="Fetch all job posting steps",
         responses={
             http_status.HTTP_200_OK: JobPostingStepsFetchSerializer,
         },
@@ -334,6 +335,7 @@ class CandidateApplicationViewSet(viewsets.ViewSet):
     # TODO: @Akshat - Add permission for updating and deleting
     @swagger_auto_schema(
         operation_description="Create a new candidate application",
+        request_body=CandidateApplicationCreateSerializer,
         responses={
             http_status.HTTP_201_CREATED: CandidateApplicationCreateSerializer,
             http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
