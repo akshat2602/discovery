@@ -76,10 +76,9 @@ class CandidateApplicationCreateSerializer(serializers.ModelSerializer):
             "email",
             "phone",
             "fk_job_posting",
-            "rejected",
             "resume",
         ]
-        read_only_fields = ("id", "applied_at", "updated_at")
+        read_only_fields = ("id", "applied_at", "updated_at", "rejected")
 
 
 class CandidateStatusFetchSerializer(serializers.ModelSerializer):
@@ -100,5 +99,5 @@ class CandidateStatusFetchSerializer(serializers.ModelSerializer):
 
 
 class JobPostingFilterSerializer(serializers.Serializer):
-    status = serializers.IntegerField()
-    created_by = serializers.IntegerField()
+    status = serializers.IntegerField(required=False)
+    created_by = serializers.IntegerField(required=False)
