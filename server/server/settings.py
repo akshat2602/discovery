@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "corsheaders",
     "rest_framework",
-    "rest_framework.authtoken",
     "storages",
     "dj_rest_auth",
     "drf_yasg",
@@ -135,9 +134,14 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Rest Auth Settings
-REST_USE_JWT = True
-JWT_AUTH_COOKIE = "access-token"
-JWT_AUTH_REFRESH_COOKIE = "refresh-token"
+REST_AUTH = {
+    "LOGIN_SERIALIZER": "common.utils.UserLoginSerializer",
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "access_token",
+    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
+    "TOKEN_MODEL": None,
+    "JWT_AUTH_HTTPONLY": False,
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
