@@ -1,6 +1,7 @@
 import os
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
+from dj_rest_auth.serializers import LoginSerializer
 
 
 class CustomErrorSerializer(serializers.Serializer):
@@ -8,6 +9,14 @@ class CustomErrorSerializer(serializers.Serializer):
 
     status = serializers.CharField()
     message = serializers.JSONField()
+
+
+class UserLoginSerializer(LoginSerializer):
+    """Login serializer"""
+
+    username = None
+    email = serializers.EmailField()
+    password = serializers.CharField(style={"input_type": "password"})
 
 
 def validate_doc(value):
