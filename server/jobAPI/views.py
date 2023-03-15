@@ -84,7 +84,7 @@ class JobPostingViewSet(viewsets.ViewSet):
         query_serializer=JobPostingFilterSerializer,
         operation_description="Fetch all job postings",
         responses={
-            http_status.HTTP_200_OK: JobPostingFetchSerializer,
+            http_status.HTTP_200_OK: JobPostingFetchSerializer(many=True),
         },
     )
     def list(self, request):
@@ -239,7 +239,7 @@ class JobPostingStepViewSet(viewsets.ViewSet):
     @swagger_auto_schema(
         operation_description="Fetch all job posting steps",
         responses={
-            http_status.HTTP_200_OK: JobPostingStepsFetchSerializer,
+            http_status.HTTP_200_OK: JobPostingStepsFetchSerializer(many=True),
         },
     )
     def list(self, request):
@@ -396,7 +396,7 @@ class CandidateApplicationViewSet(viewsets.ViewSet):
     @swagger_auto_schema(
         operation_description="Fetch all candidate applications",
         responses={
-            http_status.HTTP_200_OK: CandidateApplicationFetchSerializer,
+            http_status.HTTP_200_OK: CandidateApplicationFetchSerializer(many=True),
         },
     )
     def list(self, request):
