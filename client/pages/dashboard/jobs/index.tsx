@@ -32,11 +32,11 @@ const PostedJobs: React.FC = () => {
                 Welcome Back, Post a new Job!
               </Text>
               <Link href={"/dashboard/jobs/create"}>
-                <Button width="170px">Post</Button>
+                <Button width="11.25rem">Post</Button>
               </Link>
             </Flex>
             <Divider my={2} borderColor={"border"}></Divider>
-            <Flex>
+            <Flex mt={"2%"}>
               <Flex direction={"column"} w="100%" pr={4}>
                 <JobCard />
                 <JobCard />
@@ -48,7 +48,7 @@ const PostedJobs: React.FC = () => {
                   width={"200px"}
                   rounded={24}
                   height={"300px"}
-                  bgColor="light.50"
+                  bgColor="light.400"
                   p={4}
                 >
                   <Text fontSize={16} fontWeight={"medium"} noOfLines={1}>

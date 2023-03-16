@@ -1,105 +1,164 @@
-import { Flex } from "@chakra-ui/react";
-import React from "react";
-import {
-  Divider,
-  Avatar,
-  Heading,
-  Text,
-  Menu,
-  Icon,
-  Link,
-  Button,
-} from "@chakra-ui/react";
-import profileIcon from "../../public/profile.svg";
+import { Text, Box, SimpleGrid, Button, Divider, Flex } from "@chakra-ui/react";
+import { BiHomeCircle } from "react-icons/bi";
 import { FiBriefcase } from "react-icons/fi";
-import { useState } from "react";
+
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import Image from "next/image";
+
 import Logo from "../Util/Logo";
 import Discovery from "../Util/Discovery";
+import profileSVG from "../../public/profile.svg";
 
 const SideBar: React.FC = () => {
-  const [selectedItem, setSelectedItem] = useState(1);
+  const [isOpen, setNavbar] = useState<Boolean>(false);
+  const [number, setNumber] = useState<Number | null>(null);
+  const router = useRouter();
+  useEffect(() => {
+    switch (router.pathname.split("/")[2]) {
+      case "jobs":
+        setNumber(1);
+        break;
+      default:
+        setNumber(0);
+        break;
+    }
+  }, [router.pathname]);
 
   return (
-    <Flex
-      bg="light.50"
-      pos="fixed"
-      // left="5"
-      h="100vh"
-      p={"0.25rem"}
-      // marginTop="2.5vh"
-      // rounded={24}
-      boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
-      flexDir="column"
-      justifyContent="space-between"
-      align={"center"}
-    >
-      <Flex
-        // m={"2rem"}
-        flexDir="column"
-        // w="100%"
-        alignItems={"flex-start"}
-        as="nav"
-      >
-        <Flex flexDirection="row" align={"center"} mt={5}>
-          <Logo />
-          <Discovery fontSize={24} />
-        </Flex>
-
-        <Flex marginY={12} flexDir="column">
-          <Menu>
-            <Link href="/dashboard/jobs" _hover={{ textDecor: "none" }}>
-              <Flex align={"center"} height={"1rem"} pt={2} pb={2}>
-                <Button
-                  leftIcon={<FiBriefcase />}
-                  backgroundColor={selectedItem == 1 ? "dark.400" : "none"}
-                  p={4}
-                  borderRadius={8}
-                  w={"100%"}
-                >
-                  Jobs
-                </Button>
+    <>
+      {number && (
+        <Box
+          h="100%"
+          position="fixed"
+          backgroundColor={"light.400"}
+          p="4"
+          zIndex={12}
+          style={{ textAlign: "center" }}
+          onMouseEnter={() => {
+            if (!isOpen) setNavbar(true);
+          }}
+          onMouseLeave={() => {
+            if (isOpen) setNavbar(false);
+          }}
+          minWidth={isOpen ? "15%" : "4%"}
+          transition="min-width 0.2s"
+          boxShadow={"sm"}
+        >
+          <Box pt="1.5" borderRadius="xl">
+            <Link href={"/dashboard/"}>
+              <Flex
+                h="4rem"
+                mt={4}
+                flexDirection="row"
+                justifyContent={"center"}
+              >
+                {isOpen ? (
+                  <>
+                    <Logo />
+                    <Discovery />
+                  </>
+                ) : (
+                  <Logo />
+                )}
               </Flex>
             </Link>
-          </Menu>
-        </Flex>
-      </Flex>
+            <Divider />
+            <SimpleGrid spacingY={4} spacingX={1} mt="14" width={"100%"}>
+              <Box>
+                <Link href={"/dashboard/"}>
+                  <Button
+                    mb="2"
+                    h={10}
+                    w="100%"
+                    variant={number === 0 ? "solid" : "ghost"}
+                    colorScheme={number === 0 ? "primary" : "transparent"}
+                    justifyContent="flex-start"
+                    size="l"
+                    boxShadow={number === 0 ? "xl" : "none"}
+                    transition="width 0.2s"
+                  >
+                    <Box>
+                      <BiHomeCircle style={{ marginLeft: 8 }} size={25} />
+                    </Box>
+                    {isOpen ? (
+                      <Text marginLeft={4} fontWeight={"normal"}>
+                        Home
+                      </Text>
+                    ) : (
+                      <></>
+                    )}
+                  </Button>
+                </Link>
+              </Box>
+              <Box>
+                <Link href={"/dashboard/jobs"}>
+                  <Button
+                    mb="2"
+                    h={10}
+                    w="100%"
+                    variant={number === 1 ? "solid" : "ghost"}
+                    colorScheme={number === 1 ? "primary" : "transparent"}
+                    justifyContent="flex-start"
+                    size="l"
+                    boxShadow={number === 1 ? "xl" : "none"}
+                    transition="width 0.2s"
+                  >
+                    <Box>
+                      <FiBriefcase style={{ marginLeft: 8 }} size={25} />
+                    </Box>
+                    {isOpen ? (
+                      <Text marginLeft={4} fontWeight={"normal"}>
+                        Jobs
+                      </Text>
+                    ) : (
+                      <></>
+                    )}
+                  </Button>
+                </Link>
+              </Box>
 
-      <Flex
-        // m={"2rem"}
-        flexDir="column"
-        // w="100%"
-        // height={"70px"}
-        alignItems={"center"}
-        mb={2}
-      >
-        <Divider borderColor={"border"} />
-        <Flex mt={4} align="center">
-          {/* TODO: Fix upar neeche profile icon */}
-          <Avatar size="sm" src={profileIcon.src} />
-          <Flex flexDir="column" ml={4}>
-            <Heading
-              fontSize="18"
-              color={"white"}
-              fontWeight={"medium"}
-              // maxWidth="130px"
-              textOverflow={"clip"}
-              noOfLines={1}
-            >
-              John Mathew
-            </Heading>
-            <Text
-              fontSize="12"
-              fontWeight={"thin"}
-              // maxWidth="130px"
-              textOverflow={"clip"}
-              noOfLines={1}
-            >
-              johnmathew@gmail.com
-            </Text>
-          </Flex>
-        </Flex>
-      </Flex>
-    </Flex>
+              <Box position={"absolute"} bottom="10">
+                <Box>
+                  <Link href="/profile">
+                    <Flex justify={"space-between"} align={"center"}>
+                      <Button
+                        mb="2"
+                        h={10}
+                        w={"100%"}
+                        variant={number === 2 ? "solid" : "ghost"}
+                        colorScheme={number === 2 ? "primary" : "transparent"}
+                        justifyContent="flex-start"
+                        size="l"
+                        boxShadow={number === 2 ? "xl" : "none"}
+                        transition="width 0.2s"
+                      >
+                        <Box>
+                          <Image
+                            src={profileSVG.src}
+                            height={40}
+                            width={40}
+                            alt="profile"
+                          ></Image>
+                        </Box>
+                        {isOpen ? (
+                          <Text marginLeft={4} fontWeight={"normal"}>
+                            John Doe
+                          </Text>
+                        ) : (
+                          <></>
+                        )}
+                      </Button>
+                    </Flex>
+                  </Link>
+                </Box>
+              </Box>
+            </SimpleGrid>
+          </Box>
+        </Box>
+      )}
+    </>
   );
 };
 
