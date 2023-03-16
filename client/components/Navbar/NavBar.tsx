@@ -7,15 +7,19 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
+
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const NavBar: React.FC = () => {
   const router = useRouter();
 
   const renderBreadCrumb = () => {
     let temp: Array<JSX.Element> = [];
+    let route: Array<String> = [];
     router.pathname.split("/").map((el) => {
       if (el === "dashboard" && router.pathname === "/dashboard") {
+        route.push(el);
         temp.push(
           <BreadcrumbItem key="dashboard" isCurrentPage>
             {" "}
@@ -23,17 +27,25 @@ const NavBar: React.FC = () => {
           </BreadcrumbItem>
         );
       } else if (el !== "dashboard" && el !== "[id]" && el !== "") {
+        route.push(el);
         temp.push(
           <BreadcrumbItem key={el}>
-            <BreadcrumbLink>{el.toUpperCase()[0] + el.slice(1)}</BreadcrumbLink>
+            <BreadcrumbLink as={Link} href={route.join("/")}>
+              {el.toUpperCase()[0] + el.slice(1)}
+            </BreadcrumbLink>
           </BreadcrumbItem>
         );
       } else if (el === "[id]") {
+        route.push(router.query.id as string);
         temp.push(
           <BreadcrumbItem key={el}>
-            <BreadcrumbLink>{router.query.id}</BreadcrumbLink>
+            <BreadcrumbLink as={Link} href={route.join("/")}>
+              {router.query.id}
+            </BreadcrumbLink>
           </BreadcrumbItem>
         );
+      } else {
+        route.push(el);
       }
     });
     return (

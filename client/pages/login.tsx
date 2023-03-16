@@ -11,7 +11,7 @@ const Login: React.FC = () => {
       <Flex h="100vh" alignItems="center" justify="center">
         <Flex
           flexDirection="column"
-          bg={"light.50"}
+          bg={"light.400"}
           p={12}
           borderRadius={8}
           boxShadow="lg"
@@ -25,14 +25,14 @@ const Login: React.FC = () => {
             placeholder="johndoe@gmail.com"
             type="email"
             variant="filled"
-            bgColor={"dark.50"}
+            bgColor={"dark.400"}
             mb={3}
           />
           <Input
             placeholder="**********"
             type="password"
             variant="filled"
-            bgColor={"dark.50"}
+            bgColor={"dark.400"}
             mb={6}
           />
           <Center>

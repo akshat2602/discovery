@@ -1,5 +1,7 @@
 .vscode
 .env
+.idea
+.fleet
 
 # Django stuff
 *.log

@@ -35,8 +35,8 @@ const CandidateJobs: React.FC = () => {
           margin={3}
           rounded="20"
           boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
-          borderColor={"light.50"}
-          bgColor={"light.50"}
+          borderColor={"light.400"}
+          bgColor={"light.400"}
         >
           <InputLeftElement pointerEvents="none">
             <BsSearch color="white" />
