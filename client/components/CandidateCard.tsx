@@ -18,7 +18,7 @@ const CandidateCard: React.FC<candidateCardProps> = ({ name, email }) => {
       rounded={12}
       borderTop={"2px"}
       borderTopColor="primary.400"
-      bgColor={"light.50"}
+      bgColor={"light.400"}
       my={2}
       width="100%"
       padding={2}

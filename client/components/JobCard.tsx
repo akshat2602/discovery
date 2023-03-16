@@ -13,7 +13,7 @@ const JobCard = () => {
         rounded={12}
         borderTop={"2px"}
         borderTopColor="primary.400"
-        bgColor={"light.50"}
+        bgColor={"light.400"}
         mb={2}
       >
         <Flex direction={"column"}>

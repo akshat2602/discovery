@@ -8,7 +8,7 @@ const JobDescription: React.FC = () => {
   const router = useRouter();
   return (
     <Flex direction={"column"} align="center" padding={4}>
-      <Box width={"80vw"} flex="1" rounded={24} bgColor="light.50" p={4}>
+      <Box width={"80vw"} flex="1" rounded={24} bgColor="light.400" p={4}>
         <Flex align={"center"} justify={"space-between"}>
           <IconButton
             aria-label="Back Button"
