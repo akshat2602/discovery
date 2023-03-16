@@ -35,7 +35,7 @@ const ApplyJobPopup: React.FC = () => {
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ModalOverlay />
-        <ModalContent bgColor="light.50" px={4} pb="6" pt="4">
+        <ModalContent bgColor="light.400" px={4} pb="6" pt="4">
           <ModalHeader fontSize={18} fontWeight={"semibold"} textColor="white">
             Enter your details
           </ModalHeader>
@@ -48,7 +48,7 @@ const ApplyJobPopup: React.FC = () => {
               <Input
                 type="text"
                 border={"none"}
-                bgColor="dark.50"
+                bgColor="dark.400"
                 fontWeight={"medium"}
               />
             </FormControl>
@@ -60,7 +60,7 @@ const ApplyJobPopup: React.FC = () => {
               <Input
                 type="email"
                 border={"none"}
-                bgColor="dark.50"
+                bgColor="dark.400"
                 fontWeight={"medium"}
               />
             </FormControl>
@@ -76,7 +76,7 @@ const ApplyJobPopup: React.FC = () => {
               <Input
                 type="file"
                 border={"none"}
-                bgColor="dark.50"
+                bgColor="dark.400"
                 fontWeight={"thin"}
                 fontSize="12"
                 padding={2}

@@ -1,6 +1,5 @@
 import { Flex, Text, Divider, IconButton } from "@chakra-ui/react";
 import { BsArrowLeftShort } from "react-icons/bs";
-import { useRouter } from "next/router";
 import {
   Button,
   Card,
@@ -19,10 +18,12 @@ import {
 } from "@chakra-ui/react";
 import { FiChevronDown, FiPlus } from "react-icons/fi";
 import { BsFillTrashFill } from "react-icons/bs";
+
 import { useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-import ListOfCandidates from "../../../../components/ListOfCandidates";
 import { DashboardLayout } from "../../../../components/Dashboard/DashboardLayout";
 
 const jobStepUnit = () => {
@@ -52,10 +53,13 @@ const JobEdit: React.FC = () => {
       <DashboardLayout>
         <Flex marginX={5} marginY={8} direction={"column"} align="center">
           <Flex w={"100%"} direction={"column"}>
-            <Flex>
+            <Flex justify={"space-between"}>
               <Text fontSize={30} fontWeight={"bold"} noOfLines={1}>
                 Edit Job Details
               </Text>
+              <Link href={router.asPath + "/candidate"}>
+                <Button>Go to candidate list</Button>
+              </Link>
             </Flex>
             <Divider my={2} borderColor={"border"}></Divider>
             <Container height={8} />
@@ -188,14 +192,10 @@ const JobEdit: React.FC = () => {
                 </Button>
               </Center>
             </FormControl>
-
-            <ListOfCandidates />
             <Container height={8} />
 
             <Center>
-              <Button bgColor={"primary.400"} width="170px">
-                Save Edit
-              </Button>
+              <Button width="11.25rem">Save Edit</Button>
             </Center>
           </Flex>
         </Flex>
