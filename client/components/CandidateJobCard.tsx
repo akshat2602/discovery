@@ -9,7 +9,7 @@ const CandidateJobCard = () => {
     <Card
       rounded={12}
       borderTopColor="primary.400"
-      bgColor={"light.50"}
+      bgColor={"light.400"}
       width={240}
       p={4}
       margin={2}
