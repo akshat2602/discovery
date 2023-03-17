@@ -1,36 +1,28 @@
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
+
 import api from "./util";
-import { isAxiosError, AxiosError, AxiosResponse } from "axios";
 
 export const createLogin = async (
   login: loginRequestInterface
-): Promise<AxiosResponse | AxiosError | undefined> => {
+): Promise<AxiosResponse | undefined> => {
   try {
     const response = await api.post("auth/login/", login);
     return response;
   } catch (error) {
-    if (isAxiosError(error)) {
-      if (error.response?.status === 400) {
-        return error.response;
-      } else {
-        return error;
-      }
-    } else {
-      console.log(error);
-      return undefined;
-    }
+    console.log(error);
+    return undefined;
   }
 };
 
 export const callCreateLogin = async (login: loginRequestInterface) => {
   const resp = await createLogin(login);
-  if (resp !== undefined) {
+  if (resp) {
     if (resp.status === 200) {
-      // TODO: Set global state with user info
-      // TODO: Set cookie with access and refresh token
+      localStorage.setItem("access_token", resp.data?.access_token);
+      localStorage.setItem("refresh_token", resp.data?.refresh_token);
     }
   }
-
   return resp;
 };
 
