@@ -1,6 +1,7 @@
 import { Text, Box, SimpleGrid, Button, Divider, Flex } from "@chakra-ui/react";
 import { BiHomeCircle } from "react-icons/bi";
 import { FiBriefcase } from "react-icons/fi";
+import { SiGoogleanalytics } from "react-icons/si";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -19,6 +20,9 @@ const SideBar: React.FC = () => {
     switch (router.pathname.split("/")[2]) {
       case "job":
         setNumber(1);
+        break;
+      case "analytics":
+        setNumber(2);
         break;
       default:
         setNumber(0);
@@ -111,6 +115,33 @@ const SideBar: React.FC = () => {
                     {isOpen ? (
                       <Text marginLeft={4} fontWeight={"normal"}>
                         Jobs
+                      </Text>
+                    ) : (
+                      <></>
+                    )}
+                  </Button>
+                </Link>
+              </Box>
+
+              <Box>
+                <Link href={"/dashboard/analytics"}>
+                  <Button
+                    mb="2"
+                    h={10}
+                    w="100%"
+                    variant={number === 2 ? "solid" : "ghost"}
+                    colorScheme={number === 2 ? "primary" : "transparent"}
+                    justifyContent="flex-start"
+                    size="l"
+                    boxShadow={number === 2 ? "xl" : "none"}
+                    transition="width 0.2s"
+                  >
+                    <Box>
+                      <SiGoogleanalytics style={{ marginLeft: 8 }} size={25} />
+                    </Box>
+                    {isOpen ? (
+                      <Text marginLeft={4} fontWeight={"normal"}>
+                        Analytics
                       </Text>
                     ) : (
                       <></>
