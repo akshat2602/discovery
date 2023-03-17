@@ -7,13 +7,20 @@ import {
   Center,
   InputGroup,
   InputRightElement,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 
 import Head from "next/head";
 import { useState } from "react";
+import Image from "next/image";
 
-import { createLogin } from "../api/loginAPI";
+import { callCreateLogin } from "../api/loginAPI";
+
+import LoginLogo from "../public/login.svg";
+import Discovery from "../components/Util/Discovery";
+import Logo from "../components/Util/Logo";
 
 const Login: React.FC = () => {
   const [creds, setCreds] = useState<loginRequestInterface>({
@@ -28,62 +35,96 @@ const Login: React.FC = () => {
       <Head>
         <title>Discovery | Login</title>
       </Head>
-      <Flex h="100vh" alignItems="center" justify="center">
-        <Flex
-          flexDirection="column"
-          bg={"light.400"}
-          p={12}
-          borderRadius={8}
-          boxShadow="lg"
-        >
-          <Center>
-            <Text mb={6} fontSize={"24"}>
-              Login
-            </Text>
-          </Center>
-          <Input
-            _placeholder={{ color: "white" }}
-            placeholder="johndoe@gmail.com"
-            type="email"
-            variant={"filled"}
-            bgColor={"dark.400"}
-            isRequired={true}
-            mb={3}
-            onChange={(e) => setCreds({ ...creds, email: e.target.value })}
-          />
-          <InputGroup size="md">
-            <Input
-              isRequired={true}
-              pr="4.5rem"
-              variant={"filled"}
-              bgColor={"dark.400"}
-              type={show ? "text" : "password"}
-              placeholder="Enter password"
-              _placeholder={{ color: "white" }}
-              onChange={(e) => setCreds({ ...creds, password: e.target.value })}
-            />
-            <InputRightElement>
-              <IconButton
-                aria-label="Toggle password visibility"
-                variant="ghost"
-                size="sm"
-                onClick={handleClick}
-                icon={show ? <AiFillEyeInvisible /> : <AiFillEye />}
-              ></IconButton>
-            </InputRightElement>
-          </InputGroup>
-          <Center>
-            <Button
-              isDisabled={
-                creds.email.length === 0 || creds.password.length === 0
-              }
-              mt={8}
-              onClick={() => createLogin(creds)}
+      <Flex align="center" justify="center" h="100vh">
+        <Grid templateColumns={"repeat(2,1fr)"} h="100%" w="100%" maxH="100vh">
+          <GridItem colSpan={1}>
+            <Flex
+              flexDirection={"column"}
+              mr={"2%"}
+              h="100%"
+              justify={"center"}
+              align={"flex-end"}
             >
-              Log In
-            </Button>
-          </Center>
-        </Flex>
+              <Flex flexDirection={"row"} justify={"center"} align={"center"}>
+                <Logo width={150} height={150} />
+                <Discovery fontSize={48} />
+              </Flex>
+              <Flex justify="center" align="center" flexDirection={"row"}>
+                <Image
+                  src={LoginLogo.src}
+                  height={400}
+                  width={400}
+                  alt="Login"
+                />
+              </Flex>
+            </Flex>
+          </GridItem>
+          <GridItem colSpan={1}>
+            <Flex justify="left" align="center" h="100%" ml={"2%"}>
+              <Flex
+                justify="center"
+                align="center"
+                flexDirection="column"
+                bg={"light.400"}
+                p={5}
+                borderRadius={8}
+                boxShadow="lg"
+              >
+                <Center>
+                  <Text mb={6} fontSize={"24"}>
+                    Login
+                  </Text>
+                </Center>
+                <Input
+                  _placeholder={{ color: "white" }}
+                  placeholder="johndoe@gmail.com"
+                  type="email"
+                  variant={"filled"}
+                  bgColor={"dark.400"}
+                  isRequired={true}
+                  mb={3}
+                  onChange={(e) =>
+                    setCreds({ ...creds, email: e.target.value })
+                  }
+                />
+                <InputGroup size="md">
+                  <Input
+                    isRequired={true}
+                    pr="4.5rem"
+                    variant={"filled"}
+                    bgColor={"dark.400"}
+                    type={show ? "text" : "password"}
+                    placeholder="Enter password"
+                    _placeholder={{ color: "white" }}
+                    onChange={(e) =>
+                      setCreds({ ...creds, password: e.target.value })
+                    }
+                  />
+                  <InputRightElement>
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleClick}
+                      icon={show ? <AiFillEyeInvisible /> : <AiFillEye />}
+                    ></IconButton>
+                  </InputRightElement>
+                </InputGroup>
+                <Center>
+                  <Button
+                    isDisabled={
+                      creds.email.length === 0 || creds.password.length === 0
+                    }
+                    mt={8}
+                    onClick={() => callCreateLogin(creds)}
+                  >
+                    Log In
+                  </Button>
+                </Center>
+              </Flex>
+            </Flex>
+          </GridItem>
+        </Grid>
       </Flex>
     </>
   );
