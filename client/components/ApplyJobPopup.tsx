@@ -82,13 +82,13 @@ const ApplyJobPopup: React.FC = () => {
                 padding={2}
               />
             </FormControl>
-            <Button bgColor={"primary.400"} width="170px" my={4} py={2}>
+            <Button bgColor={"primary.400"} width="11.25rem" my={4} py={2}>
               <Text fontSize={16} fontWeight={"medium"} noOfLines={1}>
                 Submit
               </Text>
             </Button>
             <Button
-              width="170px"
+              width="11.25rem"
               my={4}
               py={2}
               onClick={() => setIsOpen(false)}

@@ -15,7 +15,7 @@ const CandidateCard: React.FC<candidateCardProps> = ({ name, email }) => {
   }
   return (
     <Box
-      rounded={12}
+      rounded={8}
       borderTop={"2px"}
       borderTopColor="primary.400"
       bgColor={"light.400"}
