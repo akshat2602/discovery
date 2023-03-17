@@ -9,12 +9,14 @@ import {
   InputRightElement,
   Grid,
   GridItem,
+  useToast,
 } from "@chakra-ui/react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 
 import Head from "next/head";
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { callCreateLogin } from "../api/loginAPI";
 
@@ -23,12 +25,30 @@ import Discovery from "../components/Util/Discovery";
 import Logo from "../components/Util/Logo";
 
 const Login: React.FC = () => {
+  const router = useRouter();
   const [creds, setCreds] = useState<loginRequestInterface>({
     email: "",
     password: "",
   });
   const [show, setShow] = useState<Boolean>(false);
+
+  const toast = useToast();
+
   const handleClick = () => setShow(!show);
+  const callLogin = async () => {
+    const response = await callCreateLogin(creds);
+    if (!response) {
+      toast({
+        title: "An error occurred. Please try again later.",
+        status: "error",
+        variant: "top-accent",
+        isClosable: true,
+      });
+    } else if (response.status === 200) {
+      // TODO: Set global state with user info
+      router.push("/dashboard/job");
+    }
+  };
 
   return (
     <>
@@ -116,7 +136,7 @@ const Login: React.FC = () => {
                       creds.email.length === 0 || creds.password.length === 0
                     }
                     mt={8}
-                    onClick={() => callCreateLogin(creds)}
+                    onClick={() => callLogin()}
                   >
                     Log In
                   </Button>
