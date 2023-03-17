@@ -1,4 +1,4 @@
-import { Card, Divider, IconButton } from "@chakra-ui/react";
+import { Card, Divider } from "@chakra-ui/react";
 import { BsPeopleFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { Flex, Text } from "@chakra-ui/react";
@@ -7,9 +7,9 @@ import Link from "next/link";
 const CandidateJobCard = () => {
   return (
     <Card
-      rounded={12}
+      borderRadius="8"
       borderTopColor="primary.400"
-      bgColor={"light.400"}
+      bgColor="light.400"
       width={240}
       p={4}
       margin={2}
