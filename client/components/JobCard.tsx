@@ -8,12 +8,12 @@ import Link from "next/link";
 
 const JobCard = () => {
   return (
-    <Link href={`/dashboard/jobs/${1}`}>
+    <Link href={`/dashboard/job/${1}`}>
       <Card
-        rounded={12}
-        borderTop={"2px"}
+        borderRadius="8"
         borderTopColor="primary.400"
-        bgColor={"light.400"}
+        bgColor="light.400"
+        borderTop={"2px"}
         mb={2}
       >
         <Flex direction={"column"}>
