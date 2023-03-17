@@ -1,8 +1,28 @@
-import { Flex, Text, Input, Button, Center } from "@chakra-ui/react";
-import Link from "next/link";
+import {
+  Flex,
+  Text,
+  Input,
+  Button,
+  IconButton,
+  Center,
+  InputGroup,
+  InputRightElement,
+} from "@chakra-ui/react";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+
 import Head from "next/head";
+import { useState } from "react";
+
+import { createLogin } from "../api/loginAPI";
 
 const Login: React.FC = () => {
+  const [creds, setCreds] = useState<loginRequestInterface>({
+    email: "",
+    password: "",
+  });
+  const [show, setShow] = useState<Boolean>(false);
+  const handleClick = () => setShow(!show);
+
   return (
     <>
       <Head>
@@ -22,25 +42,46 @@ const Login: React.FC = () => {
             </Text>
           </Center>
           <Input
+            _placeholder={{ color: "white" }}
             placeholder="johndoe@gmail.com"
             type="email"
-            variant="filled"
+            variant={"filled"}
             bgColor={"dark.400"}
+            isRequired={true}
             mb={3}
+            onChange={(e) => setCreds({ ...creds, email: e.target.value })}
           />
-          <Input
-            placeholder="**********"
-            type="password"
-            variant="filled"
-            bgColor={"dark.400"}
-            mb={6}
-          />
+          <InputGroup size="md">
+            <Input
+              isRequired={true}
+              pr="4.5rem"
+              variant={"filled"}
+              bgColor={"dark.400"}
+              type={show ? "text" : "password"}
+              placeholder="Enter password"
+              _placeholder={{ color: "white" }}
+              onChange={(e) => setCreds({ ...creds, password: e.target.value })}
+            />
+            <InputRightElement>
+              <IconButton
+                aria-label="Toggle password visibility"
+                variant="ghost"
+                size="sm"
+                onClick={handleClick}
+                icon={show ? <AiFillEyeInvisible /> : <AiFillEye />}
+              ></IconButton>
+            </InputRightElement>
+          </InputGroup>
           <Center>
-            <Link href={"/dashboard/jobs"}>
-              <Button bgColor="primary.400" mb={8}>
-                Log In
-              </Button>
-            </Link>
+            <Button
+              isDisabled={
+                creds.email.length === 0 || creds.password.length === 0
+              }
+              mt={8}
+              onClick={() => createLogin(creds)}
+            >
+              Log In
+            </Button>
           </Center>
         </Flex>
       </Flex>
