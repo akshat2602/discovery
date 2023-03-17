@@ -1,12 +1,14 @@
-import { Flex, Text, Divider, IconButton } from "@chakra-ui/react";
-import { BsArrowLeftShort } from "react-icons/bs";
 import {
   Button,
   Card,
   Center,
   Container,
+  Divider,
+  Flex,
   FormControl,
   FormLabel,
+  Hide,
+  IconButton,
   Input,
   Menu,
   MenuButton,
@@ -14,17 +16,15 @@ import {
   MenuList,
   Stack,
   Switch,
+  Text,
   Textarea,
 } from "@chakra-ui/react";
 import { FiChevronDown, FiPlus } from "react-icons/fi";
+import React, { useState } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
-
-import { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
 
-import { DashboardLayout } from "../../../../components/Dashboard/DashboardLayout";
+import { DashboardLayout } from "../../../components/Dashboard/DashboardLayout";
 
 const jobStepUnit = () => {
   return Object.assign(
@@ -36,8 +36,8 @@ const jobStepUnit = () => {
     }
   );
 };
-const JobEdit: React.FC = () => {
-  const router = useRouter();
+
+const CreateJobPosting: React.FC = () => {
   const [jobSteps, setJobSteps] = useState([
     {
       roundName: "",
@@ -45,22 +45,19 @@ const JobEdit: React.FC = () => {
       isCompleted: false,
     },
   ]);
+
   return (
     <>
       <Head>
-        <title>Discovery | Edit Job Posting</title>
+        <title>Discovery | Create Job Posting</title>
       </Head>
       <DashboardLayout>
-        <Flex marginX={5} marginY={8} direction={"column"} align="center">
-          <Flex w={"100%"} direction={"column"}>
-            <Flex justify={"space-between"}>
-              <Text fontSize={30} fontWeight={"bold"} noOfLines={1}>
-                Edit Job Details
-              </Text>
-              <Link href={router.asPath + "/candidate"}>
-                <Button>Go to candidate list</Button>
-              </Link>
-            </Flex>
+        <Flex w="100%">
+          <Flex w={"100%"} marginX={5} marginY={8} direction={"column"}>
+            <Text fontSize={30} fontWeight={"bold"} noOfLines={1}>
+              Create a new Job!
+            </Text>
+
             <Divider my={2} borderColor={"border"}></Divider>
             <Container height={8} />
             <FormControl>
@@ -108,7 +105,7 @@ const JobEdit: React.FC = () => {
                 return (
                   <Card
                     key={index}
-                    rounded={12}
+                    rounded={8}
                     borderTop={"2px"}
                     borderTopColor="primary.400"
                     bgColor={"light.400"}
@@ -168,8 +165,9 @@ const JobEdit: React.FC = () => {
                       </Stack>
                       <Container width={8} />
                       <IconButton
-                        aria-label="Delete"
+                        aria-label="Delete Round"
                         icon={<BsFillTrashFill />}
+                        // color={"red.500"}
                         fontSize={30}
                         onClick={() => {
                           jobSteps.splice(index, 1);
@@ -183,6 +181,7 @@ const JobEdit: React.FC = () => {
               <Container height={4} />
               <Center>
                 <Button
+                  // bgColor={"border"}
                   leftIcon={<FiPlus size={24} />}
                   onClick={() => {
                     setJobSteps([...jobSteps, jobStepUnit()]);
@@ -193,9 +192,8 @@ const JobEdit: React.FC = () => {
               </Center>
             </FormControl>
             <Container height={8} />
-
             <Center>
-              <Button width="11.25rem">Save Edit</Button>
+              <Button width="170px">Publish</Button>
             </Center>
           </Flex>
         </Flex>
@@ -204,4 +202,4 @@ const JobEdit: React.FC = () => {
   );
 };
 
-export default JobEdit;
+export default CreateJobPosting;

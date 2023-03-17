@@ -26,21 +26,27 @@ const NavBar: React.FC = () => {
             <BreadcrumbLink href={`/dashboard`}>Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
         );
-      } else if (el !== "dashboard" && el !== "[id]" && el !== "") {
+      } else if (
+        el !== "dashboard" &&
+        !el.toLowerCase().endsWith("id]") &&
+        el !== ""
+      ) {
         route.push(el);
         temp.push(
           <BreadcrumbItem key={el}>
             <BreadcrumbLink as={Link} href={route.join("/")}>
-              {el.toUpperCase()[0] + el.slice(1)}
+              {el.toUpperCase()[0] + el.slice(1) + "s"}
             </BreadcrumbLink>
           </BreadcrumbItem>
         );
-      } else if (el === "[id]") {
-        route.push(router.query.id as string);
+      } else if (el.toLowerCase().endsWith("id]")) {
+        console.log(route[route.length - 1]);
+        const id = route[route.length - 1] + "Id";
+        route.push(router.query[id] as string);
         temp.push(
           <BreadcrumbItem key={el}>
             <BreadcrumbLink as={Link} href={route.join("/")}>
-              {router.query.id}
+              {router.query[id]}
             </BreadcrumbLink>
           </BreadcrumbItem>
         );
