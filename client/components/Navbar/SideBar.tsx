@@ -17,7 +17,7 @@ const SideBar: React.FC = () => {
   const router = useRouter();
   useEffect(() => {
     switch (router.pathname.split("/")[2]) {
-      case "jobs":
+      case "job":
         setNumber(1);
         break;
       default:
@@ -93,7 +93,7 @@ const SideBar: React.FC = () => {
                 </Link>
               </Box>
               <Box>
-                <Link href={"/dashboard/jobs"}>
+                <Link href={"/dashboard/job"}>
                   <Button
                     mb="2"
                     h={10}

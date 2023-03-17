@@ -31,7 +31,7 @@ const PostedJobs: React.FC = () => {
               <Text fontSize={30} fontWeight={"bold"} noOfLines={1}>
                 Welcome Back, Post a new Job!
               </Text>
-              <Link href={"/dashboard/jobs/create"}>
+              <Link href={"/dashboard/job/create"}>
                 <Button width="11.25rem">Post</Button>
               </Link>
             </Flex>
@@ -46,7 +46,7 @@ const PostedJobs: React.FC = () => {
               <Hide below="sm">
                 <Box
                   width={"200px"}
-                  rounded={24}
+                  rounded={8}
                   height={"300px"}
                   bgColor="light.400"
                   p={4}
