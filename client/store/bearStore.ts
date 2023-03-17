@@ -1,8 +1,7 @@
-// import { create } from "zustand";
+import { create } from "zustand";
 
-// import { createNavBarStore, navBarState } from "./navBarStore";
+import { createUserStore, userStateInterface } from "./userStore";
 
-// export const useBearStore = create<navBarState>()((...a) => ({
-//   ...createNavBarStore(...a),
-// }));
-export {};
+export const useBearStore = create<userStateInterface>()((...a) => ({
+  ...createUserStore(...a),
+}));
