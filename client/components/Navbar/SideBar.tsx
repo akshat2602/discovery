@@ -11,28 +11,37 @@ import Image from "next/image";
 import Logo from "../Util/Logo";
 import Discovery from "../Util/Discovery";
 import profileSVG from "../../public/profile.svg";
+import { useBearStore } from "../../store/bearStore";
 
 const SideBar: React.FC = () => {
+  const router = useRouter();
+  const user = useBearStore((state) => state.user);
+
   const [isOpen, setNavbar] = useState<Boolean>(false);
   const [number, setNumber] = useState<Number | null>(null);
-  const router = useRouter();
+
   useEffect(() => {
-    switch (router.pathname.split("/")[2]) {
-      case "job":
-        setNumber(1);
-        break;
-      case "analytics":
-        setNumber(2);
-        break;
-      default:
-        setNumber(0);
-        break;
+    console.log(router.pathname.split("/")[1]);
+    if (router.pathname.split("/")[2]) {
+      switch (router.pathname.split("/")[2]) {
+        case "job":
+          setNumber(1);
+          break;
+        case "analytics":
+          setNumber(2);
+          break;
+        default:
+          setNumber(0);
+          break;
+      }
+    } else if (router.pathname.split("/")[1] === "dashboard") {
+      setNumber(0);
     }
   }, [router.pathname]);
 
   return (
     <>
-      {number && (
+      {number !== null && (
         <Box
           h="100%"
           position="fixed"
@@ -51,12 +60,13 @@ const SideBar: React.FC = () => {
           boxShadow={"sm"}
         >
           <Box pt="1.5" borderRadius="xl">
-            <Link href={"/dashboard/"}>
+            <Link href={"/dashboard"}>
               <Flex
                 h="4rem"
                 mt={4}
                 flexDirection="row"
                 justifyContent={"center"}
+                alignItems={"center"}
               >
                 {isOpen ? (
                   <>
@@ -71,7 +81,7 @@ const SideBar: React.FC = () => {
             <Divider />
             <SimpleGrid spacingY={4} spacingX={1} mt="14" width={"100%"}>
               <Box>
-                <Link href={"/dashboard/"}>
+                <Link href={"/dashboard"}>
                   <Button
                     mb="2"
                     h={10}
@@ -124,7 +134,7 @@ const SideBar: React.FC = () => {
               </Box>
 
               <Box>
-                <Link href={"/dashboard/analytics"}>
+                <Link href={"/dashboard/insight"}>
                   <Button
                     mb="2"
                     h={10}
@@ -141,7 +151,7 @@ const SideBar: React.FC = () => {
                     </Box>
                     {isOpen ? (
                       <Text marginLeft={4} fontWeight={"normal"}>
-                        Analytics
+                        Insights
                       </Text>
                     ) : (
                       <></>
@@ -158,11 +168,11 @@ const SideBar: React.FC = () => {
                         mb="2"
                         h={10}
                         w={"100%"}
-                        variant={number === 2 ? "solid" : "ghost"}
-                        colorScheme={number === 2 ? "primary" : "transparent"}
+                        variant={"ghost"}
+                        colorScheme={"transparent"}
                         justifyContent="flex-start"
                         size="l"
-                        boxShadow={number === 2 ? "xl" : "none"}
+                        boxShadow={"none"}
                         transition="width 0.2s"
                       >
                         <Box>
@@ -175,7 +185,8 @@ const SideBar: React.FC = () => {
                         </Box>
                         {isOpen ? (
                           <Text marginLeft={4} fontWeight={"normal"}>
-                            John Doe
+                            {user?.firstName}
+                            {user?.lastName}
                           </Text>
                         ) : (
                           <></>
