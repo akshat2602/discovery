@@ -16,13 +16,13 @@ import { DashboardLayout } from "../../../components/Dashboard/DashboardLayout";
 
 const checkBoxes = ["Active", "Inactive"];
 
-const JobsPage: React.FC = () => {
+const AnalyticsPage: React.FC = () => {
   const [checkedItems, setCheckedItems] = useState([false, false]);
 
   return (
     <>
       <Head>
-        <title>Discovery | Posted Jobs</title>
+        <title>Discovery | Analytics</title>
       </Head>
       <DashboardLayout>
         <Flex w="100%">
@@ -86,4 +86,4 @@ const JobsPage: React.FC = () => {
   );
 };
 
-export default JobsPage;
+export default AnalyticsPage;
