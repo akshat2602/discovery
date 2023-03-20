@@ -1,20 +1,46 @@
 import { StateCreator } from "zustand";
 
-export interface userStateInterface {
-  pk: number;
+export interface userInterface {
+  id: number;
   username: string;
   email: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
+export interface userStateInterface {
+  user: userInterface;
 }
 
-export const createUserStore: StateCreator<userStateInterface> = (set) => ({
-  pk: 0,
-  username: "",
-  email: "",
-  first_name: "",
-  last_name: "",
-  setUserInfo: (userInfo: userStateInterface) => set(userInfo),
+export interface userActionsInterface {
+  setUserInfo: (userInfo: userInterface) => void;
+}
+
+export const createUserStore: StateCreator<
+  userStateInterface & userActionsInterface,
+  [],
+  [],
+  userStateInterface
+> = () => ({
+  user: {
+    id: -9999,
+    username: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    role: "",
+  },
 });
 
-export {};
+export const setUserStore: StateCreator<
+  userStateInterface & userActionsInterface,
+  [],
+  [],
+  userActionsInterface
+> = (set) => ({
+  setUserInfo: (userInfo: userInterface) => {
+    set((state) => ({
+      user: userInfo,
+    }));
+  },
+});
