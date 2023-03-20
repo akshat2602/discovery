@@ -15,7 +15,7 @@ import Head from "next/head";
 
 import error from "../public/404.svg";
 
-const Custom404: React.FC = () => {
+const ProfilePage: React.FC = () => {
   return (
     <>
       <Head>
@@ -64,4 +64,4 @@ const Custom404: React.FC = () => {
   );
 };
 
-export default Custom404;
+export default ProfilePage;
