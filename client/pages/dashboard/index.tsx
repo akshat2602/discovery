@@ -11,12 +11,12 @@ import { useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
 
-import JobCard from "../../../components/JobCard";
-import { DashboardLayout } from "../../../components/Dashboard/DashboardLayout";
+import JobCard from "../../components/JobCard";
+import { DashboardLayout } from "../../components/Dashboard/DashboardLayout";
 
 const checkBoxes = ["Active", "Inactive"];
 
-const JobsPage: React.FC = () => {
+const DashboardPage: React.FC = () => {
   const [checkedItems, setCheckedItems] = useState([false, false]);
 
   return (
@@ -86,4 +86,4 @@ const JobsPage: React.FC = () => {
   );
 };
 
-export default JobsPage;
+export default DashboardPage;
