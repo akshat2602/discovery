@@ -19,6 +19,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { callCreateLogin } from "../api/loginAPI";
+import { userInterface } from "../store/userStore";
+import { useBearStore } from "../store/bearStore";
 
 import LoginLogo from "../public/login.svg";
 import Discovery from "../components/Util/Discovery";
@@ -26,6 +28,7 @@ import Logo from "../components/Util/Logo";
 
 const Login: React.FC = () => {
   const router = useRouter();
+  const setUserInfo = useBearStore((state) => state.setUserInfo);
   const [creds, setCreds] = useState<loginRequestInterface>({
     email: "",
     password: "",
@@ -46,6 +49,16 @@ const Login: React.FC = () => {
       });
     } else if (response.status === 200) {
       // TODO: Set global state with user info
+      const respJson: login200ResponseInterface = await response.data;
+      const userData: userInterface = {
+        id: respJson.user.pk,
+        username: respJson.user.username,
+        email: respJson.user.email,
+        firstName: respJson.user.first_name,
+        lastName: respJson.user.last_name,
+        role: respJson.user.role,
+      };
+      setUserInfo(userData);
       router.push("/dashboard/job");
     }
   };
