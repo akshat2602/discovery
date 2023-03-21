@@ -13,152 +13,173 @@ import {
 } from "@chakra-ui/react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 
+import { useEffect, useState } from "react";
 import Head from "next/head";
-import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { callCreateLogin } from "../api/loginAPI";
-import { userInterface } from "../store/userStore";
-import { useBearStore } from "../store/bearStore";
+import { usePostLogin, useCheckUserLogin } from "../api/userAPI";
 
 import LoginLogo from "../public/login.svg";
 import Discovery from "../components/Util/Discovery";
 import Logo from "../components/Util/Logo";
 
 const Login: React.FC = () => {
+  const loginMutation = usePostLogin();
+  const toast = useToast();
   const router = useRouter();
-  const setUserInfo = useBearStore((state) => state.setUserInfo);
+  const checkLoginMutation = useCheckUserLogin();
+
+  const [showLoginScreen, setShowLoginScreen] = useState<Boolean>(false);
   const [creds, setCreds] = useState<loginRequestInterface>({
     email: "",
     password: "",
   });
   const [show, setShow] = useState<Boolean>(false);
-
-  const toast = useToast();
-
   const handleClick = () => setShow(!show);
-  const callLogin = async () => {
-    const response = await callCreateLogin(creds);
-    if (!response) {
-      toast({
-        title: "An error occurred. Please try again later.",
-        status: "error",
-        variant: "top-accent",
-        isClosable: true,
-      });
-    } else if (response.status === 200) {
-      // TODO: Set global state with user info
-      const respJson: login200ResponseInterface = await response.data;
-      const userData: userInterface = {
-        id: respJson.user.pk,
-        username: respJson.user.username,
-        email: respJson.user.email,
-        firstName: respJson.user.first_name,
-        lastName: respJson.user.last_name,
-        role: respJson.user.role,
-      };
-      setUserInfo(userData);
-      router.push("/dashboard/job");
+
+  useEffect(() => {
+    if (localStorage.getItem("access_token")) {
+      setShowLoginScreen(false);
+      if (!checkLoginMutation.isLoading && !checkLoginMutation.isSuccess) {
+        checkLoginMutation.mutate();
+      }
+    } else {
+      setShowLoginScreen(true);
     }
-  };
+    if (checkLoginMutation.isSuccess) {
+      // If the user is successfully logged in, redirect them to the dashboard
+      router.push("/dashboard");
+    }
+    if (checkLoginMutation.isError) {
+      // If the user is not logged in, show the login screen
+      setShowLoginScreen(true);
+    }
+  }, [router, checkLoginMutation]);
 
   return (
     <>
       <Head>
         <title>Discovery | Login</title>
       </Head>
-      <Flex align="center" justify="center" h="100vh">
-        <Grid templateColumns={"repeat(2,1fr)"} h="100%" w="100%" maxH="100vh">
-          <GridItem colSpan={1}>
-            <Flex
-              flexDirection={"column"}
-              mr={"2%"}
-              h="100%"
-              justify={"center"}
-              align={"flex-end"}
-            >
-              <Flex flexDirection={"row"} justify={"center"} align={"center"}>
-                <Logo width={150} height={150} />
-                <Discovery fontSize={48} />
-              </Flex>
-              <Flex justify="center" align="center" flexDirection={"row"}>
-                <Image
-                  src={LoginLogo.src}
-                  height={400}
-                  width={400}
-                  alt="Login"
-                />
-              </Flex>
-            </Flex>
-          </GridItem>
-          <GridItem colSpan={1}>
-            <Flex justify="left" align="center" h="100%" ml={"2%"}>
+      {!showLoginScreen && (
+        <Flex align="center" justify="center" h="100vh">
+          <Text fontSize={24}>Loading...</Text>
+        </Flex>
+      )}
+      {showLoginScreen && (
+        <Flex align="center" justify="center" h="100vh">
+          <Grid
+            templateColumns={"repeat(2,1fr)"}
+            h="100%"
+            w="100%"
+            maxH="100vh"
+          >
+            <GridItem colSpan={1}>
               <Flex
-                justify="center"
-                align="center"
-                flexDirection="column"
-                bg={"light.400"}
-                p={5}
-                borderRadius={8}
-                boxShadow="lg"
+                flexDirection={"column"}
+                mr={"2%"}
+                h="100%"
+                justify={"center"}
+                align={"flex-end"}
               >
-                <Center>
-                  <Text mb={6} fontSize={"24"}>
-                    Login
-                  </Text>
-                </Center>
-                <Input
-                  _placeholder={{ color: "white" }}
-                  placeholder="johndoe@gmail.com"
-                  type="email"
-                  variant={"filled"}
-                  bgColor={"dark.400"}
-                  isRequired={true}
-                  mb={3}
-                  onChange={(e) =>
-                    setCreds({ ...creds, email: e.target.value })
-                  }
-                />
-                <InputGroup size="md">
+                <Flex flexDirection={"row"} justify={"center"} align={"center"}>
+                  <Logo width={150} height={150} />
+                  <Discovery fontSize={48} />
+                </Flex>
+                <Flex justify="center" align="center" flexDirection={"row"}>
+                  <Image
+                    src={LoginLogo.src}
+                    height={400}
+                    width={400}
+                    alt="Login"
+                  />
+                </Flex>
+              </Flex>
+            </GridItem>
+            <GridItem colSpan={1}>
+              <Flex justify="left" align="center" h="100%" ml={"2%"}>
+                <Flex
+                  justify="center"
+                  align="center"
+                  flexDirection="column"
+                  bg={"light.400"}
+                  p={5}
+                  borderRadius={8}
+                  boxShadow="lg"
+                >
+                  <Center>
+                    <Text mb={6} fontSize={"24"}>
+                      Login
+                    </Text>
+                  </Center>
                   <Input
-                    isRequired={true}
-                    pr="4.5rem"
+                    _placeholder={{ color: "white" }}
+                    placeholder="johndoe@gmail.com"
+                    type="email"
                     variant={"filled"}
                     bgColor={"dark.400"}
-                    type={show ? "text" : "password"}
-                    placeholder="Enter password"
-                    _placeholder={{ color: "white" }}
+                    isRequired={true}
+                    mb={3}
                     onChange={(e) =>
-                      setCreds({ ...creds, password: e.target.value })
+                      setCreds({ ...creds, email: e.target.value })
                     }
                   />
-                  <InputRightElement>
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleClick}
-                      icon={show ? <AiFillEyeInvisible /> : <AiFillEye />}
-                    ></IconButton>
-                  </InputRightElement>
-                </InputGroup>
-                <Center>
-                  <Button
-                    isDisabled={
-                      creds.email.length === 0 || creds.password.length === 0
-                    }
-                    mt={8}
-                    onClick={() => callLogin()}
-                  >
-                    Log In
-                  </Button>
-                </Center>
+                  <InputGroup size="md">
+                    <Input
+                      isRequired={true}
+                      pr="4.5rem"
+                      variant={"filled"}
+                      bgColor={"dark.400"}
+                      type={show ? "text" : "password"}
+                      placeholder="Enter password"
+                      _placeholder={{ color: "white" }}
+                      onChange={(e) =>
+                        setCreds({ ...creds, password: e.target.value })
+                      }
+                    />
+                    <InputRightElement>
+                      <IconButton
+                        aria-label="Toggle password visibility"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleClick}
+                        icon={show ? <AiFillEyeInvisible /> : <AiFillEye />}
+                      ></IconButton>
+                    </InputRightElement>
+                  </InputGroup>
+                  <Center>
+                    <Button
+                      isDisabled={
+                        creds.email.length === 0 || creds.password.length === 0
+                      }
+                      mt={8}
+                      onClick={() => {
+                        loginMutation.mutate(creds, {
+                          onSuccess: (data) => {
+                            router.push("/dashboard");
+                          },
+                          onError: (error) => {
+                            toast({
+                              title:
+                                "An error occurred. Please try again later.",
+                              status: "error",
+                              variant: "top-accent",
+                              isClosable: true,
+                            });
+                          },
+                        });
+                      }}
+                    >
+                      Log In
+                    </Button>
+                  </Center>
+                </Flex>
               </Flex>
-            </Flex>
-          </GridItem>
-        </Grid>
-      </Flex>
+            </GridItem>
+          </Grid>
+        </Flex>
+      )}
     </>
   );
 };
