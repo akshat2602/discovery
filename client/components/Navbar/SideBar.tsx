@@ -8,10 +8,11 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 
+import { useBearStore } from "../../store/bearStore";
+
 import Logo from "../Util/Logo";
 import Discovery from "../Util/Discovery";
 import profileSVG from "../../public/profile.svg";
-import { useBearStore } from "../../store/bearStore";
 
 const SideBar: React.FC = () => {
   const router = useRouter();
@@ -21,7 +22,6 @@ const SideBar: React.FC = () => {
   const [number, setNumber] = useState<Number | null>(null);
 
   useEffect(() => {
-    console.log(router.pathname.split("/")[1]);
     if (router.pathname.split("/")[2]) {
       switch (router.pathname.split("/")[2]) {
         case "job":
@@ -37,7 +37,7 @@ const SideBar: React.FC = () => {
     } else if (router.pathname.split("/")[1] === "dashboard") {
       setNumber(0);
     }
-  }, [router.pathname]);
+  }, [router]);
 
   return (
     <>
@@ -187,6 +187,7 @@ const SideBar: React.FC = () => {
                           <Text marginLeft={4} fontWeight={"normal"}>
                             {user?.firstName}
                             {user?.lastName}
+                            {user?.username}
                           </Text>
                         ) : (
                           <></>
