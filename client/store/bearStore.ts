@@ -8,9 +8,23 @@ import {
   setUserStore,
 } from "./userStore";
 
-export const useBearStore = create<userStateInterface & userActionsInterface>()(
+import {
+  createShellSocketStore,
+  shellSocketActionsInterface,
+  shellSocketInterface,
+  setShellSocketStore,
+} from "./socketStore";
+
+export const useBearStore = create<
+  userStateInterface &
+    userActionsInterface &
+    shellSocketActionsInterface &
+    shellSocketInterface
+>()(
   devtools((...a) => ({
     ...createUserStore(...a),
     ...setUserStore(...a),
+    ...createShellSocketStore(...a),
+    ...setShellSocketStore(...a),
   }))
 );
