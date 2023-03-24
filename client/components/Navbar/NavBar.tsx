@@ -40,7 +40,6 @@ const NavBar: React.FC = () => {
           </BreadcrumbItem>
         );
       } else if (el.toLowerCase().endsWith("id]")) {
-        console.log(route[route.length - 1]);
         const id = route[route.length - 1] + "Id";
         route.push(router.query[id] as string);
         temp.push(
