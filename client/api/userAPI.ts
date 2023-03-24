@@ -1,6 +1,5 @@
 import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
 import { isAxiosError, AxiosResponse } from "axios";
-import { useRouter } from "next/router";
 
 import api from "./util";
 
@@ -28,11 +27,7 @@ export const checkUserLogin = async (): Promise<AxiosResponse> => {
 };
 
 export const getUser = async (): Promise<AxiosResponse> => {
-  const response = await api.get("auth/user/", {
-    headers: {
-      Authorization: `Token ${localStorage.getItem("access_token")}`,
-    },
-  });
+  const response = await api.get("auth/user/");
   return response;
 };
 

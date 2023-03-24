@@ -10,6 +10,11 @@ api.interceptors.request.use(async (config) => {
       "You are trying to access an undefined route. Please check your route and try again."
     );
   } else {
+    if (localStorage.getItem("access_token")) {
+      config.headers["Authorization"] = `Token ${localStorage.getItem(
+        "access_token"
+      )} `;
+    }
     return config;
   }
 });
