@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "drf_yasg",
     "jobAPI",
+    "assignmentAPI",
 ]
 
 MIDDLEWARE = [
