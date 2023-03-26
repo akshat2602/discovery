@@ -1,18 +1,16 @@
 from django.db import models
-from server.jobAPI.models import CandidateApplication, JobPostingSteps
+from jobAPI.models import CandidateApplication, JobPostingSteps
 import uuid
 
 # TODO: Add validation for test duration
 # TODO: Add validation for dockerfile upload
-
+# TODO: Add custom dockerfile upload name modifier function
 # Create your models here.
 class AssignmentType(models.Model):
     """Model for Assignment Type"""
 
     name = models.CharField(max_length=256, verbose_name="Name")
-    docker_file = models.FileField(
-        upload_to="/docker_files", verbose_name="Docker File"
-    )
+    docker_file = models.FileField(upload_to="docker_files", verbose_name="Docker File")
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
