@@ -2,6 +2,9 @@ from django.db import models
 from server.jobAPI.models import CandidateApplication, JobPostingSteps
 import uuid
 
+# TODO: Add validation for test duration
+# TODO: Add validation for dockerfile upload
+
 # Create your models here.
 class AssignmentType(models.Model):
     """Model for Assignment Type"""
@@ -25,13 +28,12 @@ class CandidateAssignment(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, verbose_name="ID"
     )
-    fk_job_posting_step = models.ForeignKey(
+    fk_job_posting_step = models.OneToOneField(
         to=JobPostingSteps,
         on_delete=models.CASCADE,
-        related_name="job_posting_step",
         verbose_name="Job Posting Step",
     )
-    assignment_type = models.ForeignKey(
+    fk_assignment_type = models.ForeignKey(
         to=AssignmentType,
         on_delete=models.CASCADE,
         related_name="assignment_type",
@@ -46,6 +48,8 @@ class CandidateAssignment(models.Model):
 
     active_from = models.DateTimeField(verbose_name="Active From")
     active_upto = models.DateTimeField(verbose_name="Active Upto")
+    duration = models.DurationField(verbose_name="Duration")
+    expired = models.BooleanField(default=False, verbose_name="Expired")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
 
@@ -57,6 +61,9 @@ class CandidateAssignment(models.Model):
 class CandidateAssignmentResult(models.Model):
     """Model for Candidate Assignment Result"""
 
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, verbose_name="ID"
+    )
     fk_candidate_application = models.ForeignKey(
         to=CandidateApplication,
         on_delete=models.CASCADE,
