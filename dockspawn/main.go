@@ -4,12 +4,15 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/akshat2602/discovery/dockspawn/cmd/container"
 	"github.com/akshat2602/discovery/dockspawn/cmd/dspawn"
 	"github.com/akshat2602/discovery/dockspawn/cmd/files"
 	"github.com/akshat2602/discovery/dockspawn/cmd/terminal"
 	"github.com/akshat2602/discovery/dockspawn/cmd/ws"
 	"github.com/akshat2602/discovery/dockspawn/pkg/helper"
 )
+
+// TODO: Allow Cros Origin Requests
 
 func main() {
 	helper.InitializeLogger()
@@ -33,6 +36,13 @@ func main() {
 
 	cs.ServeMux.HandleFunc("/directory", func(w http.ResponseWriter, r *http.Request) {
 		files.HandleFileDirectoryStructure(w, r)
+	})
+
+	cs.ServeMux.HandleFunc("/container/stop", func(w http.ResponseWriter, r *http.Request) {
+		container.HandleContainerStop(w, r)
+	})
+	cs.ServeMux.HandleFunc("/container/remove", func(w http.ResponseWriter, r *http.Request) {
+		container.HandleContainerRemove(w, r)
 	})
 	s := &http.Server{
 		Addr:         ":8080",
