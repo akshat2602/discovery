@@ -27,7 +27,8 @@ func HandleContainerStop(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&csrb)
 	if err != nil {
 		helper.Logger.Sugar().Info("Error ", err)
-		// TODO: respond with error
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
 		return
 	}
 
@@ -37,12 +38,17 @@ func HandleContainerStop(w http.ResponseWriter, r *http.Request) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		helper.Logger.Sugar().Info("Error ", err)
+
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("An error occured while connecting to docker client: " + err.Error()))
+		return
 	}
 	defer cli.Close()
 	err = cli.ContainerStop(ctx, container_id, container.StopOptions{})
 	if err != nil {
 		helper.Logger.Sugar().Info("Error ", err)
-		// TODO: respond with error
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("An error occured while stopping the container: " + err.Error()))
 		return
 	}
 	w.Write([]byte("Successfully Stopped the container with id " + container_id))
@@ -53,7 +59,8 @@ func HandleContainerRemove(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&crmrb)
 	if err != nil {
 		helper.Logger.Sugar().Info("Error ", err)
-		// TODO: respond with error
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Request body not sent correctly: " + err.Error()))
 		return
 	}
 
@@ -62,6 +69,9 @@ func HandleContainerRemove(w http.ResponseWriter, r *http.Request) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
 		helper.Logger.Sugar().Info("Error ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("An error occured while connecting to docker client: " + err.Error()))
+		return
 	}
 	defer cli.Close()
 	cli.ContainerRemove(ctx, container_id, types.ContainerRemoveOptions{})
@@ -70,7 +80,9 @@ func HandleContainerRemove(w http.ResponseWriter, r *http.Request) {
 	// TODO: File Removal logic
 	if err != nil {
 		helper.Logger.Sugar().Info("Error ", err)
-		// TODO: respond with error
+
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("An error occured while removing the container: " + err.Error()))
 		return
 	}
 
