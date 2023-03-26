@@ -20,7 +20,7 @@ class AssignmentType(models.Model):
 
 
 class CandidateAssignment(models.Model):
-    """Model for candidate assignment"""
+    """Model for Candidate Assignment"""
 
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, verbose_name="ID"
@@ -37,10 +37,45 @@ class CandidateAssignment(models.Model):
         related_name="assignment_type",
         verbose_name="Assignment Type",
     )
+    total_test_cases = models.IntegerField(
+        default=100, null=False, blank=False, verbose_name="Total Test Cases"
+    )
+    cutoff_test_cases = models.IntegerField(
+        default=75, null=False, blank=False, verbose_name="Cutoff Test Cases"
+    )
 
+    active_from = models.DateTimeField(verbose_name="Active From")
+    active_upto = models.DateTimeField(verbose_name="Active Upto")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
 
     class Meta:
         verbose_name = "Candidate Assignment"
         verbose_name_plural = "Candidate Assignments"
+
+
+class CandidateAssignmentResult(models.Model):
+    """Model for Candidate Assignment Result"""
+
+    fk_candidate_application = models.ForeignKey(
+        to=CandidateApplication,
+        on_delete=models.CASCADE,
+        related_name="candidate_application",
+        verbose_name="Candidate Application",
+    )
+    fk_candidate_assignment = models.ForeignKey(
+        to=CandidateAssignment,
+        on_delete=models.CASCADE,
+        related_name="candidate_assignment",
+        verbose_name="Candidate Assignment",
+    )
+    test_cases_passed = models.IntegerField(default=0, verbose_name="Test Cases Passed")
+    attempted = models.BooleanField(default=False, verbose_name="Attempted")
+    start_time = models.DateTimeField(verbose_name="Start Time")
+    end_time = models.DateTimeField(verbose_name="End Time")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
+
+    class Meta:
+        verbose_name = "Candidate Assignment Result"
+        verbose_name_plural = "Candidate Assignment Results"
