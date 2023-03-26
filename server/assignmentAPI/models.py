@@ -69,6 +69,7 @@ class CandidateAssignmentResult(models.Model):
         related_name="candidate_assignment",
         verbose_name="Candidate Assignment",
     )
+    container_id = models.CharField(max_length=256, null=True)
     test_cases_passed = models.IntegerField(default=0, verbose_name="Test Cases Passed")
     attempted = models.BooleanField(default=False, verbose_name="Attempted")
     start_time = models.DateTimeField(verbose_name="Start Time")
