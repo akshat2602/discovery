@@ -40,6 +40,9 @@ type RequestContainerCreationBody struct {
 	ContainerName string `json:"container_name"`
 	ImageVersion  string `json:"image_version"`
 }
+type DirectoryPathRequestBody struct {
+	DirectoryPath string `json:"directory_path"`
+}
 
 func HandleFileChange(w http.ResponseWriter, r *http.Request) {
 	wsc, err := websocket.Accept(w, r, &websocket.AcceptOptions{InsecureSkipVerify: true})
@@ -190,7 +193,13 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 
 }
 func HandleFileDirectoryStructure(w http.ResponseWriter, r *http.Request) {
-	file_directory_structure, err := GetFileDirectoryStructure("directory_path")
+	var dprb = DirectoryPathRequestBody{}
+	err := json.NewDecoder(r.Body).Decode(&dprb)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	file_directory_structure, err := GetFileDirectoryStructure(dprb.DirectoryPath)
 	if err != nil {
 		helper.Logger.Sugar().Info("Error while reading file directory structure: %v", err)
 		return
