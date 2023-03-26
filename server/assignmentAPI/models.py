@@ -1,9 +1,11 @@
 from django.db import models
-from server.jobAPI.models import CandidateApplication
+from server.jobAPI.models import CandidateApplication, JobPostingSteps
 import uuid
 
 # Create your models here.
 class AssignmentType(models.Model):
+    """Model for Assignment Type"""
+
     name = models.CharField(max_length=256, verbose_name="Name")
     docker_file = models.FileField(
         upload_to="/docker_files", verbose_name="Docker File"
@@ -23,11 +25,11 @@ class CandidateAssignment(models.Model):
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, verbose_name="ID"
     )
-    fk_candidate_application = models.ForeignKey(
-        to=CandidateApplication,
+    fk_job_posting_step = models.ForeignKey(
+        to=JobPostingSteps,
         on_delete=models.CASCADE,
-        related_name="candidate_application",
-        verbose_name="Candidate Application",
+        related_name="job_posting_step",
+        verbose_name="Job Posting Step",
     )
     assignment_type = models.ForeignKey(
         to=AssignmentType,
