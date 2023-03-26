@@ -140,7 +140,7 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		helper.Logger.Sugar().Info("Error: %v", err)
+		helper.Logger.Sugar().Info("Error: ", err)
 		return
 	}
 	defer cli.Close()
