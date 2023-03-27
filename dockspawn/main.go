@@ -21,19 +21,12 @@ func main() {
 	cs.ServeMux.HandleFunc("/terminal", func(w http.ResponseWriter, r *http.Request) {
 		terminal.ServeTerminal(w, r)
 	})
-	cs.ServeMux.HandleFunc("/file/change", func(w http.ResponseWriter, r *http.Request) {
+	cs.ServeMux.HandleFunc("/file", func(w http.ResponseWriter, r *http.Request) {
 		files.HandleFileChange(w, r)
-	})
-	cs.ServeMux.HandleFunc("/file/read", func(w http.ResponseWriter, r *http.Request) {
-		files.HandleFileRead(w, r)
-	})
-	cs.ServeMux.HandleFunc("/file/create", func(w http.ResponseWriter, r *http.Request) {
-		files.HandleFileCreate(w, r)
 	})
 	cs.ServeMux.HandleFunc("/container/create", func(w http.ResponseWriter, r *http.Request) {
 		files.HandleContainerCreation(w, r)
 	})
-
 	cs.ServeMux.HandleFunc("/directory", func(w http.ResponseWriter, r *http.Request) {
 		files.HandleFileDirectoryStructure(w, r)
 	})
