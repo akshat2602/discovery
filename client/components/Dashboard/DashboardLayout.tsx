@@ -55,7 +55,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     result.isSuccess,
     result.isError,
     result.isLoading,
-    setUserInfo,
     result.data?.data,
     accessTokenMutation,
   ]);

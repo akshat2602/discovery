@@ -3,8 +3,7 @@ package files
 import (
 	"context"
 	"encoding/json"
-	"io"
-	"log"
+	"errors"
 	"net/http"
 	"os"
 	"os/exec"
@@ -21,17 +20,14 @@ import (
 // TODO: Properly define the return values for the responses
 // TODO: Restrict access to the routes based on the Method of request
 
-type WSFileData struct {
+type WSPayload struct {
+	Data     string `json:"data"`
 	FilePath string `json:"file_path"`
-	Content  string `json:"content"`
 }
-type RequestFileReadBody struct {
-	FilePath string `json:"file_path"`
-	FileName string `json:"file_name"`
-}
-type RequestFileCreateBody struct {
-	FilePath string `json:"file_path"`
-	FileName string `json:"file_name"`
+
+type WSRequestResponse struct {
+	Type    string    `json:"type"`
+	Payload WSPayload `json:"payload"`
 }
 
 type RequestContainerCreationBody struct {
@@ -59,84 +55,29 @@ func HandleFileChange(w http.ResponseWriter, r *http.Request) {
 			helper.Logger.Sugar().Error("Failed to read message from web socket: %v", err)
 			return
 		}
-		var ws_file_data WSFileData
-		err = json.Unmarshal(msg, &ws_file_data)
+		var ws_request WSRequestResponse
+		err = json.Unmarshal(msg, &ws_request)
 		if err != nil {
 			helper.Logger.Sugar().Error("Unmarshalling Error: %v", err)
 			return
 		}
-		f, err := os.OpenFile(ws_file_data.FilePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-		if err != nil {
-			helper.Logger.Sugar().Error("Error while opening file: %v", err)
-			return
-		}
 
-		defer f.Close()
-		err = f.Truncate(0)
-		if err != nil {
-			helper.Logger.Sugar().Error("Error while truncating: %v", err)
-			return
-		}
-		if _, err = f.WriteString(ws_file_data.Content); err != nil {
-			helper.Logger.Sugar().Error("Error while writing to file: %v", err)
-			return
-		}
-		if err := wsc.Write(ctx, websocket.MessageText, []byte(ws_file_data.Content)); err != nil {
-			log.Println(err)
-			return
+		switch ws_request.Type {
+		case "writeFile":
+			WriteFile(ctx, wsc, ws_request.Payload)
+		case "readFile":
+			ReadFile(ctx, wsc, ws_request.Payload)
+		case "deleteFile":
+			DeleteFile(ctx, wsc, ws_request.Payload)
+		case "createFolder":
+			CreateDirectory(ctx, wsc, ws_request.Payload)
+		case "deleteFolder":
+			DeleteDirectory(ctx, wsc, ws_request.Payload)
+		default:
+			helper.Logger.Sugar().Error("Invalid request type")
+			handleWSErrorResp(ctx, wsc, errors.New("invalid request type"))
 		}
 	}
-
-}
-
-func HandleFileRead(w http.ResponseWriter, r *http.Request) {
-
-	var rfrb = RequestFileReadBody{}
-	err := json.NewDecoder(r.Body).Decode(&rfrb)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	file, err := os.Open(rfrb.FilePath + "/" + rfrb.FileName)
-	if err != nil {
-		helper.Logger.Sugar().Info("Error: ", err)
-		return
-	}
-	defer file.Close()
-	data := make([]byte, 1024)
-	for {
-		n, err := file.Read(data)
-		if err == io.EOF {
-			helper.Logger.Sugar().Info("Error: ", err)
-			return
-		}
-		if err != nil {
-			helper.Logger.Sugar().Info("Error: ", err)
-			return
-		}
-
-		w.Write(data[:n])
-	}
-}
-
-func HandleFileCreate(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
-		helper.Logger.Sugar().Info("Error: Method not allowed")
-		w.Write([]byte("Error: Method not allowed"))
-		return
-	}
-	var rfcb = RequestFileCreateBody{}
-	err := json.NewDecoder(r.Body).Decode(&rfcb)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	f, err := os.Create(rfcb.FilePath + "/" + rfcb.FileName)
-	if err != nil {
-		log.Printf(err.Error())
-	}
-	defer f.Close()
-	w.Write([]byte("File created successfully"))
 }
 
 func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
