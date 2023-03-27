@@ -27,6 +27,14 @@ def validate_doc(value):
         raise ValidationError("Unsupported file extension, only pdf or doc allowed")
 
 
+def validate_dockerfile(value):
+    "Checking if the uploaded file is a Dockerfile by name or not"
+    print(value)
+    ext = value.name.split(".")[-1]
+    if ext.lower() != "dockerfile":
+        raise ValidationError("The uploaded file is not a dockerfile")
+
+
 def error_message(serializer, status_code):
     """Error message for serializer"""
     if isinstance(serializer, str):
@@ -46,4 +54,10 @@ def resume_upload_path(instance, filename):
         instance.fk_job_posting.id, instance.id, ext
     )
 
+    return path
+
+
+def dockerfile_upload_path(instance, filename):
+    "Dockerfile upload path"
+    path = "dockerfiles/assignment_type_{}/Dockerfile".format(instance.pk)
     return path
