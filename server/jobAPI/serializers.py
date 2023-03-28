@@ -99,5 +99,7 @@ class CandidateStatusFetchSerializer(serializers.ModelSerializer):
 
 
 class JobPostingFilterSerializer(serializers.Serializer):
+    """Query parameter Serializer for Job Posting Filter"""
+
     status = serializers.IntegerField(required=False)
     created_by = serializers.IntegerField(required=False)
