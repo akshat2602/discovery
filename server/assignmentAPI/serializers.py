@@ -27,3 +27,31 @@ class CandidateAssignmentCreateSerializer(serializers.ModelSerializer):
             "duration",
         ]
         read_only_fields = ("id", "expired", "created_at", "updated_at")
+
+
+class CandidateAssignmentFetchSerializer(serializers.ModelSerializer):
+    """
+    Fetch Serializer for Candidate Assignment
+    """
+
+    job_posting_step = serializers.IntegerField(
+        source="fk_job_posting_step.step", read_only=True
+    )
+    assignment_type = serializers.CharField(
+        source="fk_assignment_type.name", read_only=True
+    )
+
+    class Meta:
+        model = CandidateAssignment
+        fields = ["candidate_application", "candidate_assignment", "assignment_type"]
+        read_only_fields = (
+            "id",
+            "total_test_cases",
+            "cutoff_test_cases",
+            "active_from",
+            "active_upto",
+            "duration",
+            "expired",
+            "created_at",
+            "updated_at",
+        )

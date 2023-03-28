@@ -20,6 +20,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from jobAPI import urls as jobAPI_urls
+from assignmentAPI import urls as assignmentAPI_urls
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -57,4 +58,5 @@ urlpatterns += [
     re_path(r"^auth/", include("dj_rest_auth.urls")),
     # Job Posting endpoints
     re_path(r"^job/", include(jobAPI_urls)),
+    re_path(r"^assignment/", include(assignmentAPI_urls)),
 ]
