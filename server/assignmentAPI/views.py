@@ -11,6 +11,7 @@ from .models import CandidateAssignment
 
 
 # TODO: Add authentication and permission management
+# TODO: Fix the error in list api (serializer issue)
 
 
 class CandidateAssignmentViewSet(viewsets.ViewSet):
@@ -29,7 +30,7 @@ class CandidateAssignmentViewSet(viewsets.ViewSet):
         Create a new Candidate Assignment for a Job Step
         """
 
-        serialized = CandidateAssignmentCreateSerializer(request.data, many=True)
+        serialized = CandidateAssignmentCreateSerializer(data=request.data, many=True)
         if serialized.is_valid():
             serialized.save()
             return Response(data=serialized.data, status=http_status.HTTP_201_CREATED)
@@ -42,6 +43,7 @@ class CandidateAssignmentViewSet(viewsets.ViewSet):
         operation_description="Fetch all candidate assignment",
         responses={
             http_status.HTTP_200_OK: CandidateAssignmentFetchSerializer(many=True),
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
         },
     )
     def list(self, request):
@@ -51,9 +53,14 @@ class CandidateAssignmentViewSet(viewsets.ViewSet):
 
         candidate_assignments = CandidateAssignment.objects.all()
         serialized = CandidateAssignmentFetchSerializer(
-            candidate_assignments, many=True
+            data=candidate_assignments, many=True
         )
-        return Response(serialized.data, status=http_status.HTTP_200_OK)
+        if serialized.is_valid():
+            return Response(data=serialized.data, status=http_status.HTTP_200_OK)
+        return Response(
+            error_message(serialized, http_status.HTTP_400_BAD_REQUEST),
+            status=http_status.HTTP_400_BAD_REQUEST,
+        )
 
     @swagger_auto_schema(
         operation_description="Update a Candidate Assignment",

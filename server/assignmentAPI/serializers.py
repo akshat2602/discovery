@@ -43,7 +43,7 @@ class CandidateAssignmentFetchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CandidateAssignment
-        fields = ["candidate_application", "candidate_assignment", "assignment_type"]
+        fields = ["job_posting_step", "assignment_type"]
         read_only_fields = (
             "id",
             "total_test_cases",
