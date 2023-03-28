@@ -37,6 +37,7 @@ class CandidateAssignment(models.Model):
         to=JobPostingSteps,
         on_delete=models.CASCADE,
         verbose_name="Job Posting Step",
+        related_name="candidate_assignment",
     )
     fk_assignment_type = models.ForeignKey(
         to=AssignmentType,
@@ -98,8 +99,8 @@ class CandidateAssignmentResult(models.Model):
     )
     test_cases_passed = models.IntegerField(default=0, verbose_name="Test Cases Passed")
     attempted = models.BooleanField(default=False, verbose_name="Attempted")
-    start_time = models.DateTimeField(verbose_name="Start Time")
-    end_time = models.DateTimeField(verbose_name="End Time")
+    start_time = models.DateTimeField(null=True, blank=True, verbose_name="Start Time")
+    end_time = models.DateTimeField(null=True, blank=True, verbose_name="End Time")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
 
