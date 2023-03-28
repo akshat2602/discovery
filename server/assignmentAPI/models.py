@@ -63,7 +63,7 @@ class CandidateAssignment(models.Model):
         return (
             self.fk_job_posting_step.fk_job_posting.title
             + "-step_"
-            + self.fk_job_posting_step.step_number
+            + str(self.fk_job_posting_step.step_number)
             + "-"
             + self.fk_assignment_type.name
         )
@@ -108,7 +108,7 @@ class CandidateAssignmentResult(models.Model):
         return (
             self.fk_candidate_assignment.fk_job_posting_step.fk_job_posting.title
             + "-step_"
-            + self.fk_candidate_assignment.fk_job_posting_step.step_number
+            + str(self.fk_candidate_assignment.fk_job_posting_step.step_number)
             + "-"
             + +self.fk_candidate_application.fname
             + "-"
