@@ -43,8 +43,9 @@ class CandidateAssignmentFetchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CandidateAssignment
-        fields = ["job_posting_step", "assignment_type"]
-        read_only_fields = (
+        fields = [
+            "job_posting_step",
+            "assignment_type",
             "id",
             "total_test_cases",
             "cutoff_test_cases",
@@ -54,4 +55,4 @@ class CandidateAssignmentFetchSerializer(serializers.ModelSerializer):
             "expired",
             "created_at",
             "updated_at",
-        )
+        ]
