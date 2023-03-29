@@ -377,11 +377,13 @@ class CandidateAssignmentResultViewSet(viewsets.ViewSet):
         fields = request.query_params.getlist("fields", "")
 
         if fields:
-            serialized = CandidateAssignmentFetchSerializer(
+            serialized = CandidateAssignmentResultFetchSerializer(
                 candidate_assignment_result, fields=fields
             )
         else:
-            serialized = CandidateAssignmentFetchSerializer(candidate_assignment_result)
+            serialized = CandidateAssignmentResultFetchSerializer(
+                candidate_assignment_result
+            )
 
         return Response(serialized.data, status=http_status.HTTP_200_OK)
 
