@@ -25,19 +25,21 @@ export const customTheme = extendTheme(
         900: "#003a3d",
       },
       light: {
-        400: "#3A4750",
+        200: "#FFFFFF",
+        400: "#EEEEEE",
       },
       dark: {
+        200: "#3A4750",
         400: "#303841",
       },
     },
     styles: {
       global: (props) => ({
         body: {
-          bg: mode("#3A4750", "#303841")(props),
+          bg: mode("#EEEEEE", "#303841")(props),
         },
         "*::placeholder": {
-          color: mode("#3A4750", "#303841")(props),
+          color: mode("#EEEEEE", "#303841")(props),
         },
       }),
     },

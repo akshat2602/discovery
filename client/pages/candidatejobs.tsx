@@ -7,6 +7,7 @@ import {
   InputLeftElement,
   Input,
   Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { BsSearch } from "react-icons/bs";
 import CandidateJobCard from "../components/CandidateJobCard";
@@ -14,6 +15,7 @@ import Discovery from "../components/Util/Discovery";
 import Logo from "../components/Util/Logo";
 
 const CandidateJobs: React.FC = () => {
+  const fg = useColorModeValue("light.200", "dark.200");
   return (
     <>
       <Flex
@@ -35,8 +37,8 @@ const CandidateJobs: React.FC = () => {
           margin={3}
           rounded={8}
           boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
-          borderColor={"light.400"}
-          bgColor={"light.400"}
+          borderColor={fg}
+          bgColor={fg}
         >
           <InputLeftElement pointerEvents="none">
             <BsSearch color="white" />

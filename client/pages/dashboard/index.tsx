@@ -6,6 +6,7 @@ import {
   Box,
   Hide,
   Checkbox,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import Link from "next/link";
@@ -17,6 +18,7 @@ import { DashboardLayout } from "../../components/Dashboard/DashboardLayout";
 const checkBoxes = ["Active", "Inactive"];
 
 const DashboardPage: React.FC = () => {
+  const fg = useColorModeValue("light.200", "dark.200");
   const [checkedItems, setCheckedItems] = useState([false, false]);
 
   return (
@@ -48,7 +50,7 @@ const DashboardPage: React.FC = () => {
                   width={"200px"}
                   rounded={8}
                   height={"300px"}
-                  bgColor="light.400"
+                  bgColor={fg}
                   p={4}
                 >
                   <Text fontSize={16} fontWeight={"medium"} noOfLines={1}>
