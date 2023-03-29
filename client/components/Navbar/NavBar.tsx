@@ -10,6 +10,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { SwitchThemeButton } from "../Util/SwitchTheme";
 
 const NavBar: React.FC = () => {
   const router = useRouter();
@@ -69,6 +70,7 @@ const NavBar: React.FC = () => {
       <HStack>
         {renderBreadCrumb()}
         <Spacer />
+        <SwitchThemeButton />
       </HStack>
     </Box>
   );

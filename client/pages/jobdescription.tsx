@@ -1,14 +1,22 @@
-import { Flex, Box, Text, Divider, IconButton } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Text,
+  Divider,
+  IconButton,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { BsShareFill } from "react-icons/bs";
 import { useRouter } from "next/router";
 import ApplyJobPopup from "../components/ApplyJobPopup";
 
 const JobDescription: React.FC = () => {
+  const fg = useColorModeValue("light.200", "dark.200");
   const router = useRouter();
   return (
     <Flex direction={"column"} align="center" padding={4}>
-      <Box width={"80vw"} flex="1" rounded={8} bgColor="light.400" p={4}>
+      <Box width={"80vw"} flex="1" rounded={8} bgColor={fg} p={4}>
         <Flex align={"center"} justify={"space-between"}>
           <IconButton
             aria-label="Back Button"

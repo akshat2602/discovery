@@ -10,10 +10,12 @@ import {
   Input,
   Button,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
 const ApplyJobPopup: React.FC = () => {
+  const bg = useColorModeValue("light.400", "dark.400");
   const [isOpen, setIsOpen] = useState(false);
   function handleOpen() {
     setIsOpen(true);
@@ -35,7 +37,7 @@ const ApplyJobPopup: React.FC = () => {
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ModalOverlay />
-        <ModalContent bgColor="light.400" px={4} pb="6" pt="4">
+        <ModalContent bgColor={"dark.100"} px={4} pb="6" pt="4">
           <ModalHeader fontSize={18} fontWeight={"semibold"} textColor="white">
             Enter your details
           </ModalHeader>
@@ -48,7 +50,7 @@ const ApplyJobPopup: React.FC = () => {
               <Input
                 type="text"
                 border={"none"}
-                bgColor="dark.400"
+                bgColor={bg}
                 fontWeight={"medium"}
               />
             </FormControl>
@@ -60,7 +62,7 @@ const ApplyJobPopup: React.FC = () => {
               <Input
                 type="email"
                 border={"none"}
-                bgColor="dark.400"
+                bgColor={bg}
                 fontWeight={"medium"}
               />
             </FormControl>
@@ -76,7 +78,7 @@ const ApplyJobPopup: React.FC = () => {
               <Input
                 type="file"
                 border={"none"}
-                bgColor="dark.400"
+                bgColor={bg}
                 fontWeight={"thin"}
                 fontSize="12"
                 padding={2}

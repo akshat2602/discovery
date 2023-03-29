@@ -1,4 +1,11 @@
-import { Box, Text, Switch, Flex, IconButton } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Switch,
+  Flex,
+  IconButton,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { BsLink } from "react-icons/bs";
 import { useState } from "react";
 
@@ -8,6 +15,7 @@ interface candidateCardProps {
 }
 
 const CandidateCard: React.FC<candidateCardProps> = ({ name, email }) => {
+  const fg = useColorModeValue("light.200", "dark.200");
   const [isChecked, setIsChecked] = useState(false);
 
   function handleChange() {
@@ -18,7 +26,7 @@ const CandidateCard: React.FC<candidateCardProps> = ({ name, email }) => {
       rounded={8}
       borderTop={"2px"}
       borderTopColor="primary.400"
-      bgColor={"light.400"}
+      bgColor={fg}
       my={2}
       width="100%"
       padding={2}
@@ -61,7 +69,7 @@ const CandidateCard: React.FC<candidateCardProps> = ({ name, email }) => {
         <Text
           fontSize={13}
           fontWeight={"light"}
-          color={isChecked ? "primary.400" : "white"}
+          // color={isChecked ? "primary.400" : "white"}
         >
           {isChecked ? "Remove" : "Shortlist"}
         </Text>
