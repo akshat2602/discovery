@@ -1,4 +1,12 @@
-import { Text, Box, SimpleGrid, Button, Divider, Flex } from "@chakra-ui/react";
+import {
+  Text,
+  Box,
+  SimpleGrid,
+  Button,
+  Divider,
+  Flex,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { BiHomeCircle } from "react-icons/bi";
 import { FiBriefcase } from "react-icons/fi";
 import { SiGoogleanalytics } from "react-icons/si";
@@ -15,6 +23,7 @@ import Discovery from "../Util/Discovery";
 import profileSVG from "../../public/profile.svg";
 
 const SideBar: React.FC = () => {
+  const fg = useColorModeValue("light.200", "dark.200");
   const router = useRouter();
   const user = useBearStore((state) => state.user);
 
@@ -45,8 +54,9 @@ const SideBar: React.FC = () => {
         <Box
           h="100%"
           position="fixed"
-          backgroundColor={"light.400"}
+          backgroundColor={fg}
           p="4"
+          paddingTop={0}
           zIndex={12}
           style={{ textAlign: "center" }}
           onMouseEnter={() => {

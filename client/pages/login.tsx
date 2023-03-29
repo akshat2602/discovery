@@ -10,6 +10,7 @@ import {
   Grid,
   GridItem,
   useToast,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 
@@ -25,6 +26,7 @@ import Discovery from "../components/Util/Discovery";
 import Logo from "../components/Util/Logo";
 
 const Login: React.FC = () => {
+  const bg = useColorModeValue("light.400", "dark.400");
   const loginMutation = usePostLogin();
   const toast = useToast();
   const router = useRouter();
@@ -103,7 +105,7 @@ const Login: React.FC = () => {
                   justify="center"
                   align="center"
                   flexDirection="column"
-                  bg={"light.400"}
+                  bg={"dark.200"}
                   p={5}
                   borderRadius={8}
                   boxShadow="lg"
@@ -118,7 +120,7 @@ const Login: React.FC = () => {
                     placeholder="johndoe@gmail.com"
                     type="email"
                     variant={"filled"}
-                    bgColor={"dark.400"}
+                    bgColor={bg}
                     isRequired={true}
                     mb={3}
                     onChange={(e) =>
@@ -130,7 +132,7 @@ const Login: React.FC = () => {
                       isRequired={true}
                       pr="4.5rem"
                       variant={"filled"}
-                      bgColor={"dark.400"}
+                      bgColor={bg}
                       type={show ? "text" : "password"}
                       placeholder="Enter password"
                       _placeholder={{ color: "white" }}

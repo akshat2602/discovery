@@ -22,8 +22,6 @@ export const ShellComponent: React.FC = () => {
     [isBrowser]
   );
 
-  console.log(isBrowser);
-  console.log(ws);
   useEffect(() => {
     const term = new Terminal({
       cursorBlink: true,

@@ -15,6 +15,7 @@ import {
   Stack,
   Switch,
   Textarea,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FiChevronDown, FiPlus } from "react-icons/fi";
 import { BsFillTrashFill } from "react-icons/bs";
@@ -37,6 +38,7 @@ const jobStepUnit = () => {
   );
 };
 const JobEdit: React.FC = () => {
+  const fg = useColorModeValue("light.200", "dark.200");
   const router = useRouter();
   const [jobSteps, setJobSteps] = useState([
     {
@@ -111,7 +113,7 @@ const JobEdit: React.FC = () => {
                     rounded={8}
                     borderTop={"2px"}
                     borderTopColor="primary.400"
-                    bgColor={"light.400"}
+                    bgColor={fg}
                     mb={2}
                   >
                     <Text
