@@ -7,8 +7,10 @@ from .serializers import (
     CandidateAssignmentFetchSerializer,
     CandidateAssignmentCreateSerializer,
     AssignmentTypeSerializer,
+    CandidateAssignmentResultCreateSerializer,
+    CandidateAssignmentResultFetchSerializer,
 )
-from .models import CandidateAssignment, AssignmentType
+from .models import CandidateAssignment, AssignmentType, CandidateAssignmentResult
 
 
 # TODO: Add authentication and permission management
@@ -304,6 +306,171 @@ class AssignmentTypeViewSet(viewsets.ViewSet):
             return Response(
                 error_message(
                     "Assignment Type not found", http_status.HTTP_404_NOT_FOUND
+                ),
+                status=http_status.HTTP_404_NOT_FOUND,
+            )
+
+        except ValidationError:
+            return Response(
+                error_message("Invalid ID", http_status.HTTP_400_BAD_REQUEST),
+                status=http_status.HTTP_400_BAD_REQUEST,
+            )
+        query.delete()
+        return Response(status=http_status.HTTP_204_NO_CONTENT)
+
+
+class CandidateAssignmentResultViewSet(viewsets.ViewSet):
+    """Viewset for Candidate Assignment Result"""
+
+    @swagger_auto_schema(
+        operation_description="Create a new Candidate Assignment Result",
+        request_body=CandidateAssignmentResultCreateSerializer,
+        responses={
+            http_status.HTTP_201_CREATED: CandidateAssignmentResultCreateSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
+        },
+    )
+    def create(self, request):
+        """
+        Create a new Candidate Assignment Result (*not required)
+        """
+
+        serialized = CandidateAssignmentResultCreateSerializer(
+            data=request.data, many=True
+        )
+        if serialized.is_valid():
+            serialized.save()
+            return Response(data=serialized.data, status=http_status.HTTP_201_CREATED)
+        return Response(
+            error_message(serialized, http_status.HTTP_400_BAD_REQUEST),
+            status=http_status.HTTP_400_BAD_REQUEST,
+        )
+
+    @swagger_auto_schema(
+        operation_description="Fetch a candidate assignment",
+        responses={
+            http_status.HTTP_200_OK: CandidateAssignmentResultFetchSerializer,
+            http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
+        },
+    )
+    def retrieve(self, request, pk=None):
+        """
+        Fetch a Candidate Assignment Result
+        """
+        try:
+            candidate_assignment_result = CandidateAssignmentResult.objects.get(pk=pk)
+        except CandidateAssignmentResult.DoesNotExist:
+            return Response(
+                error_message(
+                    "Candidate Assignment Result not found",
+                    http_status.HTTP_404_NOT_FOUND,
+                ),
+                status=http_status.HTTP_404_NOT_FOUND,
+            )
+        except ValidationError:
+            return Response(
+                error_message("Invalid ID", http_status.HTTP_400_BAD_REQUEST),
+                status=http_status.HTTP_400_BAD_REQUEST,
+            )
+
+        fields = request.query_params.getlist("fields", "")
+
+        if fields:
+            serialized = CandidateAssignmentFetchSerializer(
+                candidate_assignment_result, fields=fields
+            )
+        else:
+            serialized = CandidateAssignmentFetchSerializer(candidate_assignment_result)
+
+        return Response(serialized.data, status=http_status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        operation_description="Fetch all candidate assignment results",
+        responses={
+            http_status.HTTP_200_OK: CandidateAssignmentResultFetchSerializer(
+                many=True
+            ),
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
+        },
+    )
+    def list(self, request):
+        """
+        Fetch all Candidate Assignment Results
+        """
+
+        candidate_assignment_results = CandidateAssignmentResult.objects.all()
+        serialized = CandidateAssignmentResultFetchSerializer(
+            candidate_assignment_results, many=True
+        )
+        return Response(data=serialized.data, status=http_status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        operation_description="Update a Candidate Assignment Results",
+        responses={
+            http_status.HTTP_200_OK: CandidateAssignmentResultCreateSerializer,
+            http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
+        },
+    )
+    def update(self, request, pk=None):
+        """
+        Update a Candidate Assignment Result
+        """
+        candidate_assignment_result_id = pk
+        try:
+            query = CandidateAssignmentResult.objects.get(
+                pk=candidate_assignment_result_id
+            )
+        except CandidateAssignmentResult.DoesNotExist:
+            return Response(
+                error_message(
+                    "Candidate Assignment Results not found",
+                    http_status.HTTP_404_NOT_FOUND,
+                ),
+                status=http_status.HTTP_404_NOT_FOUND,
+            )
+        except ValidationError:
+            return Response(
+                error_message("Invalid ID", http_status.HTTP_400_BAD_REQUEST),
+                status=http_status.HTTP_400_BAD_REQUEST,
+            )
+
+        serialized = CandidateAssignmentResultCreateSerializer(
+            query, data=request.data, partial=True
+        )
+        if serialized.is_valid():
+            serialized.save()
+            return Response(data=serialized.data, status=http_status.HTTP_200_OK)
+        return Response(
+            error_message(serialized, http_status.HTTP_400_BAD_REQUEST),
+            status=http_status.HTTP_400_BAD_REQUEST,
+        )
+
+    @swagger_auto_schema(
+        operation_description="Delete a Candidate Assignment Result",
+        responses={
+            http_status.HTTP_204_NO_CONTENT: "",
+            http_status.HTTP_404_NOT_FOUND: CustomErrorSerializer,
+            http_status.HTTP_400_BAD_REQUEST: CustomErrorSerializer,
+        },
+    )
+    def destroy(self, request, pk=None):
+        """
+        Delete a Candidate Assignment Result
+        """
+
+        candidate_assignment_result_id = pk
+
+        try:
+            query = CandidateAssignmentResult.objects.get(
+                pk=candidate_assignment_result_id
+            )
+        except CandidateAssignmentResult.DoesNotExist:
+            return Response(
+                error_message(
+                    "Candidate Assignment Result not found",
+                    http_status.HTTP_404_NOT_FOUND,
                 ),
                 status=http_status.HTTP_404_NOT_FOUND,
             )
