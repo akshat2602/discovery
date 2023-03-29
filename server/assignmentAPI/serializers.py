@@ -4,12 +4,12 @@ from rest_framework import serializers
 from .models import CandidateAssignment, AssignmentType
 
 
-class AssignmentTypeCreateSerializer(serializers.ModelSerializer):
+class AssignmentTypeSerializer(serializers.ModelSerializer):
     """Create Serializer for Assignment Type"""
 
     class Meta:
         model = AssignmentType
-        fields = ["name", "docker_file"]
+        fields = ["name", "docker_file", "created_at", "updated_at"]
 
 
 class CandidateAssignmentCreateSerializer(serializers.ModelSerializer):
