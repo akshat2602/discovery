@@ -20,7 +20,15 @@ def create_status(sender, instance, created, **kwargs):
 def create_candidate_assignment_result(sender, instance, created, **kwargs):
     if instance.fk_job_step.step == 2:
         """if the step is assignment"""
-        CandidateAssignmentResult.objects.create(
-            fk_candidate_application=instance.fk_job_posting_candidate,
-            fk_candidate_assignment=instance.fk_job_step.candidate_assignment,
-        )
+
+        if (
+            CandidateAssignmentResult.objects.filter(
+                fk_candidate_assignment=instance.fk_job_step.candidate_assignment
+            ).first()
+            is None
+        ):
+            """Check if the job step is changed to assignment"""
+            CandidateAssignmentResult.objects.create(
+                fk_candidate_application=instance.fk_job_posting_candidate,
+                fk_candidate_assignment=instance.fk_job_step.candidate_assignment,
+            )
