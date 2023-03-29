@@ -53,14 +53,9 @@ class CandidateAssignmentViewSet(viewsets.ViewSet):
 
         candidate_assignments = CandidateAssignment.objects.all()
         serialized = CandidateAssignmentFetchSerializer(
-            data=candidate_assignments, many=True
+            candidate_assignments, many=True
         )
-        if serialized.is_valid():
-            return Response(data=serialized.data, status=http_status.HTTP_200_OK)
-        return Response(
-            error_message(serialized, http_status.HTTP_400_BAD_REQUEST),
-            status=http_status.HTTP_400_BAD_REQUEST,
-        )
+        return Response(data=serialized.data, status=http_status.HTTP_200_OK)
 
     @swagger_auto_schema(
         operation_description="Update a Candidate Assignment",
