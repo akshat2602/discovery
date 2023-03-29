@@ -1,15 +1,15 @@
-import { Card, Divider } from "@chakra-ui/react";
+import { Card, Divider, useColorModeValue, Flex, Text } from "@chakra-ui/react";
 import { BsPeopleFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
-import { Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 const CandidateJobCard = () => {
+  const fg = useColorModeValue("light.200", "dark.200");
   return (
     <Card
       borderRadius="8"
       borderTopColor="primary.400"
-      bgColor="light.400"
+      bgColor={fg}
       width={240}
       p={4}
       margin={2}

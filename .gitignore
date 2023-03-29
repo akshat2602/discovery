@@ -3,6 +3,8 @@
 .idea
 .fleet
 
+themes
+
 # Django stuff
 *.log
 *.pot

@@ -1,18 +1,25 @@
-import { Card, Divider, IconButton } from "@chakra-ui/react";
+import {
+  Card,
+  Divider,
+  IconButton,
+  useColorModeValue,
+  Flex,
+  Text,
+} from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
 import { TiLocation } from "react-icons/ti";
 import { BsPeopleFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
-import { Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 const JobCard = () => {
+  const fg = useColorModeValue("light.200", "dark.200");
   return (
     <Link href={`/dashboard/job/${1}`}>
       <Card
         borderRadius="8"
         borderTopColor="primary.400"
-        bgColor="light.400"
+        bgColor={fg}
         borderTop={"2px"}
         mb={2}
       >
