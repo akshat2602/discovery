@@ -110,7 +110,7 @@ class CandidateAssignmentResult(models.Model):
             + "-step_"
             + str(self.fk_candidate_assignment.fk_job_posting_step.step_number)
             + "-"
-            + +self.fk_candidate_application.fname
+            + self.fk_candidate_application.fname
             + "-"
             + self.fk_candidate_application.lname
         )
