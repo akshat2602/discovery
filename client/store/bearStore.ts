@@ -26,6 +26,13 @@ import {
   setEditorFileStore,
 } from "./editorStore";
 
+import {
+  createFileOrFolderStore,
+  setFileOrFolderStore,
+  fileOrFolderActionsInterface,
+  fileOrFolderInterface,
+} from "./folderStore";
+
 export const useBearStore = create<
   userStateInterface &
     userActionsInterface &
@@ -34,7 +41,9 @@ export const useBearStore = create<
     editorSocketActionsInterface &
     editorSocketInterface &
     editorFileActionsInterface &
-    editorFileInterface
+    editorFileInterface &
+    fileOrFolderActionsInterface &
+    fileOrFolderInterface
 >()(
   devtools((...a) => ({
     ...createUserStore(...a),
@@ -45,5 +54,7 @@ export const useBearStore = create<
     ...setEditorSocketStore(...a),
     ...createEditorFileStore(...a),
     ...setEditorFileStore(...a),
+    ...createFileOrFolderStore(...a),
+    ...setFileOrFolderStore(...a),
   }))
 );
