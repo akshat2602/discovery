@@ -14,7 +14,7 @@ export const ShellComponent: React.FC = () => {
   const setTerminalWs = useBearStore((state) => state.setTerminalWs);
   const terminal = useRef(null);
   // const router = useRouter();
-  // const playgroundId = router.query["playgroundId"];
+  // const assessmentId = router.query["assessmentId"];
 
   const isBrowser = typeof window !== "undefined";
   const ws = useMemo(
