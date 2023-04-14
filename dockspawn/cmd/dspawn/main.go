@@ -10,13 +10,14 @@ import (
 	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
+	"github.com/google/uuid"
 )
 
 type RequestContainerCreationBody struct {
-	Image        string `json:"image"`
-	AssessmentID string `json:"assessment_id"`
-	ImageVersion string `json:"image_version"`
-	RunCommand   string `json:"run_command"`
+	Image        string    `json:"image"`
+	AssessmentID uuid.UUID `json:"assessment_id"`
+	ImageVersion string    `json:"image_version"`
+	RunCommand   string    `json:"run_command"`
 }
 
 var dockercli *client.Client
@@ -79,7 +80,7 @@ func ContainerCreate(ctx context.Context, containerOptions RequestContainerCreat
 				Target: "/app",
 			},
 		},
-	}, nil, nil, containerOptions.AssessmentID)
+	}, nil, nil, containerOptions.AssessmentID.String())
 	if err != nil {
 		helper.Logger.Sugar().Info("Container create failed: ", err)
 		return container.CreateResponse{}, err

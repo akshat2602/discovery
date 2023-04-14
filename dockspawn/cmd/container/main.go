@@ -33,13 +33,13 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 	helper.JSONDecode(&rccb, w, r)
 
 	host_machine_pwd := os.Getenv("DOCKER_HOST_FILE_DIRECTORY_ROOT")
-	absLocalPath, err := filepath.Abs(pwd + "/" + rccb.AssessmentID)
+	absLocalPath, err := filepath.Abs(pwd + "/" + rccb.AssessmentID.String())
 	if err != nil {
 		helper.Logger.Sugar().Info("Error while getting absolute path: ", err)
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	absGlobalPath, err := filepath.Abs(host_machine_pwd + "/" + rccb.AssessmentID)
+	absGlobalPath, err := filepath.Abs(host_machine_pwd + "/" + rccb.AssessmentID.String())
 	if err != nil {
 		helper.Logger.Sugar().Info("Error while getting absolute path: ", err)
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
@@ -61,7 +61,7 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 	// TODO: Use the run command here
 	app := "/bin/bash"
 	arg1 := "-c"
-	arg2 := "npm create vite@latest -y code -- --template react"
+	arg2 := "npm create vite@latest -y " + rccb.AssessmentID.String() + " -- --template react"
 	cmd := exec.Command(app, arg1, arg2)
 	cmd.Dir = absLocalPath
 
@@ -76,15 +76,6 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 		helper.Logger.Sugar().Info("stderr: ", stderr.String())
 		return
 	}
-	// app := "/bin/bash"
-	// arg1 := "npm create vite@latest -y code -- --template react"
-	// cmd := exec.Command(app, arg1)
-	// cmd.Dir = absLocalPath
-	// _, err = cmd.Output()
-	// if err != nil {
-	// 	helper.Logger.Sugar().Info("Error while creating vite files for assessment: ", err)
-	// 	return
-	// }
 	resp, err := dspawn.ContainerCreate(ctx, rccb, absGlobalPath)
 	if err != nil {
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
