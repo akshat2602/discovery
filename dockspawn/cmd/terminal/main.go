@@ -17,23 +17,24 @@ func ServeTerminal(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// defer c.Close(websocket.StatusInternalError, "The sky is falling")
-
+	// TODO: Take assessment id from request
+	// containerID :=
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	exec_id, err := dspawn.CreateExec(ctx, "container_id")
+	exec_id, err := dspawn.CreateExec(ctx, "34dd04e9f4d5b508e52128d836f36c3e1479d03cbb473c26f0dc37cbbc7288d6")
 	if err != nil {
 		return
 	}
-	hresp, err := dspawn.AttachExec(ctx, "container_id", exec_id)
+	hresp, err := dspawn.AttachExec(ctx, "34dd04e9f4d5b508e52128d836f36c3e1479d03cbb473c26f0dc37cbbc7288d6", exec_id)
 	if err != nil {
 		return
 	}
 	// defer hresp.Close()
-	terminal_process(ctx, "container_id", wsc, hresp, cancel)
+	terminalProcess(ctx, "34dd04e9f4d5b508e52128d836f36c3e1479d03cbb473c26f0dc37cbbc7288d6", wsc, hresp, cancel)
 }
 
-func terminal_process(ctx context.Context, container_id string, wsc *websocket.Conn, hresp types.HijackedResponse, cancel context.CancelFunc) {
+func terminalProcess(ctx context.Context, container_id string, wsc *websocket.Conn, hresp types.HijackedResponse, cancel context.CancelFunc) {
 	// use channels to handle communication between the websocket and the response object
 	responseCh := make(chan []byte)
 	errorCh := make(chan error)
