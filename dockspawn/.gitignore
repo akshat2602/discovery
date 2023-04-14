@@ -3,3 +3,6 @@ bin
 
 # Go vendor dependencies
 vendor
+
+# Assessment folders
+[0-9a-zA-Z]*-[0-9a-zA-Z]*-[0-9a-zA-Z]*-[0-9a-zA-Z]*-[0-9a-zA-Z]*
