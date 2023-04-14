@@ -22,16 +22,16 @@ func ServeTerminal(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	exec_id, err := dspawn.CreateExec(ctx, "c10daa132047651f811b8c156a71d4aa4cd201feccb360118039c4ca3b32a948")
+	exec_id, err := dspawn.CreateExec(ctx, "f2cb79484e7234fc4cedecb0c5f6f14976f8857817e53dabfd452608edc537ea")
 	if err != nil {
 		return
 	}
-	hresp, err := dspawn.AttachExec(ctx, "c10daa132047651f811b8c156a71d4aa4cd201feccb360118039c4ca3b32a948", exec_id)
+	hresp, err := dspawn.AttachExec(ctx, "f2cb79484e7234fc4cedecb0c5f6f14976f8857817e53dabfd452608edc537ea", exec_id)
 	if err != nil {
 		return
 	}
 	// defer hresp.Close()
-	terminalProcess(ctx, "c10daa132047651f811b8c156a71d4aa4cd201feccb360118039c4ca3b32a948", wsc, hresp, cancel)
+	terminalProcess(ctx, "f2cb79484e7234fc4cedecb0c5f6f14976f8857817e53dabfd452608edc537ea", wsc, hresp, cancel)
 }
 
 func terminalProcess(ctx context.Context, container_id string, wsc *websocket.Conn, hresp types.HijackedResponse, cancel context.CancelFunc) {
