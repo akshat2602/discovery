@@ -27,7 +27,7 @@ export const ShellComponent: React.FC = () => {
       cursorBlink: true,
       convertEol: true,
       theme: {
-        background: "#282a36",
+        background: "#303841",
         foreground: "#f8f8f2",
         cyan: "#8be9fd",
         green: "#50fa7b",
