@@ -1,9 +1,11 @@
 package container
 
 import (
+	"bytes"
 	"context"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/akshat2602/discovery/dockspawn/cmd/dspawn"
@@ -21,6 +23,7 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 
 	pwd, err := os.Getwd()
+	helper.Logger.Sugar().Info("Current working directory: ", pwd)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -29,17 +32,25 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 
 	helper.JSONDecode(&rccb, w, r)
 
-	absPath, err := filepath.Abs(pwd + "/../../" + rccb.AssessmentID)
+	host_machine_pwd := os.Getenv("DOCKER_HOST_FILE_DIRECTORY_ROOT")
+	absLocalPath, err := filepath.Abs(pwd + "/" + rccb.AssessmentID)
+	if err != nil {
+		helper.Logger.Sugar().Info("Error while getting absolute path: ", err)
+		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	absGlobalPath, err := filepath.Abs(host_machine_pwd + "/" + rccb.AssessmentID)
 	if err != nil {
 		helper.Logger.Sugar().Info("Error while getting absolute path: ", err)
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	_, err = os.Stat(absPath)
+	_, err = os.Stat(absLocalPath)
 	if os.IsNotExist(err) {
 		// path does not exist
-		err = os.Mkdir(absPath, os.ModePerm)
+		helper.Logger.Sugar().Info("Directory does not exist, creating directory: ", absLocalPath)
+		err = os.Mkdir(absLocalPath, os.ModePerm)
 		if err != nil {
 			helper.Logger.Sugar().Info("Error while creating directory: ", err)
 			helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
@@ -47,8 +58,34 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	// TODO: Download files
-	// TODO: Run create vite app command
-	resp, err := dspawn.ContainerCreate(ctx, rccb, absPath)
+	// TODO: Use the run command here
+	app := "/bin/bash"
+	arg1 := "-c"
+	arg2 := "npm create vite@latest -y code -- --template react"
+	cmd := exec.Command(app, arg1, arg2)
+	cmd.Dir = absLocalPath
+
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
+
+	err = cmd.Run()
+	if err != nil {
+		helper.Logger.Sugar().Info("Error while creating vite files for assessment: ", err)
+		helper.Logger.Sugar().Info("stderr: ", stderr.String())
+		return
+	}
+	// app := "/bin/bash"
+	// arg1 := "npm create vite@latest -y code -- --template react"
+	// cmd := exec.Command(app, arg1)
+	// cmd.Dir = absLocalPath
+	// _, err = cmd.Output()
+	// if err != nil {
+	// 	helper.Logger.Sugar().Info("Error while creating vite files for assessment: ", err)
+	// 	return
+	// }
+	resp, err := dspawn.ContainerCreate(ctx, rccb, absGlobalPath)
 	if err != nil {
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 		return
