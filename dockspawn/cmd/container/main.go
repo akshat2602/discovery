@@ -2,89 +2,102 @@ package container
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
+	"os"
+	"path/filepath"
 
+	"github.com/akshat2602/discovery/dockspawn/cmd/dspawn"
 	"github.com/akshat2602/discovery/dockspawn/pkg/helper"
-	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/client"
 )
 
 // TODO: Change these structs to private structs
-// TODO: Properly define the return values for the responses
 // TODO: Restrict access to the routes based on the Method of request
 
-type ContainerStopRequestBody struct {
-	ContainerID string `json:"container_id"`
+type ContainerRequestBody struct {
+	AssessmentID string `json:"assessment_id"`
 }
-type ContainerRemoveRequestBody struct {
-	ContainerID string `json:"container_id"`
+
+func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
+	ctx := context.Background()
+
+	pwd, err := os.Getwd()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	var rccb = dspawn.RequestContainerCreationBody{}
+
+	helper.JSONDecode(&rccb, w, r)
+
+	absPath, err := filepath.Abs(pwd + "/../../" + rccb.AssessmentID)
+	if err != nil {
+		helper.Logger.Sugar().Info("Error while getting absolute path: ", err)
+		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	_, err = os.Stat(absPath)
+	if os.IsNotExist(err) {
+		// path does not exist
+		err = os.Mkdir(absPath, os.ModePerm)
+		if err != nil {
+			helper.Logger.Sugar().Info("Error while creating directory: ", err)
+			helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+	// TODO: Download files
+	// TODO: Run create vite app command
+	resp, err := dspawn.ContainerCreate(ctx, rccb, absPath)
+	if err != nil {
+		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	err = dspawn.ContainerStart(ctx, resp.ID)
+	if err != nil {
+		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	helper.WriteMessageToResponse(w, "Container created successfully", http.StatusOK)
 }
 
 func HandleContainerStop(w http.ResponseWriter, r *http.Request) {
-	var csrb = ContainerStopRequestBody{}
-	err := json.NewDecoder(r.Body).Decode(&csrb)
-	if err != nil {
-		helper.Logger.Sugar().Info("Error ", err)
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(err.Error()))
-		return
-	}
-
-	container_id := csrb.ContainerID
-
 	ctx := context.Background()
-	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	if err != nil {
-		helper.Logger.Sugar().Info("Error ", err)
+	var csrb = ContainerRequestBody{}
+	helper.JSONDecode(&csrb, w, r)
+	aID := csrb.AssessmentID
 
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("An error occured while connecting to docker client: " + err.Error()))
-		return
-	}
-	defer cli.Close()
-	err = cli.ContainerStop(ctx, container_id, container.StopOptions{})
+	containerID, err := dspawn.ContainerNameToID(ctx, aID)
 	if err != nil {
-		helper.Logger.Sugar().Info("Error ", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("An error occured while stopping the container: " + err.Error()))
+		helper.WriteErrorToResponse(w, "An error occured while getting the container ID: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.Write([]byte("Successfully Stopped the container with id " + container_id))
+	err = dspawn.ContainerStop(ctx, containerID)
+	if err != nil {
+		helper.WriteErrorToResponse(w, "An error occured while stopping the container: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	helper.WriteMessageToResponse(w, "Successfully Stopped the container", http.StatusOK)
 }
 
 func HandleContainerRemove(w http.ResponseWriter, r *http.Request) {
-	var crmrb = ContainerStopRequestBody{}
-	err := json.NewDecoder(r.Body).Decode(&crmrb)
-	if err != nil {
-		helper.Logger.Sugar().Info("Error ", err)
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("Request body not sent correctly: " + err.Error()))
-		return
-	}
-
-	container_id := crmrb.ContainerID
 	ctx := context.Background()
-	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+	var crmrb = ContainerRequestBody{}
+	helper.JSONDecode(&crmrb, w, r)
+	aID := crmrb.AssessmentID
+
+	containerID, err := dspawn.ContainerNameToID(ctx, aID)
 	if err != nil {
-		helper.Logger.Sugar().Info("Error ", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("An error occured while connecting to docker client: " + err.Error()))
+		helper.WriteErrorToResponse(w, "An error occured while getting the container ID: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-	defer cli.Close()
-	cli.ContainerRemove(ctx, container_id, types.ContainerRemoveOptions{})
-	err = cli.ContainerStop(ctx, container_id, container.StopOptions{})
-
+	err = dspawn.ContainerRemove(ctx, containerID)
+	// TODO: Check if this line is required
+	// err = cli.ContainerStop(ctx, container_id, container.StopOptions{})
 	// TODO: File Removal logic
 	if err != nil {
-		helper.Logger.Sugar().Info("Error ", err)
-
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("An error occured while removing the container: " + err.Error()))
+		helper.WriteErrorToResponse(w, "An error occured while removing the container: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	w.Write([]byte("Successfully Removed the container with id " + container_id))
+	helper.WriteMessageToResponse(w, "Successfully removed the container", http.StatusOK)
 }
