@@ -1,173 +1,177 @@
-// import { useState } from "react";
+import { Box, Button, Text } from "@chakra-ui/react";
 
-// import { ContextForFiles } from "./ContextFile";
-// import { ContextForFolders } from "./ContextFolder";
+import { useState } from "react";
 
-// import { useBearStore } from "../../store/bearStore";
-// // import folderStructureStore from "../Store/folderStructureStore";
-// // import websocketStore from "../Store/websocketStore";
-// // import availableTabsStore from "../Store/availableTabsStore";
+import { useBearStore } from "../../store/bearStore";
 
-// import Collapse from "../assets/collapse.png";
-// import Expand from "../assets/expand.png";
+import { AiFillFile } from "react-icons/ai";
+import { FcCollapse as Collapse, FcExpand as Expand } from "react-icons/fc";
 
-// import { AiFillFile } from "react-icons/ai";
-// // import { IconPack } from "../assets/IconPack";
+import { ContextForFolders } from "./ContextFolder";
+import { ContextForFiles } from "./ContextFile";
+// import { IconPack } from "../assets/IconPack";
 
-// const Tree = ({
-//   data,
-//   ws,
-//   addOrUpdateAvailableTabs,
-//   setX,
-//   setY,
-//   setContextForFileOpen,
-//   setContextForFolderOpen,
-//   setPath,
-// }) => {
-//   const [visible, setVisible] = useState(true);
+interface TreeProps {
+  data: folderStructureInterface;
+  ws: WebSocket | null;
+  addOrUpdateTab: (path: string) => void;
+  setX: (x: number) => void;
+  setY: (y: number) => void;
+  setContextForFileOpen: (open: boolean) => void;
+  setContextForFolderOpen: (open: boolean) => void;
+  setPath: React.Dispatch<React.SetStateAction<string>>;
+}
 
-//   const toggleVisibility = (name) => {
-//     setVisible({ ...visible, [name]: !visible[name] });
-//   };
+const Tree: React.FC<TreeProps> = ({
+  data,
+  ws,
+  addOrUpdateTab,
+  setX,
+  setY,
+  setContextForFileOpen,
+  setContextForFolderOpen,
+  setPath,
+}) => {
+  const [visible, setVisible] = useState<{ [key: string]: Boolean }>({});
 
-//   const handleDoubleClick = (path) => {
-//     const readFileRequest = {
-//       type: "readFile",
-//       payload: {
-//         path: path,
-//         data: null,
-//       },
-//     };
-//     addOrUpdateAvailableTabs(path);
-//     ws.send(JSON.stringify(readFileRequest));
-//   };
+  const toggleVisibility = (name: string) => {
+    setVisible({ ...visible, [name]: !visible[name] });
+  };
 
-//   const handleContextForFolders = (e, path) => {
-//     e.preventDefault();
-//     setContextForFolderOpen(true);
-//     setX(e.clientX);
-//     setY(e.clientY);
-//     setPath(path);
-//   };
+  const handleDoubleClick = (path: string) => {
+    const readFileRequest = {
+      type: "readFile",
+      payload: {
+        path: path,
+        data: null,
+      },
+    };
+    addOrUpdateTab(path);
+    ws?.send(JSON.stringify(readFileRequest));
+  };
 
-//   const handleContextForFiles = (e, path) => {
-//     e.preventDefault();
-//     setContextForFileOpen(true);
-//     setX(e.clientX);
-//     setY(e.clientY);
-//     setPath(path);
-//   };
+  const handleContextForFolders = (
+    e: React.MouseEvent<Element, MouseEvent>,
+    name: string
+  ) => {
+    e.preventDefault();
+    setContextForFolderOpen(true);
+    setX(e.clientX);
+    setY(e.clientY);
+    setPath(name);
+  };
 
-//   return (
-//     <div style={{ paddingLeft: "10px", color: "white" }}>
-//       {data.children ? (
-//         <button
-//           onContextMenu={(e) => handleContextForFolders(e, data.path)}
-//           onClick={() => toggleVisibility(data.name)}
-//           style={{
-//             paddingTop: "6px",
-//             fontSize: "15px",
-//             backgroundColor: "transparent",
-//             color: "white",
-//             outline: "none",
-//             border: "none",
-//             cursor: "pointer",
-//           }}
-//         >
-//           <img
-//             src={visible[data.name] ? Collapse : Expand}
-//             height="10px"
-//             width="10px"
-//           />
-//           &nbsp;
-//           {data.name}
-//         </button>
-//       ) : (
-//         <div style={{ display: "flex", alignItems: "center" }}>
-//           <AiFillFile
-//             color="gray"
-//             display="block"
-//             style={{ marginTop: "7px" }}
-//           />
-//           <p
-//             onContextMenu={(e) => handleContextForFiles(e, data.path)}
-//             onDoubleClick={() => handleDoubleClick(data.path)}
-//             style={{
-//               fontSize: "15px",
-//               cursor: "pointer",
-//               marginLeft: "5px",
-//               paddingTop: "6px",
-//             }}
-//           >
-//             {data.name}
-//           </p>
-//         </div>
-//       )}
-//       {visible[data.name] &&
-//         data.children &&
-//         data.children.map((child) => (
-//           <Tree
-//             key={child.name}
-//             data={child}
-//             ws={ws}
-//             addOrUpdateAvailableTabs={addOrUpdateAvailableTabs}
-//             setX={setX}
-//             setY={setY}
-//             setContextForFileOpen={setContextForFileOpen}
-//             setContextForFolderOpen={setContextForFolderOpen}
-//             setPath={setPath}
-//           />
-//         ))}
-//     </div>
-//   );
-// };
+  const handleContextForFiles = (
+    e: React.MouseEvent<Element, MouseEvent>,
+    name: string
+  ) => {
+    e.preventDefault();
+    setContextForFileOpen(true);
+    setX(e.clientX);
+    setY(e.clientY);
+    setPath(name);
+  };
 
-// export const FolderStructureComponent = () => {
-//   const folderStructure = folderStructureStore(
-//     (state) => state.folderStructure
-//   );
-//   const addOrUpdateAvailableTabs = availableTabsStore(
-//     (state) => state.addOrUpdateAvailableTabs
-//   );
+  return (
+    <Box style={{ paddingLeft: "10px", color: "white" }}>
+      {data.contents ? (
+        <Button
+          onContextMenu={(e) => handleContextForFolders(e, data.name)}
+          onClick={() => toggleVisibility(data.name)}
+          style={{
+            paddingTop: "6px",
+            fontSize: "15px",
+            backgroundColor: "transparent",
+            color: "white",
+            outline: "none",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          {visible[data.name] ? <Collapse /> : <Expand />}
+          &nbsp;
+          {data.name}
+        </Button>
+      ) : (
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          <AiFillFile
+            color="gray"
+            display="block"
+            style={{ marginTop: "7px" }}
+          />
+          <Text
+            onContextMenu={(e) => handleContextForFiles(e, data.name)}
+            onDoubleClick={() => handleDoubleClick(data.name)}
+            style={{
+              fontSize: "15px",
+              cursor: "pointer",
+              marginLeft: "5px",
+              paddingTop: "6px",
+            }}
+          >
+            {data.name}
+          </Text>
+        </Box>
+      )}
+      {visible[data.name] &&
+        data.contents &&
+        data.contents.map((child) => (
+          <Tree
+            key={child.name}
+            data={child}
+            ws={ws}
+            addOrUpdateTab={addOrUpdateTab}
+            setX={setX}
+            setY={setY}
+            setContextForFileOpen={setContextForFileOpen}
+            setContextForFolderOpen={setContextForFolderOpen}
+            setPath={setPath}
+          />
+        ))}
+    </Box>
+  );
+};
 
-//   const [x, setX] = useState(null);
-//   const [y, setY] = useState(null);
-//   const [contextForFolderOpen, setContextForFolderOpen] = useState(false);
-//   const [contextForFileOpen, setContextForFileOpen] = useState(false);
-//   const [path, setPath] = useState(null);
+export const FolderStructureComponent = () => {
+  const [folderStructure, addOrUpdateTab] = useBearStore((state) => [
+    state.folderStructure,
+    state.addOrUpdateTab,
+  ]);
 
-//   const ws = websocketStore((state) => state.ws);
+  const [x, setX] = useState<number | null>(null);
+  const [y, setY] = useState<number | null>(null);
+  const [contextForFolderOpen, setContextForFolderOpen] =
+    useState<Boolean>(false);
+  const [contextForFileOpen, setContextForFileOpen] = useState<Boolean>(false);
+  const [path, setPath] = useState<string>("");
 
-//   return (
-//     <>
-//       {contextForFileOpen && x && y && (
-//         <ContextForFiles
-//           x={x}
-//           y={y}
-//           setOpen={setContextForFileOpen}
-//           path={path}
-//         />
-//       )}
-//       {contextForFolderOpen && x && y && (
-//         <ContextForFolders
-//           x={x}
-//           y={y}
-//           setOpen={setContextForFolderOpen}
-//           path={path}
-//         />
-//       )}
-//       {folderStructure && (
-//         <Tree
-//           data={folderStructure}
-//           ws={ws}
-//           addOrUpdateAvailableTabs={addOrUpdateAvailableTabs}
-//           setX={setX}
-//           setY={setY}
-//           setContextForFileOpen={setContextForFileOpen}
-//           setContextForFolderOpen={setContextForFolderOpen}
-//           setPath={setPath}
-//         />
-//       )}
-//     </>
-//   );
-// };
+  const ws = useBearStore((state) => state.wsForEditor);
+
+  return (
+    <>
+      {contextForFileOpen && x && y && (
+        <ContextForFiles x={x} y={y} setOpen={setContextForFileOpen} />
+      )}
+      {contextForFolderOpen && x && y && (
+        <ContextForFolders
+          x={x}
+          y={y}
+          setOpen={setContextForFolderOpen}
+          path={path}
+        />
+      )}
+      {folderStructure && (
+        <Tree
+          data={folderStructure}
+          ws={ws}
+          addOrUpdateTab={addOrUpdateTab}
+          setX={setX}
+          setY={setY}
+          setContextForFileOpen={setContextForFileOpen}
+          setContextForFolderOpen={setContextForFolderOpen}
+          setPath={setPath}
+        />
+      )}
+    </>
+  );
+};

@@ -1,9 +1,10 @@
 import { Box } from "@chakra-ui/react";
 
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
+import { useMemo } from "react";
 
 import { EditorComponent } from "../../../components/Editor/EditorComponent";
+import { FolderStructureComponent } from "../../../components/Editor/FolderComponent";
 const ShellComponent = dynamic(
   () =>
     import("../../../components/Editor/ShellComponent").then(
@@ -17,19 +18,21 @@ const ShellComponent = dynamic(
 import { useBearStore } from "../../../store/bearStore";
 
 const Playground: React.FC = () => {
-  const setActiveTab = useBearStore((state) => state.setActiveTab);
-  const setEditorWs = useBearStore((state) => state.setEditorWs);
-  const ws = useBearStore((state) => state.wsForEditor);
+  const [setActiveTab, setEditorWs, ws] = useBearStore((state) => [
+    state.setActiveTab,
+    state.setEditorWs,
+    state.wsForEditor,
+  ]);
 
-  useEffect(() => {
-    const tempWs = new WebSocket("ws://localhost:8080/file");
-    setEditorWs(tempWs);
-  }, []);
-
-  if (ws) {
-    ws.onopen = () => {
-      setEditorWs(ws);
-      ws.onmessage = (msg) => {
+  const isBrowser = typeof window !== "undefined";
+  const tempWs = useMemo(
+    () => (isBrowser ? new WebSocket("ws://localhost:8080/file") : null),
+    [isBrowser]
+  );
+  if (tempWs) {
+    tempWs.onopen = () => {
+      setEditorWs(tempWs);
+      tempWs.onmessage = (msg) => {
         const data: wsRequestResponseInterface = JSON.parse(msg.data);
         switch (data.type) {
           case "readFile":
@@ -58,7 +61,7 @@ const Playground: React.FC = () => {
           h={"100vh"}
           overflow={"auto"}
         >
-          Folders go here!
+          <FolderStructureComponent />
         </Box>
         <Box display={"flex"} flexDirection={"column"} width={"100%"}>
           <Box borderBottom={"1px solid"}>
