@@ -2,10 +2,10 @@
 import { Box, Button } from "@chakra-ui/react";
 
 interface ContextForFoldersProps {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: React.Dispatch<React.SetStateAction<Boolean>>;
   x: number;
   y: number;
-  path: string;
+  path: string | null;
 }
 
 export const ContextForFolders: React.FC<ContextForFoldersProps> = ({

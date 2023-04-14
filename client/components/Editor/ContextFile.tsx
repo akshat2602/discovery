@@ -1,7 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 
 interface ContextForFilesProps {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: React.Dispatch<React.SetStateAction<Boolean>>;
   x: number;
   y: number;
 }
