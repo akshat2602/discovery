@@ -12,7 +12,7 @@ import (
 	"github.com/akshat2602/discovery/dockspawn/pkg/helper"
 )
 
-// TODO: Allow Cros Origin Requests
+// TODO: Allow CORS
 
 func main() {
 	helper.InitializeLogger()
@@ -22,15 +22,14 @@ func main() {
 		terminal.ServeTerminal(w, r)
 	})
 	cs.ServeMux.HandleFunc("/file", func(w http.ResponseWriter, r *http.Request) {
-		files.HandleFileChange(w, r)
-	})
-	cs.ServeMux.HandleFunc("/container/create", func(w http.ResponseWriter, r *http.Request) {
-		files.HandleContainerCreation(w, r)
+		files.ServeFiles(w, r)
 	})
 	cs.ServeMux.HandleFunc("/directory", func(w http.ResponseWriter, r *http.Request) {
 		files.HandleFileDirectoryStructure(w, r)
 	})
-
+	cs.ServeMux.HandleFunc("/container/create", func(w http.ResponseWriter, r *http.Request) {
+		container.HandleContainerCreation(w, r)
+	})
 	cs.ServeMux.HandleFunc("/container/stop", func(w http.ResponseWriter, r *http.Request) {
 		container.HandleContainerStop(w, r)
 	})
