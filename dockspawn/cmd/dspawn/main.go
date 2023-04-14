@@ -65,7 +65,12 @@ func AttachExec(ctx context.Context, container_id string, exec_id types.IDRespon
 
 func ContainerCreate(ctx context.Context, containerOptions RequestContainerCreationBody, absPath string) (container.CreateResponse, error) {
 	resp, err := dockercli.ContainerCreate(ctx, &container.Config{
-		Image: containerOptions.Image + ":" + containerOptions.ImageVersion,
+		Cmd:          []string{"/bin/bash"},
+		Tty:          true,
+		AttachStdin:  true,
+		AttachStdout: true,
+		AttachStderr: true,
+		Image:        containerOptions.Image + ":" + containerOptions.ImageVersion,
 	}, &container.HostConfig{
 		Mounts: []mount.Mount{
 			{
