@@ -2,14 +2,16 @@ import { useState } from "react";
 
 import Editor from "@monaco-editor/react";
 import { editor } from "monaco-editor/esm/vs/editor/editor.api";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 // import themeList from "monaco-themes/themes/themelist.json";
 
 import { useBearStore } from "../../store/bearStore";
-import { useEffect } from "react";
 
 export const EditorComponent = () => {
   const activeTab = useBearStore((state) => state.activeTab);
   const ws = useBearStore((state) => state.wsForEditor);
+  const router = useRouter();
   const [activeTheme, setActiveTheme] =
     useState<editor.IStandaloneThemeData | null>(null);
   // const themes: { label: string; value: string }[] = [];
@@ -55,6 +57,7 @@ export const EditorComponent = () => {
             payload: {
               data: value,
               file_path: activeTab.path,
+              assessment_id: router.query.assessmentID as string,
             },
           };
           if (ws) {

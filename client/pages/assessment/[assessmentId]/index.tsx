@@ -5,7 +5,9 @@ import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 
 import { EditorComponent } from "../../../components/Editor/EditorComponent";
-import { FolderStructureComponent } from "../../../components/Editor/FolderComponent";
+import { FolderStructureComponent } from "../../../components/Editor/Folder/FolderComponent";
+import { FolderModal } from "../../../components/Editor/Folder/FolderModal";
+import { FileModal } from "../../../components/Editor/Folder/FileModal";
 const ShellComponent = dynamic(
   () =>
     import("../../../components/Editor/ShellComponent").then(
@@ -22,9 +24,14 @@ import { useGetDirectory } from "../../../api/folderAPI";
 const Playground: React.FC<{ assessmentId: string | string[] | undefined }> = ({
   assessmentId,
 }) => {
-  const [setActiveTab, setEditorWs, setFolderStructure] = useBearStore(
-    (state) => [state.setActiveTab, state.setEditorWs, state.setFolderStructure]
-  );
+  const [setActiveTab, setEditorWs, setFolderStructure, setIsFile, setPath] =
+    useBearStore((state) => [
+      state.setActiveTab,
+      state.setEditorWs,
+      state.setFolderStructure,
+      state.setIsFile,
+      state.setPath,
+    ]);
   if (!assessmentId) {
     return <Box>Invalid</Box>;
   }
@@ -50,7 +57,12 @@ const Playground: React.FC<{ assessmentId: string | string[] | undefined }> = ({
           case "readFile":
             const fileContent = data.payload.data;
             const path = data.payload.file_path;
-            setActiveTab(path, fileContent);
+            setActiveTab(path, fileContent!);
+            break;
+          case "validateFolderStructure":
+            result.refetch();
+            setPath(null);
+            setIsFile(-1);
             break;
           default:
             break;
@@ -63,24 +75,28 @@ const Playground: React.FC<{ assessmentId: string | string[] | undefined }> = ({
   }
 
   return (
-    <Box style={{ display: "flex" }}>
-      <Box
-        pr={10}
-        pt={"0.25vh"}
-        minW={"250px"}
-        maxW={"25%"}
-        h={"100vh"}
-        overflow={"auto"}
-      >
-        <FolderStructureComponent />
-      </Box>
-      <Box display={"flex"} flexDirection={"column"} width={"100%"}>
-        <Box borderBottom={"1px solid"}>
-          <EditorComponent />
+    <>
+      <FolderModal />
+      <FileModal />
+      <Box style={{ display: "flex" }}>
+        <Box
+          pr={10}
+          pt={"0.25vh"}
+          minW={"250px"}
+          maxW={"25%"}
+          h={"100vh"}
+          overflow={"auto"}
+        >
+          <FolderStructureComponent />
         </Box>
-        <ShellComponent />
+        <Box display={"flex"} flexDirection={"column"} width={"100%"}>
+          <Box borderBottom={"1px solid"}>
+            <EditorComponent />
+          </Box>
+          <ShellComponent />
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
