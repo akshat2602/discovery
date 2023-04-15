@@ -1,7 +1,8 @@
 import { Box } from "@chakra-ui/react";
 
+import { useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { useMemo } from "react";
+import { useRouter } from "next/router";
 
 import { EditorComponent } from "../../../components/Editor/EditorComponent";
 import { FolderStructureComponent } from "../../../components/Editor/FolderComponent";
@@ -16,14 +17,23 @@ const ShellComponent = dynamic(
 );
 
 import { useBearStore } from "../../../store/bearStore";
+import { useGetDirectory } from "../../../api/folderAPI";
 
 const Playground: React.FC = () => {
-  const [setActiveTab, setEditorWs, ws] = useBearStore((state) => [
-    state.setActiveTab,
-    state.setEditorWs,
-    state.wsForEditor,
-  ]);
-
+  const router = useRouter();
+  const [setActiveTab, setEditorWs, ws, setFolderStructure] = useBearStore(
+    (state) => [
+      state.setActiveTab,
+      state.setEditorWs,
+      state.wsForEditor,
+      state.setFolderStructure,
+    ]
+  );
+  const assessmentId = router.query["assessmentId"];
+  const result = useGetDirectory(assessmentId as string);
+  if (!result.isLoading && result.isSuccess) {
+    setFolderStructure(result.data.data);
+  }
   const isBrowser = typeof window !== "undefined";
   const tempWs = useMemo(
     () => (isBrowser ? new WebSocket("ws://localhost:8080/file") : null),
