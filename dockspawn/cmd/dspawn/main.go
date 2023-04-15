@@ -22,19 +22,19 @@ type RequestContainerCreationBody struct {
 
 var dockercli *client.Client
 
-var termSize [2]uint = [2]uint{80, 24}
+// var termSize [2]uint = [2]uint{160, 24}
 var execCfg types.ExecConfig = types.ExecConfig{
-	User:         "",
-	Privileged:   false,
-	Tty:          true,
-	ConsoleSize:  &termSize,
+	User:       "root",
+	Privileged: false,
+	Tty:        true,
+	// ConsoleSize:  &termSize,
 	AttachStdin:  true,
 	AttachStdout: true,
 	AttachStderr: true,
 	Detach:       false,
 	Env:          nil,
 	WorkingDir:   "/",
-	Cmd:          []string{"sh", "-c", "TERM=xterm-256color /bin/bash"},
+	Cmd:          []string{"/bin/bash", "-c", "TERM=xterm-256color /bin/bash"},
 }
 
 func InitializeDockerClient() {
@@ -115,7 +115,7 @@ func ContainerStart(ctx context.Context, containerID string) error {
 }
 
 func ContainerNameToID(ctx context.Context, containerName string) (string, error) {
-	f := filters.Args{}
+	f := filters.NewArgs()
 	f.Add("name", containerName)
 	containers, err := dockercli.ContainerList(ctx, types.ContainerListOptions{
 		Filters: f,
