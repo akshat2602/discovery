@@ -182,10 +182,5 @@ func GetFileDirectoryStructure(dPath string) ([]byte, error) {
 		helper.Logger.Sugar().Info("Error while reading file directory structure: ", err)
 		return nil, err
 	}
-	f, err := json.Marshal(stdout)
-	if err != nil {
-		helper.Logger.Sugar().Info("Error while marshaling file directory structure: ", err)
-		return nil, err
-	}
-	return f, nil
+	return stdout, nil
 }

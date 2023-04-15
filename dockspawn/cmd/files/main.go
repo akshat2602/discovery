@@ -71,5 +71,7 @@ func HandleFileDirectoryStructure(w http.ResponseWriter, r *http.Request) {
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	helper.WriteMessageToResponse(w, fileStructure, http.StatusOK)
+	var f interface{}
+	json.Unmarshal(fileStructure, &f)
+	helper.WriteMessageToResponse(w, f, http.StatusOK)
 }
