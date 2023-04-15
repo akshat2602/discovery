@@ -3,7 +3,7 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-import { useBearStore } from "../../store/bearStore";
+import { useBearStore } from "../../../store/bearStore";
 
 import { AiFillFile } from "react-icons/ai";
 import { FcCollapse as Collapse, FcExpand as Expand } from "react-icons/fc";
@@ -39,14 +39,13 @@ const Tree: React.FC<TreeProps> = ({
     setVisible({ ...visible, [name]: !visible[name] });
   };
   const router = useRouter();
-  const { assessmentId } = router.query;
   const handleDoubleClick = (path: string) => {
-    const readFileRequest = {
+    const readFileRequest: wsRequestResponseInterface = {
       type: "readFile",
       payload: {
         file_path: path,
         data: null,
-        assessment_id: assessmentId,
+        assessment_id: router.query.assessmentId as string,
       },
     };
     addOrUpdateTab(path);
@@ -82,8 +81,8 @@ const Tree: React.FC<TreeProps> = ({
           onContextMenu={(e) => handleContextForFolders(e, data.name)}
           onClick={() => toggleVisibility(data.name)}
           style={{
-            paddingTop: "6px",
-            fontSize: "15px",
+            paddingTop: "2%",
+            // fontSize: "15px",
             backgroundColor: "transparent",
             color: "white",
             outline: "none",
@@ -106,10 +105,10 @@ const Tree: React.FC<TreeProps> = ({
             onContextMenu={(e) => handleContextForFiles(e, data.name)}
             onDoubleClick={() => handleDoubleClick(data.name)}
             style={{
-              fontSize: "15px",
+              // fontSize: "15px",
               cursor: "pointer",
-              marginLeft: "5px",
-              paddingTop: "6px",
+              marginLeft: "2%",
+              paddingTop: "2%",
             }}
           >
             {data.name.split("/")[data.name.split("/").length - 1]}
