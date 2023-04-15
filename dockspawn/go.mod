@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/docker/docker v23.0.3+incompatible
 	github.com/google/uuid v1.3.0
+	github.com/rs/cors v1.9.0
 	go.uber.org/zap v1.24.0
 	nhooyr.io/websocket v1.8.7
 )

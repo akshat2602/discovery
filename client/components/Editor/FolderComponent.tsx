@@ -90,7 +90,7 @@ const Tree: React.FC<TreeProps> = ({
         >
           {visible[data.name] ? <Collapse /> : <Expand />}
           &nbsp;
-          {data.name}
+          {data.name.split("/")[data.name.split("/").length - 1]}
         </Button>
       ) : (
         <Box style={{ display: "flex", alignItems: "center" }}>
@@ -109,7 +109,7 @@ const Tree: React.FC<TreeProps> = ({
               paddingTop: "6px",
             }}
           >
-            {data.name}
+            {data.name.split("/")[data.name.split("/").length - 1]}
           </Text>
         </Box>
       )}
@@ -137,7 +137,7 @@ export const FolderStructureComponent = () => {
     state.folderStructure,
     state.addOrUpdateTab,
   ]);
-
+  console.log("folderStructure", folderStructure);
   const [x, setX] = useState<number | null>(null);
   const [y, setY] = useState<number | null>(null);
   const [contextForFolderOpen, setContextForFolderOpen] =
@@ -162,7 +162,7 @@ export const FolderStructureComponent = () => {
       )}
       {folderStructure && (
         <Tree
-          data={folderStructure}
+          data={folderStructure.contents![0]}
           ws={ws}
           addOrUpdateTab={addOrUpdateTab}
           setX={setX}

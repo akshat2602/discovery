@@ -10,6 +10,7 @@ import (
 	"github.com/akshat2602/discovery/dockspawn/cmd/terminal"
 	"github.com/akshat2602/discovery/dockspawn/cmd/ws"
 	"github.com/akshat2602/discovery/dockspawn/pkg/helper"
+	"github.com/rs/cors"
 )
 
 // TODO: Allow CORS
@@ -36,9 +37,19 @@ func main() {
 	cs.ServeMux.HandleFunc("/container/remove", func(w http.ResponseWriter, r *http.Request) {
 		container.HandleContainerRemove(w, r)
 	})
+	corsHandler := cors.New(
+		cors.Options{
+			// TODO: Change this to the frontend URL
+			AllowedOrigins:   []string{"*"},
+			AllowCredentials: true,
+			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+			AllowedHeaders:   []string{"*"},
+		},
+	).Handler(cs)
+
 	s := &http.Server{
 		Addr:         ":8080",
-		Handler:      cs,
+		Handler:      corsHandler,
 		ReadTimeout:  time.Second * 10,
 		WriteTimeout: time.Second * 10,
 	}
