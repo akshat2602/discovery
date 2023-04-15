@@ -127,5 +127,6 @@ func ContainerNameToID(ctx context.Context, container_name string) (string, erro
 	if len(containers) > 0 {
 		return containers[0].ID, nil
 	}
+	helper.Logger.Sugar().Info("Container not found")
 	return "", errors.New("container not found")
 }

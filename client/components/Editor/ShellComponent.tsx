@@ -6,19 +6,24 @@ import { FitAddon } from "xterm-addon-fit";
 import "xterm/css/xterm.css";
 
 import { useEffect, useMemo, useRef } from "react";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 import { useBearStore } from "../../store/bearStore";
 
 export const ShellComponent: React.FC = () => {
   const setTerminalWs = useBearStore((state) => state.setTerminalWs);
   const terminal = useRef(null);
-  // const router = useRouter();
-  // const assessmentId = router.query["assessmentId"];
+  const router = useRouter();
+  const assessmentId = router.query["assessmentId"];
 
   const isBrowser = typeof window !== "undefined";
   const ws = useMemo(
-    () => (isBrowser ? new WebSocket("ws://localhost:8080/terminal") : null),
+    () =>
+      isBrowser
+        ? new WebSocket(
+            `ws://localhost:8080/terminal?assessment_id=${assessmentId}`
+          )
+        : null,
     [isBrowser]
   );
 
