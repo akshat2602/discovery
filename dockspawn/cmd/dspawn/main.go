@@ -22,12 +22,12 @@ type RequestContainerCreationBody struct {
 
 var dockercli *client.Client
 
-var term_size [2]uint = [2]uint{80, 24}
-var exec_cfg types.ExecConfig = types.ExecConfig{
+var termSize [2]uint = [2]uint{80, 24}
+var execCfg types.ExecConfig = types.ExecConfig{
 	User:         "",
 	Privileged:   false,
 	Tty:          true,
-	ConsoleSize:  &term_size,
+	ConsoleSize:  &termSize,
 	AttachStdin:  true,
 	AttachStdout: true,
 	AttachStderr: true,
@@ -45,18 +45,18 @@ func InitializeDockerClient() {
 	}
 }
 
-func CreateExec(ctx context.Context, container_id string) (types.IDResponse, error) {
-	exec_id, err := dockercli.ContainerExecCreate(ctx, container_id, exec_cfg)
+func CreateExec(ctx context.Context, containerID string) (types.IDResponse, error) {
+	execID, err := dockercli.ContainerExecCreate(ctx, containerID, execCfg)
 	if err != nil {
 		helper.Logger.Sugar().Info("Container Exec Create failed: ", err)
 		return types.IDResponse{}, err
 	}
-	return exec_id, nil
+	return execID, nil
 }
 
-func AttachExec(ctx context.Context, container_id string, exec_id types.IDResponse) (types.HijackedResponse, error) {
-	exec_attach_config := types.ExecStartCheck{Detach: false, Tty: true, ConsoleSize: exec_cfg.ConsoleSize}
-	hresp, err := dockercli.ContainerExecAttach(ctx, exec_id.ID, exec_attach_config)
+func AttachExec(ctx context.Context, containerID string, execID types.IDResponse) (types.HijackedResponse, error) {
+	execAttConf := types.ExecStartCheck{Detach: false, Tty: true, ConsoleSize: execCfg.ConsoleSize}
+	hresp, err := dockercli.ContainerExecAttach(ctx, execID.ID, execAttConf)
 	if err != nil {
 		helper.Logger.Sugar().Info("Container Exec Attach failed: ", err)
 		return types.HijackedResponse{}, err
@@ -88,8 +88,8 @@ func ContainerCreate(ctx context.Context, containerOptions RequestContainerCreat
 	return resp, nil
 }
 
-func ContainerStop(ctx context.Context, container_id string) error {
-	err := dockercli.ContainerStop(ctx, container_id, container.StopOptions{})
+func ContainerStop(ctx context.Context, containerID string) error {
+	err := dockercli.ContainerStop(ctx, containerID, container.StopOptions{})
 	if err != nil {
 		helper.Logger.Sugar().Info("Container Stop failed: ", err)
 		return err
@@ -97,8 +97,8 @@ func ContainerStop(ctx context.Context, container_id string) error {
 	return nil
 }
 
-func ContainerRemove(ctx context.Context, container_id string) error {
-	err := dockercli.ContainerRemove(ctx, container_id, types.ContainerRemoveOptions{})
+func ContainerRemove(ctx context.Context, containerID string) error {
+	err := dockercli.ContainerRemove(ctx, containerID, types.ContainerRemoveOptions{})
 	if err != nil {
 		helper.Logger.Sugar().Info("Container Remove failed: ", err)
 		return err
@@ -106,17 +106,17 @@ func ContainerRemove(ctx context.Context, container_id string) error {
 	return nil
 }
 
-func ContainerStart(ctx context.Context, container_id string) error {
-	if err := dockercli.ContainerStart(ctx, container_id, types.ContainerStartOptions{}); err != nil {
+func ContainerStart(ctx context.Context, containerID string) error {
+	if err := dockercli.ContainerStart(ctx, containerID, types.ContainerStartOptions{}); err != nil {
 		helper.Logger.Sugar().Info("Container Start failed: ", err)
 		return err
 	}
 	return nil
 }
 
-func ContainerNameToID(ctx context.Context, container_name string) (string, error) {
+func ContainerNameToID(ctx context.Context, containerName string) (string, error) {
 	f := filters.Args{}
-	f.Add("name", container_name)
+	f.Add("name", containerName)
 	containers, err := dockercli.ContainerList(ctx, types.ContainerListOptions{
 		Filters: f,
 	})

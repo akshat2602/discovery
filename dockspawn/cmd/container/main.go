@@ -32,14 +32,14 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 
 	helper.JSONDecode(&rccb, w, r)
 
-	host_machine_pwd := os.Getenv("DOCKER_HOST_FILE_DIRECTORY_ROOT")
+	hostMachinePwd := os.Getenv("DOCKER_HOST_FILE_DIRECTORY_ROOT")
 	absLocalPath, err := filepath.Abs(pwd + "/" + rccb.AssessmentID.String())
 	if err != nil {
 		helper.Logger.Sugar().Info("Error while getting absolute path: ", err)
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	absGlobalPath, err := filepath.Abs(host_machine_pwd + "/" + rccb.AssessmentID.String())
+	absGlobalPath, err := filepath.Abs(hostMachinePwd + "/" + rccb.AssessmentID.String())
 	if err != nil {
 		helper.Logger.Sugar().Info("Error while getting absolute path: ", err)
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)

@@ -169,14 +169,14 @@ func DeleteDirectory(ctx context.Context, wsc *websocket.Conn, p helper.WSPayloa
 	}
 }
 
-func GetFileDirectoryStructure(directory_path string) ([]byte, error) {
+func GetFileDirectoryStructure(dPath string) ([]byte, error) {
 	app := "tree"
 
 	arg0 := "-f"
 	arg1 := "-J"
 	arg2 := "--noreport"
 	cmd := exec.Command(app, arg0, arg1, arg2)
-	cmd.Dir = directory_path
+	cmd.Dir = dPath
 	stdout, err := cmd.Output()
 	if err != nil {
 		helper.Logger.Sugar().Info("Error while reading file directory structure: ", err)
