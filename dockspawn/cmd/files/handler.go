@@ -90,6 +90,36 @@ func ReadFile(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
 	}
 }
 
+func CreateFile(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
+	absPath := "/src/" + p.AssessmentID + p.FilePath[1:]
+	f, err := os.Create(absPath)
+	if err != nil {
+		helper.Logger.Sugar().Error("Error while creating file: ", err)
+		helper.HandleWSErrorResp(ctx, wsc, err)
+	}
+
+	defer f.Close()
+	// Convert the data to WSRequestResponse struct
+	resp := helper.WSRequestResponse{
+		Type: "createFile",
+		Payload: helper.WSPayload{
+			Data:     "File created successfully",
+			FilePath: p.FilePath,
+		},
+	}
+	// Convert the struct to JSON
+	respJSON, err := json.Marshal(resp)
+	if err != nil {
+		helper.Logger.Sugar().Error("Error while marshalling: ", err)
+		helper.HandleWSErrorResp(ctx, wsc, err)
+	}
+	// Send the response to the client
+	if err := wsc.Write(ctx, websocket.MessageText, respJSON); err != nil {
+		helper.Logger.Sugar().Error("Error while sending response to client: ", err)
+		helper.HandleWSErrorResp(ctx, wsc, err)
+	}
+}
+
 func DeleteFile(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
 	absPath := "/src/" + p.AssessmentID + p.FilePath[1:]
 	err := os.Remove(absPath)
