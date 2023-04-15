@@ -18,8 +18,9 @@ type Response struct {
 }
 
 type WSPayload struct {
-	Data     string `json:"data"`
-	FilePath string `json:"file_path"`
+	Data         string `json:"data"`
+	FilePath     string `json:"file_path"`
+	AssessmentID string `json:"assessment_id"`
 }
 
 type WSRequestResponse struct {

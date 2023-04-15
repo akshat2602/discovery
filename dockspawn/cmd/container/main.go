@@ -61,7 +61,7 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 	// TODO: Use the run command here
 	app := "/bin/bash"
 	arg1 := "-c"
-	arg2 := "npm create vite@latest -y " + rccb.AssessmentID.String() + " -- --template react"
+	arg2 := "npm create vite@latest -y code -- --template react"
 	cmd := exec.Command(app, arg1, arg2)
 	cmd.Dir = absLocalPath
 
