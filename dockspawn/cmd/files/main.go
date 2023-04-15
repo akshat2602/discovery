@@ -45,6 +45,8 @@ func ServeFiles(w http.ResponseWriter, r *http.Request) {
 			WriteFile(ctx, wsc, wsReq.Payload)
 		case "readFile":
 			ReadFile(ctx, wsc, wsReq.Payload)
+		case "createFile":
+			CreateFile(ctx, wsc, wsReq.Payload)
 		case "deleteFile":
 			DeleteFile(ctx, wsc, wsReq.Payload)
 		case "createFolder":
