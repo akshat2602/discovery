@@ -17,21 +17,23 @@ func ServeTerminal(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// defer c.Close(websocket.StatusInternalError, "The sky is falling")
-	// TODO: Take assessment id from request
-	// containerID :=
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-
-	exec_id, err := dspawn.CreateExec(ctx, "f2cb79484e7234fc4cedecb0c5f6f14976f8857817e53dabfd452608edc537ea")
+	assessmentID := r.URL.Query().Get("assessment_id")
+	containerID, err := dspawn.ContainerNameToID(ctx, assessmentID)
 	if err != nil {
 		return
 	}
-	hresp, err := dspawn.AttachExec(ctx, "f2cb79484e7234fc4cedecb0c5f6f14976f8857817e53dabfd452608edc537ea", exec_id)
+	exec_id, err := dspawn.CreateExec(ctx, containerID)
+	if err != nil {
+		return
+	}
+	hresp, err := dspawn.AttachExec(ctx, containerID, exec_id)
 	if err != nil {
 		return
 	}
 	// defer hresp.Close()
-	terminalProcess(ctx, "f2cb79484e7234fc4cedecb0c5f6f14976f8857817e53dabfd452608edc537ea", wsc, hresp, cancel)
+	terminalProcess(ctx, containerID, wsc, hresp, cancel)
 }
 
 func terminalProcess(ctx context.Context, container_id string, wsc *websocket.Conn, hresp types.HijackedResponse, cancel context.CancelFunc) {
