@@ -1,6 +1,7 @@
 import { Box, Button, Text } from "@chakra-ui/react";
 
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 import { useBearStore } from "../../store/bearStore";
 
@@ -37,13 +38,15 @@ const Tree: React.FC<TreeProps> = ({
   const toggleVisibility = (name: string) => {
     setVisible({ ...visible, [name]: !visible[name] });
   };
-
+  const router = useRouter();
+  const { assessmentId } = router.query;
   const handleDoubleClick = (path: string) => {
     const readFileRequest = {
       type: "readFile",
       payload: {
-        path: path,
+        file_path: path,
         data: null,
+        assessment_id: assessmentId,
       },
     };
     addOrUpdateTab(path);

@@ -11,7 +11,8 @@ import (
 )
 
 func WriteFile(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
-	f, err := os.OpenFile(p.FilePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	absPath := "/src/" + p.AssessmentID + p.FilePath[1:]
+	f, err := os.OpenFile(absPath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		helper.Logger.Sugar().Error("Error while opening file: ", err)
 		helper.HandleWSErrorResp(ctx, wsc, err)
@@ -49,7 +50,8 @@ func WriteFile(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
 }
 
 func ReadFile(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
-	f, err := os.Open(p.FilePath)
+	absPath := "/src/" + p.AssessmentID + p.FilePath[1:]
+	f, err := os.Open(absPath)
 	if err != nil {
 		helper.Logger.Sugar().Error("Error while opening file: ", err)
 		helper.HandleWSErrorResp(ctx, wsc, err)
@@ -89,7 +91,8 @@ func ReadFile(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
 }
 
 func DeleteFile(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
-	err := os.Remove(p.FilePath)
+	absPath := "/src/" + p.AssessmentID + p.FilePath[1:]
+	err := os.Remove(absPath)
 	if err != nil {
 		helper.Logger.Sugar().Error("Error while deleting file: ", err)
 		helper.HandleWSErrorResp(ctx, wsc, err)
@@ -116,7 +119,8 @@ func DeleteFile(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
 }
 
 func CreateDirectory(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
-	err := os.Mkdir(p.FilePath, 0755)
+	absPath := "/src/" + p.AssessmentID + p.FilePath[1:]
+	err := os.Mkdir(absPath, 0755)
 	if err != nil {
 		helper.Logger.Sugar().Error("Error while creating directory: ", err)
 		helper.HandleWSErrorResp(ctx, wsc, err)
@@ -143,7 +147,8 @@ func CreateDirectory(ctx context.Context, wsc *websocket.Conn, p helper.WSPayloa
 }
 
 func DeleteDirectory(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
-	err := os.RemoveAll(p.FilePath)
+	absPath := "/src/" + p.AssessmentID + p.FilePath[1:]
+	err := os.RemoveAll(absPath)
 	if err != nil {
 		helper.Logger.Sugar().Error("Error while deleting directory: ", err)
 		helper.HandleWSErrorResp(ctx, wsc, err)

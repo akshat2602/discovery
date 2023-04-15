@@ -33,7 +33,7 @@ var execCfg types.ExecConfig = types.ExecConfig{
 	AttachStderr: true,
 	Detach:       false,
 	Env:          nil,
-	WorkingDir:   "/",
+	WorkingDir:   "/app",
 	Cmd:          []string{"/bin/bash", "-c", "TERM=xterm-256color /bin/bash"},
 }
 
