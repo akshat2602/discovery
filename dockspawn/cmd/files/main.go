@@ -18,8 +18,6 @@ type FolderStructure struct {
 	Contents []FolderStructure `json:"contents"`
 }
 
-// TODO: Change all error responses to go through the helper package
-
 func ServeFiles(w http.ResponseWriter, r *http.Request) {
 	wsc, err := websocket.Accept(w, r, &websocket.AcceptOptions{InsecureSkipVerify: true})
 	if err != nil {
@@ -35,24 +33,24 @@ func ServeFiles(w http.ResponseWriter, r *http.Request) {
 			helper.Logger.Sugar().Error("Failed to read message from web socket: ", err)
 			return
 		}
-		var ws_request helper.WSRequestResponse
-		err = json.Unmarshal(msg, &ws_request)
+		var wsReq helper.WSRequestResponse
+		err = json.Unmarshal(msg, &wsReq)
 		if err != nil {
 			helper.Logger.Sugar().Error("Unmarshalling Error: ", err)
 			return
 		}
 
-		switch ws_request.Type {
+		switch wsReq.Type {
 		case "writeFile":
-			WriteFile(ctx, wsc, ws_request.Payload)
+			WriteFile(ctx, wsc, wsReq.Payload)
 		case "readFile":
-			ReadFile(ctx, wsc, ws_request.Payload)
+			ReadFile(ctx, wsc, wsReq.Payload)
 		case "deleteFile":
-			DeleteFile(ctx, wsc, ws_request.Payload)
+			DeleteFile(ctx, wsc, wsReq.Payload)
 		case "createFolder":
-			CreateDirectory(ctx, wsc, ws_request.Payload)
+			CreateDirectory(ctx, wsc, wsReq.Payload)
 		case "deleteFolder":
-			DeleteDirectory(ctx, wsc, ws_request.Payload)
+			DeleteDirectory(ctx, wsc, wsReq.Payload)
 		default:
 			helper.Logger.Sugar().Error("Invalid request type")
 			helper.HandleWSErrorResp(ctx, wsc, errors.New("invalid request type"))
@@ -63,8 +61,6 @@ func ServeFiles(w http.ResponseWriter, r *http.Request) {
 func HandleFileDirectoryStructure(w http.ResponseWriter, r *http.Request) {
 	qParams := r.URL.Query()
 	dprb := qParams.Get("assessment_id")
-	// var dprb = DirectoryPathRequestBody{}
-	// err := json.NewDecoder(r.Body).Decode(&dprb)
 	if dprb == "" {
 		helper.WriteErrorToResponse(w, errors.New("assessment id not specified").Error(), http.StatusBadRequest)
 		return

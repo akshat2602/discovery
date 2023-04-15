@@ -24,19 +24,19 @@ func ServeTerminal(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-	exec_id, err := dspawn.CreateExec(ctx, containerID)
+	execID, err := dspawn.CreateExec(ctx, containerID)
 	if err != nil {
 		return
 	}
-	hresp, err := dspawn.AttachExec(ctx, containerID, exec_id)
+	hresp, err := dspawn.AttachExec(ctx, containerID, execID)
 	if err != nil {
 		return
 	}
 	// defer hresp.Close()
-	terminalProcess(ctx, containerID, wsc, hresp, cancel)
+	terminalProcess(ctx, wsc, hresp, cancel)
 }
 
-func terminalProcess(ctx context.Context, container_id string, wsc *websocket.Conn, hresp types.HijackedResponse, cancel context.CancelFunc) {
+func terminalProcess(ctx context.Context, wsc *websocket.Conn, hresp types.HijackedResponse, cancel context.CancelFunc) {
 	// use channels to handle communication between the websocket and the response object
 	responseCh := make(chan []byte)
 	errorCh := make(chan error)
