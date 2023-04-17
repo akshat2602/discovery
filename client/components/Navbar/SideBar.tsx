@@ -36,7 +36,7 @@ const SideBar: React.FC = () => {
         case "job":
           setNumber(1);
           break;
-        case "analytics":
+        case "insight":
           setNumber(2);
           break;
         default:
