@@ -21,7 +21,7 @@ type FolderStructure struct {
 func ServeFiles(w http.ResponseWriter, r *http.Request) {
 	wsc, err := websocket.Accept(w, r, &websocket.AcceptOptions{InsecureSkipVerify: true})
 	if err != nil {
-		helper.Logger.Sugar().Info("Failed to accept websocket connection: ", err)
+		helper.Logger.Sugar().Error("Failed to accept websocket connection: ", err)
 		return
 	}
 	ctx, cancel := context.WithCancel(context.Background())
@@ -69,7 +69,7 @@ func HandleFileDirectoryStructure(w http.ResponseWriter, r *http.Request) {
 	}
 	fileStructure, err := GetFileDirectoryStructure("./" + dprb)
 	if err != nil {
-		helper.Logger.Sugar().Info("Error while reading file directory structure: ", err)
+		helper.Logger.Sugar().Error("Error while reading file directory structure: ", err)
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

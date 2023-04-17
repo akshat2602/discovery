@@ -13,7 +13,7 @@ import (
 func ServeTerminal(w http.ResponseWriter, r *http.Request) {
 	wsc, err := websocket.Accept(w, r, &websocket.AcceptOptions{InsecureSkipVerify: true})
 	if err != nil {
-		helper.Logger.Sugar().Info("Failed to accept websocket connection: ", err)
+		helper.Logger.Sugar().Error("Failed to accept websocket connection: ", err)
 		return
 	}
 	// defer c.Close(websocket.StatusInternalError, "The sky is falling")
@@ -78,12 +78,12 @@ func terminalProcess(ctx context.Context, wsc *websocket.Conn, hresp types.Hijac
 		case response := <-responseCh:
 			err := wsc.Write(ctx, websocket.MessageText, response)
 			if err != nil {
-				helper.Logger.Sugar().Info("Websocket write error: ", err)
+				helper.Logger.Sugar().Error("Websocket write error: ", err)
 				cancel()
 				return
 			}
 		case err := <-errorCh:
-			helper.Logger.Sugar().Info("Error: ", err)
+			helper.Logger.Sugar().Error("Error: ", err)
 			cancel()
 			return
 		case <-ctx.Done():
