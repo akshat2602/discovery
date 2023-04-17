@@ -10,38 +10,39 @@ import (
 
 	"github.com/akshat2602/discovery/dockspawn/cmd/dspawn"
 	"github.com/akshat2602/discovery/dockspawn/pkg/helper"
+	"github.com/google/uuid"
 )
 
 // TODO: Change these structs to private structs
 // TODO: Restrict access to the routes based on the Method of request
 
 type ContainerRequestBody struct {
-	AssessmentID string `json:"assessment_id"`
+	AssessmentID uuid.UUID `json:"assessment_id"`
 }
 
 func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 
 	pwd, err := os.Getwd()
-	helper.Logger.Sugar().Info("Current working directory: ", pwd)
+	// helper.Logger.Sugar().Info("Current working directory: ", pwd)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	var rccb = dspawn.RequestContainerCreationBody{}
+	var csrb = ContainerRequestBody{}
 
-	helper.JSONDecode(&rccb, w, r)
+	helper.JSONDecode(&csrb, w, r)
 
 	hostMachinePwd := os.Getenv("DOCKER_HOST_FILE_DIRECTORY_ROOT")
-	absLocalPath, err := filepath.Abs(pwd + "/" + rccb.AssessmentID.String())
+	absLocalPath, err := filepath.Abs(pwd + "/" + csrb.AssessmentID.String())
 	if err != nil {
-		helper.Logger.Sugar().Info("Error while getting absolute path: ", err)
+		helper.Logger.Sugar().Error("Error while getting absolute path: ", err)
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	absGlobalPath, err := filepath.Abs(hostMachinePwd + "/" + rccb.AssessmentID.String())
+	absGlobalPath, err := filepath.Abs(hostMachinePwd + "/" + csrb.AssessmentID.String())
 	if err != nil {
-		helper.Logger.Sugar().Info("Error while getting absolute path: ", err)
+		helper.Logger.Sugar().Error("Error while getting absolute path: ", err)
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -52,30 +53,32 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 		helper.Logger.Sugar().Info("Directory does not exist, creating directory: ", absLocalPath)
 		err = os.Mkdir(absLocalPath, os.ModePerm)
 		if err != nil {
-			helper.Logger.Sugar().Info("Error while creating directory: ", err)
+			helper.Logger.Sugar().Error("Error while creating directory: ", err)
 			helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-	}
-	// TODO: Download files
-	// TODO: Use the run command here
-	app := "/bin/bash"
-	arg1 := "-c"
-	arg2 := "npm create vite@latest -y code -- --template react"
-	cmd := exec.Command(app, arg1, arg2)
-	cmd.Dir = absLocalPath
+		// TODO: Download files
+		// TODO: Use the run command here
+		app := "/bin/bash"
+		arg1 := "-c"
+		arg2 := "npm create vite@latest -y code -- --template react"
+		cmd := exec.Command(app, arg1, arg2)
+		cmd.Dir = absLocalPath
 
-	var out bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &stderr
+		var out bytes.Buffer
+		var stderr bytes.Buffer
+		cmd.Stdout = &out
+		cmd.Stderr = &stderr
 
-	err = cmd.Run()
-	if err != nil {
-		helper.Logger.Sugar().Info("Error while creating vite files for assessment: ", err)
-		helper.Logger.Sugar().Info("stderr: ", stderr.String())
-		return
+		err = cmd.Run()
+		if err != nil {
+			helper.Logger.Sugar().Error("Error while creating vite files for assessment: ", err)
+			helper.Logger.Sugar().Error("stderr: ", stderr.String())
+			return
+		}
 	}
+	rccb := dspawn.ContainerCreationConfig{}
+	// TODO: Fetch rccb from Django
 	resp, err := dspawn.ContainerCreate(ctx, rccb, absGlobalPath)
 	if err != nil {
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
@@ -95,7 +98,7 @@ func HandleContainerStop(w http.ResponseWriter, r *http.Request) {
 	helper.JSONDecode(&csrb, w, r)
 	aID := csrb.AssessmentID
 
-	containerID, err := dspawn.ContainerNameToID(ctx, aID)
+	containerID, err := dspawn.ContainerNameToID(ctx, aID.String())
 	if err != nil {
 		helper.WriteErrorToResponse(w, "An error occured while getting the container ID: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -114,7 +117,7 @@ func HandleContainerRemove(w http.ResponseWriter, r *http.Request) {
 	helper.JSONDecode(&crmrb, w, r)
 	aID := crmrb.AssessmentID
 
-	containerID, err := dspawn.ContainerNameToID(ctx, aID)
+	containerID, err := dspawn.ContainerNameToID(ctx, aID.String())
 	if err != nil {
 		helper.WriteErrorToResponse(w, "An error occured while getting the container ID: "+err.Error(), http.StatusInternalServerError)
 		return
