@@ -26,14 +26,14 @@ export const FolderModal = () => {
     state.setIsFile,
     state.wsForEditor,
   ]);
-
+  const assessmentID = router.query.assessmentId as string;
   const createFolder = () => {
     const wsReq: wsRequestResponseInterface = {
       type: "createFolder",
       payload: {
         file_path: path + "/" + name,
         data: null,
-        assessment_id: router.query.assessmentId as string,
+        assessment_id: assessmentID,
         port: null,
       },
     };

@@ -26,14 +26,14 @@ export const FileModal = () => {
     state.setIsFile,
     state.wsForEditor,
   ]);
-
+  const assessmentID = router.query.assessmentId as string;
   const createFile = () => {
     const wsReq: wsRequestResponseInterface = {
       type: "createFile",
       payload: {
         file_path: path + "/" + name,
         data: null,
-        assessment_id: router.query.assessmentId as string,
+        assessment_id: assessmentID,
         port: null,
       },
     };

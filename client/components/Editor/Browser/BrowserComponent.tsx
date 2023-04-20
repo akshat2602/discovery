@@ -1,8 +1,14 @@
-import { Input, InputLeftElement, VStack, InputGroup } from "@chakra-ui/react";
+import {
+  Input,
+  InputLeftElement,
+  VStack,
+  InputGroup,
+  Button,
+} from "@chakra-ui/react";
 import { AiOutlineReload } from "react-icons/ai";
 
 import { useRouter } from "next/router";
-// import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { useBearStore } from "../../../store/bearStore";
 
@@ -15,18 +21,13 @@ export const BrowserComponent = () => {
     state.wsForEditor,
   ]);
 
-  // const browser = useRef(null);
-  // const inputRef = useRef(null);
+  const browser = useRef<HTMLIFrameElement>(null);
 
-  // const handleRefresh = () => {
-  //   if (browser.current) {
-  //     browser.current.src = browser.current.src;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (port) inputRef.current.input.style.color = "white";
-  // }, [port]);
+  const handleRefresh = () => {
+    if (browser.current) {
+      browser.current.src = browser.current.src;
+    }
+  };
 
   if (wsForEditor && !port) {
     const message: wsRequestResponseInterface = {
@@ -44,14 +45,16 @@ export const BrowserComponent = () => {
   return (
     <>
       {port && (
-        <VStack>
+        <VStack h={"100%"}>
           <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<AiOutlineReload />}
-            />
+            <InputLeftElement>
+              <Button
+                variant={"ghost"}
+                leftIcon={<AiOutlineReload />}
+                onClick={handleRefresh}
+              ></Button>
+            </InputLeftElement>
             <Input
-              // ref={inputRef}
               variant={"outline"}
               defaultValue={`http://localhost:${port}`}
               w={"100%"}
@@ -63,9 +66,9 @@ export const BrowserComponent = () => {
 
           <iframe
             //   frameBorder={0}
-            // ref={browser}
+            ref={browser}
             src={`http://localhost:${port}`}
-            style={{ width: "100%" }}
+            style={{ width: "100%", height: "100%" }}
           />
         </VStack>
       )}
