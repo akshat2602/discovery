@@ -1,35 +1,32 @@
 import { StateCreator } from "zustand";
-import { randomUserInterface } from "../types/randomUserType";
+import { Result, randomUserInterface } from "../types/randomUserType";
 
-export interface RandomUserAction {
-  setUserData: (users: randomUserInterface) => void;
+export interface RandomUserStoreInterface {
+  users: Result[];
+}
+
+export interface RandomUserActionInterface {
+  setUserData: (res: randomUserInterface) => void;
 }
 
 export const randomUserStore: StateCreator<
-  randomUserInterface & RandomUserAction,
+  RandomUserStoreInterface & RandomUserActionInterface,
   [],
   [],
-  randomUserInterface
+  RandomUserStoreInterface
 > = () => ({
-  results: [],
-  info: {
-    seed: "",
-    results: 0,
-    page: 0,
-    version: "",
-  },
+  users: [],
 });
 
 export const randomUserAction: StateCreator<
-  randomUserInterface & RandomUserAction,
+  RandomUserStoreInterface & RandomUserActionInterface,
   [],
   [],
-  RandomUserAction
+  RandomUserActionInterface
 > = (set) => ({
-  setUserData: (users: randomUserInterface) => {
+  setUserData: (res: randomUserInterface) => {
     set((state) => ({
-      results: users.results,
-      info: users.info,
+      users: res.results,
     }));
   },
 });

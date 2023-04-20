@@ -12,8 +12,34 @@ import { BsPeopleFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import Link from "next/link";
 
-const JobCard = () => {
+const JobCard: React.FC = () => {
   const fg = useColorModeValue("light.200", "dark.200");
+
+  function randomDate(start: Date, end: Date) {
+    return new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    );
+  }
+
+  const jobTitles = [
+    "Intern - Product Management Intern",
+    "Senior Software Engineer",
+    "Software Developer - Android",
+    "Software Developer - iOS",
+    "Software Developer - Web",
+    "Software Developer - Backend",
+    "Software Developer - Full Stack",
+    "Software Developer - Machine Learning",
+    "Software Developer - Data Science",
+    "Software Developer - DevOps",
+    "Software Developer - QA",
+    "Software Developer - Security",
+    "Software Developer - UI/UX",
+    "Software Developer - Game Development",
+    "Software Developer - Blockchain",
+    "Software Developer - Embedded Systems",
+  ];
+
   return (
     <Link href={`/dashboard/job/${1}`}>
       <Card
@@ -26,7 +52,7 @@ const JobCard = () => {
         <Flex direction={"column"}>
           <Flex px={4} py={1} align="center" justify={"space-between"}>
             <Text fontSize={16} fontWeight={"medium"}>
-              Intern - Product Management Intern
+              {jobTitles[Math.floor(Math.random() * jobTitles.length)]}
             </Text>
             <IconButton
               aria-label="Edit"
@@ -42,37 +68,41 @@ const JobCard = () => {
             <Flex align={"center"}>
               <TiLocation color="white" height={24} />
               <Text
-                ml={1}
+                // ml={1}
                 fontSize={12}
                 fontWeight={"light"}
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
-                San Francisco, CA
+                Bangalore, India
               </Text>
             </Flex>
             <Flex align={"center"}>
               <BsPeopleFill color="white" height={24} />
               <Text
-                ml={1}
+                // ml={1}
                 fontSize={12}
                 fontWeight={"light"}
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
-                5,996 Applicants
+                {" "}
+                {Math.floor(Math.random() * 100) +
+                  Math.floor(Math.random() * 100)}{" "}
+                Applicants
               </Text>
             </Flex>
             <Flex align={"center"}>
               <AiOutlineClockCircle color="white" height={24} />
               <Text
-                ml={1}
+                // ml={1}
                 fontSize={12}
                 fontWeight={"light"}
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
-                Posted On Feb 11, 2023
+                Posted On{" "}
+                {randomDate(new Date(2023, 1, 1), new Date()).toDateString()}
               </Text>
             </Flex>
           </Flex>
