@@ -20,6 +20,14 @@ type HiringStage = {
   stage: string;
   candidates: Candidate[];
 };
+const colorList: string[] = [
+  "#7ED376",
+  "#7D9BD3",
+  "#CACC72",
+  "#69B7E3",
+  "#C0A1C2",
+  "#00ADB5",
+];
 const hiringStages: HiringStage[] = [
   {
     stage: "APPLIED",
@@ -36,37 +44,43 @@ const hiringStages: HiringStage[] = [
   {
     stage: "SCREENING",
     candidates: [
-      { name: "Candidate 3", rating: 5, daysAgo: 3 },
-      { name: "Candidate 4", rating: 3, daysAgo: 5 },
+      { name: "Bernardo Carney", rating: 3, daysAgo: 7 },
+      { name: "Zack Beier", rating: 4, daysAgo: 6 },
+      { name: "Gregorio Senger", rating: 5, daysAgo: 8 },
+      { name: "Sandrine Ruecker", rating: 1, daysAgo: 9 },
+      { name: "Shawn Moss", rating: 4, daysAgo: 4 },
+      { name: "Zander Mante", rating: 3, daysAgo: 3 },
+      { name: "Aniya Huel", rating: 2, daysAgo: 7 },
     ],
   },
   {
     stage: "CODING TEST",
     candidates: [
-      { name: "Candidate 5", rating: 4, daysAgo: 4 },
-      { name: "Candidate 6", rating: 5, daysAgo: 7 },
+      { name: "Deandre Barry", rating: 4, daysAgo: 10 },
+      { name: "Fidel Gutkowski", rating: 3, daysAgo: 6 },
+      { name: "Garett", rating: 4, daysAgo: 5 },
+      { name: "Richie Lubowitz", rating: 0, daysAgo: 7 },
+      { name: "Jocelyn Okon", rating: 1, daysAgo: 6 },
     ],
   },
   {
     stage: "INTERVIEW",
     candidates: [
-      { name: "Candidate 1", rating: 3, daysAgo: 2 },
-      { name: "Candidate 2", rating: 4, daysAgo: 1 },
+      { name: "Olga Streich", rating: 4, daysAgo: 7 },
+      { name: "Demarcus Dooley", rating: 3, daysAgo: 8 },
+      { name: "Scott Lang", rating: 5, daysAgo: 9 },
     ],
   },
   {
     stage: "HR INTERVIEW",
     candidates: [
-      { name: "Candidate 1", rating: 3, daysAgo: 2 },
-      { name: "Candidate 2", rating: 4, daysAgo: 1 },
+      { name: "Marielle James", rating: 2, daysAgo: 9 },
+      { name: "Kristina Effert", rating: 4, daysAgo: 2 },
     ],
   },
   {
     stage: "HIRED",
-    candidates: [
-      { name: "Candidate 1", rating: 3, daysAgo: 2 },
-      { name: "Candidate 2", rating: 4, daysAgo: 1 },
-    ],
+    candidates: [{ name: "Easton Whener", rating: 4, daysAgo: 1 }],
   },
 ];
 type CandidateCardProps = {
@@ -112,12 +126,12 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
   };
   return (
     <Box
-      borderWidth="1px"
       borderRadius="md"
       p={4}
       shadow="md"
       width="200px"
       textAlign="center"
+      bgColor={"dark.200"}
     >
       <Text fontSize="16" fontWeight="semibold" mb={2}>
         {name}
@@ -139,11 +153,24 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
     </Box>
   );
 };
+
 const HiringStagesList: React.FC = () => (
   <HStack overflowX="auto" spacing={4} align="start">
-    {hiringStages.map(({ stage, candidates }) => (
+    {hiringStages.map(({ stage, candidates }, index) => (
       <VStack key={stage} alignContent="start">
-        <Text fontWeight="bold">{stage}</Text>
+        <Box
+          borderRadius="md"
+          p={4}
+          shadow="md"
+          width="200px"
+          textAlign="center"
+          bgColor={"dark.200"}
+          borderTopWidth={"2px"}
+          borderTopColor={colorList[index]}
+        >
+          <Text fontWeight="bold">{stage}</Text>
+        </Box>
+
         {candidates.map(({ name, rating, daysAgo }) => (
           <CandidateCard
             key={name}
