@@ -1,19 +1,15 @@
 package container
 
 import (
-	"bytes"
 	"context"
 	"net/http"
 	"os"
-	"os/exec"
-	"path/filepath"
 
 	"github.com/akshat2602/discovery/dockspawn/cmd/dspawn"
 	"github.com/akshat2602/discovery/dockspawn/pkg/helper"
 	"github.com/google/uuid"
 )
 
-// TODO: Change these structs to private structs
 // TODO: Restrict access to the routes based on the Method of request
 
 type ContainerRequestBody struct {
@@ -22,27 +18,16 @@ type ContainerRequestBody struct {
 
 func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
-
-	pwd, err := os.Getwd()
-	// helper.Logger.Sugar().Info("Current working directory: ", pwd)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
 	var csrb = ContainerRequestBody{}
-
 	helper.JSONDecode(&csrb, w, r)
 
-	hostMachinePwd := os.Getenv("DOCKER_HOST_FILE_DIRECTORY_ROOT")
-	absLocalPath, err := filepath.Abs(pwd + "/" + csrb.AssessmentID.String())
+	absLocalPath, err := GetDockerLocalPath(csrb.AssessmentID.String())
 	if err != nil {
-		helper.Logger.Sugar().Error("Error while getting absolute path: ", err)
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	absGlobalPath, err := filepath.Abs(hostMachinePwd + "/" + csrb.AssessmentID.String())
+	absGlobalPath, err := GetRootPath(csrb.AssessmentID.String())
 	if err != nil {
-		helper.Logger.Sugar().Error("Error while getting absolute path: ", err)
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -57,28 +42,17 @@ func HandleContainerCreation(w http.ResponseWriter, r *http.Request) {
 			helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// TODO: Download files
-		// TODO: Use the run command here
-		app := "/bin/bash"
-		arg1 := "-c"
-		arg2 := "npm create vite@latest -y code -- --template react"
-		cmd := exec.Command(app, arg1, arg2)
-		cmd.Dir = absLocalPath
-
-		var out bytes.Buffer
-		var stderr bytes.Buffer
-		cmd.Stdout = &out
-		cmd.Stderr = &stderr
-
-		err = cmd.Run()
+		err = PopulateContainer(absLocalPath)
 		if err != nil {
-			helper.Logger.Sugar().Error("Error while creating vite files for assessment: ", err)
-			helper.Logger.Sugar().Error("stderr: ", stderr.String())
+			helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
-	rccb := dspawn.ContainerCreationConfig{}
-	// TODO: Fetch rccb from Django
+	rccb, err := FetchContaionerCreationConfig(csrb.AssessmentID)
+	if err != nil {
+		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	resp, err := dspawn.ContainerCreate(ctx, rccb, absGlobalPath)
 	if err != nil {
 		helper.WriteErrorToResponse(w, err.Error(), http.StatusInternalServerError)

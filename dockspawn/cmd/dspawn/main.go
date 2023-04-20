@@ -10,6 +10,7 @@ import (
 	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/mount"
 	"github.com/docker/docker/client"
+	"github.com/docker/go-connections/nat"
 	"github.com/google/uuid"
 )
 
@@ -72,12 +73,28 @@ func ContainerCreate(ctx context.Context, containerOptions ContainerCreationConf
 		AttachStdout: true,
 		AttachStderr: true,
 		Image:        containerOptions.Image + ":" + containerOptions.ImageVersion,
+		Volumes: map[string]struct{}{
+			absPath: {},
+		},
+		ExposedPorts: nat.PortSet{
+			"5173/tcp": {},
+		},
 	}, &container.HostConfig{
+		Binds: []string{
+			absPath + "/app",
+		},
 		Mounts: []mount.Mount{
 			{
 				Type:   mount.TypeBind,
 				Source: absPath,
 				Target: "/app",
+			},
+		},
+		PortBindings: nat.PortMap{
+			"5173/tcp": []nat.PortBinding{
+				{
+					HostPort: "0",
+				},
 			},
 		},
 	}, nil, nil, containerOptions.AssessmentID.String())
@@ -129,4 +146,13 @@ func ContainerNameToID(ctx context.Context, containerName string) (string, error
 	}
 	helper.Logger.Sugar().Info("Container not found")
 	return "", errors.New("container not found")
+}
+
+func GetContainer(ctx context.Context, containerId string) (types.ContainerJSON, error) {
+	c, err := dockerCli.ContainerInspect(ctx, containerId)
+	if err != nil {
+		helper.Logger.Sugar().Error("Container Inspect failed: ", err)
+		return types.ContainerJSON{}, err
+	}
+	return c, nil
 }

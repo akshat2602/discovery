@@ -53,6 +53,8 @@ func ServeFiles(w http.ResponseWriter, r *http.Request) {
 			CreateDirectory(ctx, wsc, wsReq.Payload)
 		case "deleteFolder":
 			DeleteDirectory(ctx, wsc, wsReq.Payload)
+		case "registerPort":
+			FetchPort(ctx, wsc, wsReq.Payload)
 		default:
 			helper.Logger.Sugar().Error("Invalid request type")
 			helper.HandleWSErrorResp(ctx, wsc, errors.New("invalid request type"))

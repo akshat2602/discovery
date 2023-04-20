@@ -21,6 +21,7 @@ type WSPayload struct {
 	Data         string `json:"data"`
 	FilePath     string `json:"file_path"`
 	AssessmentID string `json:"assessment_id"`
+	Port         string `json:"port"`
 }
 
 type WSRequestResponse struct {
