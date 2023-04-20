@@ -1,4 +1,6 @@
-import { randomUUID } from "crypto";
+// @ts-nocheck
+import { userGetAPI } from "./userGetAPI";
+import { randomUserInterface, Result } from "../types/randomUserType";
 
 const jobTitles = [
   "Product Management - Intern",
@@ -28,8 +30,8 @@ interface tempJobRoundInterface {
 }
 const jobRounds: tempJobRoundInterface = {
   1: ["Phone Screen", "Coding Challenge"],
-  2: ["Coding Interview", "Technical Interview", "Onsite Interview"],
-  3: ["Coding Interview", "Technical Interview", "Onsite Interview"],
+  2: ["Take Home Chanllenge", "Coding Challenge"],
+  3: ["Live Coding", "Coding Challenge"],
   4: ["Coding Interview", "Technical Interview", "Onsite Interview"],
   5: ["Coding Interview", "Technical Interview", "Onsite Interview"],
 };
@@ -52,7 +54,7 @@ const jobDescriptions = [
   "Developing and implementing blockchain-based solutions for applications such as cryptocurrency, supply chain management, and digital identity.",
   "Designing and developing software for embedded systems, such as microcontrollers and IoT devices.",
 ];
-const generateJob = async (): Promise<jobInterface> => {
+const generateJob = async (users: Result[]): Promise<jobInterface> => {
   const rand = Math.random();
   const randNum = Math.floor(rand * jobTitles.length);
   const id = Math.floor(Math.random() * 100000) + "";
@@ -64,10 +66,18 @@ const generateJob = async (): Promise<jobInterface> => {
   const applicants = Math.floor(Math.random() * 100);
   const numRounds = rand * 3 + 2;
   const rounds: jobRoundInterface[] = [];
+  let prev = 0;
   for (let i = 1; i <= numRounds; i++) {
     const randRound = Math.floor(Math.random() * jobRounds[i].length);
-    rounds.push({ round: i, roundName: jobRounds[i][randRound] });
+    const candidateList = Math.floor(Math.random() * 10) + prev;
+    rounds.push({
+      round: i,
+      roundName: jobRounds[i][randRound],
+      candidates: users.slice(prev, candidateList),
+    });
+    prev = candidateList;
   }
+
   rounds[rounds.length - 1] = { round: rounds.length, roundName: "Offer" };
   return {
     id,
@@ -83,8 +93,11 @@ const generateJob = async (): Promise<jobInterface> => {
 
 const generateJobs = async (numJobs: number): Promise<jobInterface[]> => {
   const jobs: jobInterface[] = [];
+  const users = (await (await userGetAPI()).results) as Result[];
+  let prev = 0;
   for (let i = 0; i < numJobs; i++) {
-    jobs.push(await generateJob());
+    jobs.push(await generateJob(users.slice(prev, prev + 10)));
+    prev = prev + 10;
   }
   return jobs;
 };
