@@ -147,14 +147,14 @@ const JobEdit: React.FC = () => {
                     color: "primary.400",
                     borderColor: "primary.400",
                     fontWeight: "bold",
-                  }} 
+                  }}
                 >
                   SETTINGS
                 </Tab>
               </TabList>
               <TabPanels mt={4}>
                 <TabPanel>
-                  <CandidatePipeline/>
+                  <CandidatePipeline />
                 </TabPanel>
                 <TabPanel>
                   <Flex

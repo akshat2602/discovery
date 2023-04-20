@@ -7,12 +7,19 @@ import LandingLogo from "../public/landing.svg";
 import Image from "next/image";
 
 import { useBearStore } from "../store/bearStore";
+import { useJobStore } from "../store/jobStore";
 import { userGetAPI } from "../api/userGetAPI";
+import { generateJobs } from "../api/jobAPI";
 
 const Home: React.FC = () => {
   const setUserData = useBearStore((state) => state.setUserData);
+  const setJobData = useJobStore((state) => state.setJobData);
   userGetAPI().then((res) => {
     setUserData(res);
+  });
+  generateJobs(Math.random() * 6 + 1).then((res) => {
+    setJobData(res);
+    console.log(res);
   });
 
   return (
