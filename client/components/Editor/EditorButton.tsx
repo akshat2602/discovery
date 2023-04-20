@@ -1,6 +1,8 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Text, HStack, Button } from "@chakra-ui/react";
+import { AiOutlineClose } from "react-icons/ai";
 
 import { useRouter } from "next/router";
+import { useRef } from "react";
 
 import { useBearStore } from "../../store/bearStore";
 
@@ -13,12 +15,25 @@ export const EditorButtonComponent: React.FC<EditorButtonProps> = ({
   path,
   isActive,
 }) => {
-  const [ws, addOrUpdateTab] = useBearStore((state) => [
-    state.wsForEditor,
-    state.addOrUpdateTab,
-  ]);
+  const [ws, addOrUpdateTab, removeTabs, removeActiveTab] = useBearStore(
+    (state) => [
+      state.wsForEditor,
+      state.addOrUpdateTab,
+      state.removeTabs,
+      state.removeActiveTab,
+    ]
+  );
   const router = useRouter();
   const assessmentID = router.query.assessmentId as string;
+
+  const closeTab = (e: React.MouseEvent<Element, MouseEvent>) => {
+    e.stopPropagation();
+    if (isActive) {
+      removeActiveTab();
+    }
+    removeTabs(path);
+  };
+
   const handleClick = () => {
     const message: wsRequestResponseInterface = {
       type: "readFile",
@@ -34,25 +49,31 @@ export const EditorButtonComponent: React.FC<EditorButtonProps> = ({
   };
 
   return (
-    <Button
+    <Box
+      cursor={"pointer"}
       outline={"none"}
       minW={"100px"}
-      h={"25px"}
+      h={"100%"}
       bg={isActive ? "dark.200" : "dark.400"}
       fontSize={"14px"}
       borderLeft={"none"}
       borderBottom={"none"}
       borderRight={"2px solid #191921"}
       fontFamily={"Droid Sans Mono, monospace"}
-      // borderTop={isActive ? "1px solid #ff79c6" : "none"}
+      borderTop={isActive ? "1px solid #ff79c6" : "none"}
       color={isActive ? "white" : "#6272a4"}
       pl={"5px"}
       pr={"5px"}
-      disabled={isActive}
+      // disabled={isActive}
       onClick={handleClick}
       borderRadius={"0px"}
     >
-      {path.replace(/\\/g, "/").split("/").pop()}
-    </Button>
+      <HStack>
+        <Text>{path.replace(/\\/g, "/").split("/").pop()}</Text>
+        <Button onClick={closeTab} h={"100%"} variant={"ghost"}>
+          <AiOutlineClose size={"10px"} />
+        </Button>
+      </HStack>
+    </Box>
   );
 };
