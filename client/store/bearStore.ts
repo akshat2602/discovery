@@ -40,6 +40,13 @@ import {
   browserPortInterface,
 } from "./browserStore";
 
+import {
+  randomUserStore,
+  RandomUserAction,
+  randomUserAction,
+} from "./randomUserStore";
+import { randomUserInterface } from "../types/randomUserType";
+
 export const useBearStore = create<
   userStateInterface &
     userActionsInterface &
@@ -52,7 +59,9 @@ export const useBearStore = create<
     fileOrFolderActionsInterface &
     fileOrFolderInterface &
     browserPortActionsInterface &
-    browserPortInterface
+    browserPortInterface &
+    RandomUserAction &
+    randomUserInterface
 >()(
   devtools((...a) => ({
     ...createUserStore(...a),
@@ -67,5 +76,7 @@ export const useBearStore = create<
     ...setFileOrFolderStore(...a),
     ...createBrowserPortStore(...a),
     ...setBrowserPortStore(...a),
+    ...randomUserStore(...a),
+    ...randomUserAction(...a),
   }))
 );
