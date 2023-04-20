@@ -4,7 +4,7 @@ import Editor from "@monaco-editor/react";
 import { editor } from "monaco-editor/esm/vs/editor/editor.api";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import languages from "../../public/languages.json";
+// import languages from "../../public/languages.json";
 // import themeList from "monaco-themes/themes/themelist.json";
 
 import { useBearStore } from "../../store/bearStore";

@@ -1,16 +1,15 @@
 import { Box, Button, Text } from "@chakra-ui/react";
+import { AiFillFile } from "react-icons/ai";
+import { FcCollapse as Collapse, FcExpand as Expand } from "react-icons/fc";
+// import { FileIcons } from "file-icons-js";
 
 import { useState } from "react";
 import { useRouter } from "next/router";
 
 import { useBearStore } from "../../../store/bearStore";
 
-import { AiFillFile } from "react-icons/ai";
-import { FcCollapse as Collapse, FcExpand as Expand } from "react-icons/fc";
-
 import { ContextForFolders } from "./ContextFolder";
 import { ContextForFiles } from "./ContextFile";
-// import { IconPack } from "../assets/IconPack";
 
 interface TreeProps {
   data: folderStructureInterface;
@@ -140,7 +139,6 @@ export const FolderStructureComponent = () => {
     state.folderStructure,
     state.addOrUpdateTab,
   ]);
-  console.log("folderStructure", folderStructure);
   const [x, setX] = useState<number | null>(null);
   const [y, setY] = useState<number | null>(null);
   const [contextForFolderOpen, setContextForFolderOpen] =
