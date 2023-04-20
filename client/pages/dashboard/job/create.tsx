@@ -18,6 +18,7 @@ import {
   Switch,
   Text,
   Textarea,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FiChevronDown, FiPlus } from "react-icons/fi";
 import React, { useState } from "react";
@@ -38,6 +39,7 @@ const jobStepUnit = () => {
 };
 
 const CreateJobPosting: React.FC = () => {
+  const fg = useColorModeValue("light.200", "dark.200");
   const [jobSteps, setJobSteps] = useState([
     {
       roundName: "",
@@ -107,8 +109,8 @@ const CreateJobPosting: React.FC = () => {
                     key={index}
                     rounded={8}
                     borderTop={"2px"}
-                    borderTopColor="primary.400"
-                    bgColor={"light.400"}
+                    borderTopColor={"primary.400"}
+                    bgColor={fg}
                     mb={2}
                   >
                     <Text
