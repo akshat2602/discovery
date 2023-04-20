@@ -8,7 +8,7 @@ import {
 import { AiOutlineReload } from "react-icons/ai";
 
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { useRef, useMemo } from "react";
 
 import { useBearStore } from "../../../store/bearStore";
 
@@ -29,18 +29,20 @@ export const BrowserComponent = () => {
     }
   };
 
-  if (wsForEditor && !port) {
-    const message: wsRequestResponseInterface = {
-      type: "registerPort",
-      payload: {
-        data: null,
-        file_path: "",
-        assessment_id: assessmentID,
-        port: null,
-      },
-    };
-    wsForEditor.send(JSON.stringify(message));
-  }
+  useMemo(() => {
+    if (wsForEditor && !port) {
+      const message: wsRequestResponseInterface = {
+        type: "registerPort",
+        payload: {
+          data: null,
+          file_path: "",
+          assessment_id: assessmentID,
+          port: null,
+        },
+      };
+      wsForEditor.send(JSON.stringify(message));
+    }
+  }, [port, wsForEditor, assessmentID]);
 
   return (
     <>

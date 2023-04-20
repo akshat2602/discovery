@@ -4,6 +4,7 @@ import Editor from "@monaco-editor/react";
 import { editor } from "monaco-editor/esm/vs/editor/editor.api";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import languages from "../../public/languages.json";
 // import themeList from "monaco-themes/themes/themelist.json";
 
 import { useBearStore } from "../../store/bearStore";
@@ -15,29 +16,14 @@ export const EditorComponent = () => {
   const [activeTheme, setActiveTheme] =
     useState<editor.IStandaloneThemeData | null>(null);
   const assessmentID = router.query.assessmentId as string;
-  // const themes: { label: string; value: string }[] = [];
 
-  // Object.entries(themeList).forEach(([key, value]) => {
-  //   themes.push({
-  //     label: value,
-  //     value: key,
-  //   });
-  // });
-
-  // const themeLoadPromises = {};
-  // function loadTheme(value) {
-  //   if (themeLoadPromises[value]) {
-  //     return themeLoadPromises[value];
-  //   }
-
-  //   const themePath = themeList[value];
-  //   return import(
-  //     /* webpackChunkName: "theme/[request]" */ `monaco-themes/themes/${themePath}`
-  //   ).then((data) => {
-  //     loadedThemes[value] = true;
-  //     monaco.editor.defineTheme(value, data);
-  //   });
-  // }
+  const getLanguageFromExtension = (extension: string) => {
+    for (const lang of languages) {
+      if (lang.extensions && lang.extensions.includes(extension)) {
+        return lang.name;
+      }
+    }
+  };
 
   useEffect(() => {
     import("monaco-themes/themes/Dracula.json").then((data) => {

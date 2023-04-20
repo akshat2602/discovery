@@ -10,10 +10,10 @@ export const EditorTabsComponent = () => {
   return (
     <Box
       display={"flex"}
-      pt={"5px"}
-      pb={"5px"}
+      // pt={"5px"}
+      // pb={"5px"}
       h={"3vh"}
-      borderBottom={"1px solid #1f1f1f"}
+      // borderBottom={"1px solid #1f1f1f"}
     >
       {Object.keys(availableTabs).length > 0 &&
         Object.entries(availableTabs).map((entries) => {
