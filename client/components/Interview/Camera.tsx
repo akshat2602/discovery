@@ -1,10 +1,6 @@
 import { useEffect, useRef } from "react";
-interface CameraProps {
-  height?: number;
-  width?: number;
-}
 
-const Camera: React.FC<CameraProps> = ({ height, width }) => {
+const Camera: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {

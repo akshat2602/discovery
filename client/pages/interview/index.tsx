@@ -12,7 +12,12 @@ import notes from "../../public/notes.svg";
 import settings from "../../public/settings.svg";
 import speaker from "../../public/speaker.svg";
 import { BsDot } from "react-icons/bs";
+import { useState } from "react";
+import { Select } from "chakra-react-select";
+import ReactSelect from "react-select";
+
 const Interview: React.FC = () => {
+  const [isCamView, setIsCamView] = useState(true);
   return (
     <>
       <Flex flexDirection="row" align="center" justify="space-between" mx={16}>
@@ -60,7 +65,65 @@ const Interview: React.FC = () => {
         height={"80vh"}
         backgroundColor={"black"}
       >
-        <Camera />
+        {isCamView ? (
+          <Camera />
+        ) : (
+          <Box
+            zIndex={100}
+            m={"auto"}
+            width={"95vw"}
+            justifyContent={"center"}
+            height={"80vh"}
+            backgroundColor={"black"}
+          >
+            <Select
+              placeholder="select a language"
+              options={[
+                {
+                  label: "C++",
+                  value: "cpp",
+                },
+                {
+                  label: "C",
+                  value: "c",
+                },
+                {
+                  label: "Python",
+                  value: "python",
+                },
+                {
+                  label: "Javascript",
+                  value: "javascript",
+                },
+                {
+                  label: "Typescript",
+                  value: "typescript",
+                },
+                {
+                  label: "Golang",
+                  value: "golang",
+                },
+                {
+                  label: "Java",
+                  value: "java",
+                },
+              ]}
+            ></Select>
+            <Box
+              backgroundColor={"#3A4750"}
+              width="25px"
+              height={"25px"}
+              p={1}
+              borderRadius={"8px"}
+              cursor="pointer"
+              onClick={() => setIsCamView(true)}
+              ml={5}
+            >
+              <Image src={focus.src} />
+            </Box>
+            coding-environment
+          </Box>
+        )}
         <Flex
           position={"absolute"}
           height={"80vh"}
@@ -86,6 +149,7 @@ const Interview: React.FC = () => {
                 height={"25px"}
                 p={1}
                 borderRadius={"8px"}
+                cursor="pointer"
               >
                 <Image src={focus.src} />
               </Box>
@@ -95,6 +159,8 @@ const Interview: React.FC = () => {
                 height={"25px"}
                 marginLeft="10px"
                 borderRadius={"8px"}
+                onClick={() => setIsCamView(false)}
+                cursor="pointer"
               >
                 <Image
                   src={code.src}
