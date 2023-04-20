@@ -1,5 +1,6 @@
 import { useBearStore } from "../../../store/bearStore";
 import { Box, Button } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 interface ContextForFoldersProps {
   setOpen: React.Dispatch<React.SetStateAction<Boolean>>;
@@ -14,10 +15,26 @@ export const ContextForFolders: React.FC<ContextForFoldersProps> = ({
   y,
   path,
 }) => {
-  const [setPath, setIsFile] = useBearStore((state) => [
+  const [ws, setPath, setIsFile] = useBearStore((state) => [
+    state.wsForEditor,
     state.setPath,
     state.setIsFile,
   ]);
+
+  const router = useRouter();
+
+  const deleteFolder = () => {
+    const wsReq: wsRequestResponseInterface = {
+      type: "deleteFolder",
+      payload: {
+        file_path: path!,
+        data: null,
+        assessment_id: router.query.assessmentId as string,
+        port: null,
+      },
+    };
+    ws?.send(JSON.stringify(wsReq));
+  };
 
   const createDirectory = () => {
     setPath(path);
@@ -68,6 +85,7 @@ export const ContextForFolders: React.FC<ContextForFoldersProps> = ({
         Create File
       </Button>
       <Button
+        onClick={deleteFolder}
         color={"white"}
         backgroundColor={"dark.200"}
         borderRadius={"0px"}

@@ -14,6 +14,7 @@ export const EditorComponent = () => {
   const router = useRouter();
   const [activeTheme, setActiveTheme] =
     useState<editor.IStandaloneThemeData | null>(null);
+  const assessmentID = router.query.assessmentId as string;
   // const themes: { label: string; value: string }[] = [];
 
   // Object.entries(themeList).forEach(([key, value]) => {
@@ -57,7 +58,7 @@ export const EditorComponent = () => {
             payload: {
               data: value,
               file_path: activeTab.path,
-              assessment_id: router.query.assessmentID as string,
+              assessment_id: assessmentID,
               port: null,
             },
           };

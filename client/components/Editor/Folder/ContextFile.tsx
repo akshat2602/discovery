@@ -1,5 +1,8 @@
 import { Box, Button } from "@chakra-ui/react";
 
+import { useBearStore } from "../../../store/bearStore";
+import { useRouter } from "next/router";
+
 interface ContextForFilesProps {
   setOpen: React.Dispatch<React.SetStateAction<Boolean>>;
   x: number;
@@ -11,6 +14,22 @@ export const ContextForFiles: React.FC<ContextForFilesProps> = ({
   x,
   y,
 }) => {
+  const [path, ws] = useBearStore((state) => [state.path, state.wsForEditor]);
+  const router = useRouter();
+  const assessmentID = router.query.assessmentId as string;
+  const deleteFile = () => {
+    const wsReq: wsRequestResponseInterface = {
+      type: "deleteFile",
+      payload: {
+        file_path: path!,
+        data: null,
+        assessment_id: assessmentID,
+        port: null,
+      },
+    };
+    ws?.send(JSON.stringify(wsReq));
+  };
+
   return (
     <Box
       onMouseLeave={() => {
@@ -32,11 +51,11 @@ export const ContextForFiles: React.FC<ContextForFilesProps> = ({
         cursor={"pointer"}
         border={"none"}
         outline={"none"}
-        // onClick={deleteFile}
+        onClick={deleteFile}
       >
         Delete File
       </Button>
-      <Button
+      {/* <Button
         color={"white"}
         backgroundColor={"dark.200"}
         borderRadius={"0px"}
@@ -48,7 +67,7 @@ export const ContextForFiles: React.FC<ContextForFilesProps> = ({
         // onClick={renameFile}
       >
         Rename File
-      </Button>
+      </Button> */}
     </Box>
   );
 };
