@@ -1,13 +1,15 @@
 import { Box } from "@chakra-ui/react";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 import { EditorComponent } from "../../../components/Editor/EditorComponent";
 import { FolderStructureComponent } from "../../../components/Editor/Folder/FolderComponent";
 import { FolderModal } from "../../../components/Editor/Folder/FolderModal";
 import { FileModal } from "../../../components/Editor/Folder/FileModal";
+import { BrowserComponent } from "../../../components/Editor/Browser/BrowserComponent";
 const ShellComponent = dynamic(
   () =>
     import("../../../components/Editor/ShellComponent").then(
@@ -20,22 +22,29 @@ const ShellComponent = dynamic(
 
 import { useBearStore } from "../../../store/bearStore";
 import { useGetDirectory } from "../../../api/folderAPI";
+// import { useContainerCreate } from "../../../api/containerAPI";
 
-const Playground: React.FC<{ assessmentId: string | string[] | undefined }> = ({
-  assessmentId,
-}) => {
-  const [setActiveTab, setEditorWs, setFolderStructure, setIsFile, setPath] =
-    useBearStore((state) => [
-      state.setActiveTab,
-      state.setEditorWs,
-      state.setFolderStructure,
-      state.setIsFile,
-      state.setPath,
-    ]);
-  if (!assessmentId) {
-    return <Box>Invalid</Box>;
-  }
+const Playground: React.FC<{ assessmentId: string }> = ({ assessmentId }) => {
+  const router = useRouter();
+  const [
+    setActiveTab,
+    setEditorWs,
+    setFolderStructure,
+    setIsFile,
+    setPath,
+    setPort,
+  ] = useBearStore((state) => [
+    state.setActiveTab,
+    state.setEditorWs,
+    state.setFolderStructure,
+    state.setIsFile,
+    state.setPath,
+    state.setPort,
+  ]);
+
   const result = useGetDirectory(assessmentId);
+  // const containerMutation = useContainerCreate(assessmentId);
+  // containerMutation.mutate();
   useEffect(() => {
     if (result.isSuccess) {
       setFolderStructure(result.data.data.message[0]);
@@ -47,7 +56,6 @@ const Playground: React.FC<{ assessmentId: string | string[] | undefined }> = ({
     () => (isBrowser ? new WebSocket("ws://localhost:8080/file") : null),
     [isBrowser]
   );
-
   if (tempWs) {
     tempWs.onopen = () => {
       setEditorWs(tempWs);
@@ -64,11 +72,11 @@ const Playground: React.FC<{ assessmentId: string | string[] | undefined }> = ({
             setPath(null);
             setIsFile(-1);
             break;
+          case "registerPort":
+            const port = data.payload.port;
+            setPort(port!);
           default:
             break;
-          // case "registerPort":
-          //   const port = data.payload.port;
-          //   setPort(port);
         }
       };
     };
@@ -95,15 +103,16 @@ const Playground: React.FC<{ assessmentId: string | string[] | undefined }> = ({
           </Box>
           <ShellComponent />
         </Box>
+        <BrowserComponent />
       </Box>
     </>
   );
 };
 
 export const getServerSideProps: GetServerSideProps<{
-  assessmentId: string | string[] | undefined;
+  assessmentId: string;
 }> = async (context) => {
-  const assessmentId = context.params!.assessmentId;
+  const assessmentId = context.params!.assessmentId as string;
   // Pass data to the page via props
   return { props: { assessmentId } };
 };

@@ -46,6 +46,7 @@ const Tree: React.FC<TreeProps> = ({
         file_path: path,
         data: null,
         assessment_id: router.query.assessmentId as string,
+        port: null,
       },
     };
     addOrUpdateTab(path);
