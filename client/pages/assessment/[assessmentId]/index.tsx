@@ -1,15 +1,18 @@
 import { Box } from "@chakra-ui/react";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { Allotment } from "allotment";
+import "allotment/dist/style.css";
 
 import { EditorComponent } from "../../../components/Editor/EditorComponent";
 import { FolderStructureComponent } from "../../../components/Editor/Folder/FolderComponent";
 import { FolderModal } from "../../../components/Editor/Folder/FolderModal";
 import { FileModal } from "../../../components/Editor/Folder/FileModal";
 import { BrowserComponent } from "../../../components/Editor/Browser/BrowserComponent";
+import { EditorTabsComponent } from "../../../components/Editor/EditorTabsComponent";
 const ShellComponent = dynamic(
   () =>
     import("../../../components/Editor/ShellComponent").then(
@@ -86,7 +89,7 @@ const Playground: React.FC<{ assessmentId: string }> = ({ assessmentId }) => {
     <>
       <FolderModal />
       <FileModal />
-      <Box style={{ display: "flex" }}>
+      <Box display={"flex"}>
         <Box
           pr={10}
           pt={"0.25vh"}
@@ -97,13 +100,23 @@ const Playground: React.FC<{ assessmentId: string }> = ({ assessmentId }) => {
         >
           <FolderStructureComponent />
         </Box>
-        <Box display={"flex"} flexDirection={"column"} width={"100%"}>
-          <Box borderBottom={"1px solid"}>
-            <EditorComponent />
-          </Box>
-          <ShellComponent />
+        <Box h={"100vh"} w={"100vw"}>
+          <Allotment>
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              w={"100%"}
+              h={"100%"}
+            >
+              <Box borderBottom={"1px solid #bd93f9"}>
+                <EditorTabsComponent />
+                <EditorComponent />
+              </Box>
+              <ShellComponent />
+            </Box>
+            <BrowserComponent />
+          </Allotment>
         </Box>
-        <BrowserComponent />
       </Box>
     </>
   );
