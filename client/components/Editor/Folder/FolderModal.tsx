@@ -34,6 +34,7 @@ export const FolderModal = () => {
         file_path: path + "/" + name,
         data: null,
         assessment_id: router.query.assessmentId as string,
+        port: null,
       },
     };
     ws?.send(JSON.stringify(wsReq));

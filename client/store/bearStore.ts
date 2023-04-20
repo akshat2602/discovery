@@ -33,6 +33,13 @@ import {
   fileOrFolderInterface,
 } from "./folderStore";
 
+import {
+  createBrowserPortStore,
+  setBrowserPortStore,
+  browserPortActionsInterface,
+  browserPortInterface,
+} from "./browserStore";
+
 export const useBearStore = create<
   userStateInterface &
     userActionsInterface &
@@ -43,7 +50,9 @@ export const useBearStore = create<
     editorFileActionsInterface &
     editorFileInterface &
     fileOrFolderActionsInterface &
-    fileOrFolderInterface
+    fileOrFolderInterface &
+    browserPortActionsInterface &
+    browserPortInterface
 >()(
   devtools((...a) => ({
     ...createUserStore(...a),
@@ -56,5 +65,7 @@ export const useBearStore = create<
     ...setEditorFileStore(...a),
     ...createFileOrFolderStore(...a),
     ...setFileOrFolderStore(...a),
+    ...createBrowserPortStore(...a),
+    ...setBrowserPortStore(...a),
   }))
 );
