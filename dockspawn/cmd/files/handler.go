@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/akshat2602/discovery/dockspawn/cmd/dspawn"
 	"github.com/akshat2602/discovery/dockspawn/pkg/helper"
 	"nhooyr.io/websocket"
 )
@@ -218,4 +219,41 @@ func GetFileDirectoryStructure(dPath string) ([]byte, error) {
 		return nil, err
 	}
 	return stdout, nil
+}
+
+func FetchPort(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
+	cName := p.AssessmentID
+	cId, err := dspawn.ContainerNameToID(ctx, cName)
+	if err != nil {
+		helper.Logger.Sugar().Error("Error while fetching container ID: ", err)
+		helper.HandleWSErrorResp(ctx, wsc, err)
+	}
+	c, err := dspawn.GetContainer(ctx, cId)
+	if err != nil {
+		helper.Logger.Sugar().Error("Error while fetching container: ", err)
+		helper.HandleWSErrorResp(ctx, wsc, err)
+	}
+	// Get the port
+	port := c.HostConfig.PortBindings["5173/tcp"][0].HostPort
+	helper.Logger.Sugar().Info("Port: ", port)
+	helper.Logger.Sugar().Info("Container: ", c)
+	// Convert the data to WSRequestResponse struct
+	resp := helper.WSRequestResponse{
+		Type: "registerPort",
+		Payload: helper.WSPayload{
+			Port: port,
+		},
+	}
+	// Convert the struct to JSON
+	respJSON, err := json.Marshal(resp)
+	if err != nil {
+		helper.Logger.Sugar().Error("Error while marshalling: ", err)
+		helper.HandleWSErrorResp(ctx, wsc, err)
+	}
+	// Send the response to the client
+	if err := wsc.Write(ctx, websocket.MessageText, respJSON); err != nil {
+		helper.Logger.Sugar().Error("Error while sending response to client: ", err)
+		helper.HandleWSErrorResp(ctx, wsc, err)
+	}
+
 }
