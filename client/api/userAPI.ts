@@ -1,7 +1,7 @@
 import { useQuery, useMutation, QueryClient } from "@tanstack/react-query";
 import { isAxiosError, AxiosResponse } from "axios";
 
-import api from "./util";
+import { api } from "./util";
 
 const queryClient = new QueryClient();
 

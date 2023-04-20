@@ -58,6 +58,7 @@ export const EditorComponent = () => {
               data: value,
               file_path: activeTab.path,
               assessment_id: router.query.assessmentID as string,
+              port: null,
             },
           };
           if (ws) {
