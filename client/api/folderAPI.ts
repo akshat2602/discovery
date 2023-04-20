@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
-// import api from "./util";
+import { dspawnApi } from "./util";
 
 export const getDirectory = async (
   assessmentID: string | string[]
 ): Promise<AxiosResponse> => {
-  const response = await axios.get(
-    `http://localhost:8080/directory?assessment_id=${assessmentID}`
+  const response = await dspawnApi.get(
+    `directory?assessment_id=${assessmentID}`
   );
   return response;
 };
