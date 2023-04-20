@@ -234,9 +234,7 @@ func FetchPort(ctx context.Context, wsc *websocket.Conn, p helper.WSPayload) {
 		helper.HandleWSErrorResp(ctx, wsc, err)
 	}
 	// Get the port
-	port := c.HostConfig.PortBindings["5173/tcp"][0].HostPort
-	helper.Logger.Sugar().Info("Port: ", port)
-	helper.Logger.Sugar().Info("Container: ", c)
+	port := c.NetworkSettings.Ports["5173/tcp"][0].HostPort
 	// Convert the data to WSRequestResponse struct
 	resp := helper.WSRequestResponse{
 		Type: "registerPort",
