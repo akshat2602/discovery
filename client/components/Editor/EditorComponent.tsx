@@ -17,13 +17,13 @@ export const EditorComponent = () => {
     useState<editor.IStandaloneThemeData | null>(null);
   const assessmentID = router.query.assessmentId as string;
 
-  const getLanguageFromExtension = (extension: string) => {
-    for (const lang of languages) {
-      if (lang.extensions && lang.extensions.includes(extension)) {
-        return lang.name;
-      }
-    }
-  };
+  // const getLanguageFromExtension = (extension: string) => {
+  //   for (const lang of languages) {
+  //     if (lang.extensions && lang.extensions.includes(extension)) {
+  //       return lang.name;
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     import("monaco-themes/themes/Dracula.json").then((data) => {

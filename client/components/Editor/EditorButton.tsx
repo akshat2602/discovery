@@ -26,13 +26,13 @@ export const EditorButtonComponent: React.FC<EditorButtonProps> = ({
   const router = useRouter();
   const assessmentID = router.query.assessmentId as string;
 
-  const closeTab = (e: React.MouseEvent<Element, MouseEvent>) => {
-    e.stopPropagation();
-    if (isActive) {
-      removeActiveTab();
-    }
-    removeTabs(path);
-  };
+  // const closeTab = (e: React.MouseEvent<Element, MouseEvent>) => {
+  //   e.stopPropagation();
+  //   removeTabs(path);
+  //   if (isActive) {
+  //     removeActiveTab();
+  //   }
+  // };
 
   const handleClick = () => {
     const message: wsRequestResponseInterface = {
@@ -66,14 +66,14 @@ export const EditorButtonComponent: React.FC<EditorButtonProps> = ({
       pr={"5px"}
       // disabled={isActive}
       onClick={handleClick}
-      borderRadius={"0px"}
+      borderRadius={"4px 4px 0 0"}
     >
-      <HStack>
-        <Text>{path.replace(/\\/g, "/").split("/").pop()}</Text>
-        <Button onClick={closeTab} h={"100%"} variant={"ghost"}>
+      {/* <HStack> */}
+      <Text>{path.replace(/\\/g, "/").split("/").pop()}</Text>
+      {/* <Button onClick={closeTab} h={"100%"} variant={"ghost"}>
           <AiOutlineClose size={"10px"} />
-        </Button>
-      </HStack>
+        </Button> */}
+      {/* </HStack> */}
     </Box>
   );
 };
