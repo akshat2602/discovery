@@ -12,4 +12,5 @@ interface jobInterface {
 interface jobRoundInterface {
   round: number;
   roundName: string;
+  candidates?: Result[];
 }
