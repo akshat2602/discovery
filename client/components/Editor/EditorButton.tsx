@@ -1,8 +1,8 @@
 import { Box, Text, HStack, Button } from "@chakra-ui/react";
-import { AiOutlineClose } from "react-icons/ai";
+// import { AiOutlineClose } from "react-icons/ai";
 
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useMonaco } from "@monaco-editor/react";
 
 import { useBearStore } from "../../store/bearStore";
 
@@ -15,6 +15,7 @@ export const EditorButtonComponent: React.FC<EditorButtonProps> = ({
   path,
   isActive,
 }) => {
+  const monaco = useMonaco();
   const [ws, addOrUpdateTab, removeTabs, removeActiveTab] = useBearStore(
     (state) => [
       state.wsForEditor,
@@ -27,6 +28,16 @@ export const EditorButtonComponent: React.FC<EditorButtonProps> = ({
   const assessmentID = router.query.assessmentId as string;
 
   // const closeTab = (e: React.MouseEvent<Element, MouseEvent>) => {
+  //   for (let key in monaco?.editor.getModels()) {
+  //     if (
+  //       monaco?.editor.getModels()[key] &&
+  //       monaco?.editor.getModels()[key].uri.path === "/" + path
+  //     ) {
+  //       console.log("disposing model");
+  //       monaco?.editor.getModels()[key].dispose();
+  //       // return;
+  //     }
+  //   }
   //   e.stopPropagation();
   //   removeTabs(path);
   //   if (isActive) {
@@ -72,8 +83,8 @@ export const EditorButtonComponent: React.FC<EditorButtonProps> = ({
       <Text>{path.replace(/\\/g, "/").split("/").pop()}</Text>
       {/* <Button onClick={closeTab} h={"100%"} variant={"ghost"}>
           <AiOutlineClose size={"10px"} />
-        </Button> */}
-      {/* </HStack> */}
+        </Button>{" "}
+      </HStack> */}
     </Box>
   );
 };
