@@ -12,12 +12,15 @@ import notes from "../../public/notes.svg";
 import settings from "../../public/settings.svg";
 import speaker from "../../public/speaker.svg";
 import { BsDot } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Select } from "chakra-react-select";
-import ReactSelect from "react-select";
 
 const Interview: React.FC = () => {
-  const [isCamView, setIsCamView] = useState(true);
+  const [isCamView, setIsCamView] = useState<Boolean>(true);
+  const [language, setLanguage] = useState<string>("");
+  useEffect(() => {
+    console.log(language);
+  }, [language]);
   return (
     <>
       <Flex flexDirection="row" align="center" justify="space-between" mx={16}>
@@ -78,6 +81,7 @@ const Interview: React.FC = () => {
           >
             <Select
               placeholder="select a language"
+              onChange={(e) => setLanguage(e!.value)}
               options={[
                 {
                   label: "C++",
