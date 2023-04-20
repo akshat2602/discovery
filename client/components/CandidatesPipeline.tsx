@@ -8,6 +8,12 @@ import {
 } from "@chakra-ui/react";
 import { Divider } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
+
+import { useRouter } from "next/router";
+
+interface CandidatesPipelineProps {
+  job: jobInterface;
+}
 // Define types for the hiring stages and candidates data
 type Candidate = {
   name: string;
@@ -83,21 +89,23 @@ const hiringStages: HiringStage[] = [
   },
 ];
 type CandidateCardProps = {
-  name: string;
-  rating: number;
-  daysAgo: number;
+  name: {
+    title: string;
+    first: string;
+    last: string;
+  };
+  // rating: number;
+  id: string;
+  dob: Date;
 };
-const CandidateCard: React.FC<CandidateCardProps> = ({
-  name,
-  rating,
-  daysAgo,
-}) => {
+const CandidateCard: React.FC<CandidateCardProps> = ({ name, id, dob }) => {
   const fg = useColorModeValue("light.200", "dark.200");
+  const rating = Math.random() * 5;
+  const router = useRouter();
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
     const emptyStars = 5 - fullStars - halfStar;
-
     return (
       <>
         {Array(fullStars)
@@ -124,6 +132,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
       </>
     );
   };
+
   return (
     <Box
       borderRadius="md"
@@ -132,9 +141,13 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
       width="200px"
       textAlign="center"
       bgColor={fg}
+      onClick={() => {
+        // router.push(`dashboard/job//candidate/${id}`);
+        console.log("here");
+      }}
     >
       <Text fontSize="16" fontWeight="semibold" mb={2}>
-        {name}
+        {name.title} {name.first} {name.last}
       </Text>
       <Divider mb={2} />
       <Flex justify="space-between" align="center">
@@ -144,41 +157,41 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
             {rating.toFixed(1)}
           </Text>
         </Flex>
-        <Text
-          color="gray.500"
-          fontSize="10"
-          fontWeight="regular"
-        >{`${daysAgo} days ago`}</Text>
+        <Text color="gray.500" fontSize="10" fontWeight="regular">
+          {/* {dob} */}DOB goes here
+        </Text>
       </Flex>
     </Box>
   );
 };
 
-const HiringStagesList: React.FC = () => {
+const HiringStagesList: React.FC<CandidatesPipelineProps> = (jobObject) => {
   const fg = useColorModeValue("light.200", "dark.200");
   return (
     <HStack overflowX="auto" spacing={4} align="start">
-      {hiringStages.map(({ stage, candidates }, index) => (
-        <VStack key={stage} alignContent="start">
+      {jobObject.job.rounds.map(({ round, roundName, candidates }, index) => (
+        <VStack key={round} alignContent="start">
           <Box
-            borderRadius="md"
+            borderRadius={"md"}
             p={4}
-            shadow="md"
-            width="200px"
-            textAlign="center"
+            shadow={"md"}
+            minW={"200px"}
+            textAlign={"center"}
             bgColor={fg}
             borderTopWidth={"2px"}
+            // h={"80px"}
             borderTopColor={colorList[index]}
           >
-            <Text fontWeight="bold">{stage}</Text>
+            <Text fontWeight="bold">{roundName}</Text>
           </Box>
 
-          {candidates.map(({ name, rating, daysAgo }) => (
+          {candidates?.map(({ id, name, dob }) => (
             <CandidateCard
-              key={name}
+              key={id}
+              id={id}
               name={name}
-              rating={rating}
-              daysAgo={daysAgo}
+              // rating={rating}
+              dob={dob}
             />
           ))}
         </VStack>
@@ -187,8 +200,8 @@ const HiringStagesList: React.FC = () => {
   );
 };
 
-const CandidatePipeline: React.FC = () => {
-  return <HiringStagesList />;
+const CandidatePipeline: React.FC<CandidatesPipelineProps> = (jobObject) => {
+  return <HiringStagesList job={jobObject.job} />;
 };
 
 export default CandidatePipeline;
