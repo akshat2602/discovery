@@ -18,14 +18,14 @@ export const EditorButtonComponent: React.FC<EditorButtonProps> = ({
     state.addOrUpdateTab,
   ]);
   const router = useRouter();
-
+  const assessmentID = router.query.assessmentId as string;
   const handleClick = () => {
     const message: wsRequestResponseInterface = {
       type: "readFile",
       payload: {
         data: null,
         file_path: path,
-        assessment_id: router.query.assessmentId as string,
+        assessment_id: assessmentID,
         port: null,
       },
     };
