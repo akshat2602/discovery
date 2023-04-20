@@ -6,6 +6,11 @@ import time from "../../public/access_time.svg";
 import Camera from "../../components/Interview/Camera";
 import focus from "../../public/focus.svg";
 import code from "../../public/code.svg";
+import video from "../../public/video.svg";
+import mic from "../../public/mic.svg";
+import notes from "../../public/notes.svg";
+import settings from "../../public/settings.svg";
+import speaker from "../../public/speaker.svg";
 import { BsDot } from "react-icons/bs";
 const Interview: React.FC = () => {
   return (
@@ -148,6 +153,22 @@ const Interview: React.FC = () => {
             </Box>
           </Flex>
         </Flex>
+      </Flex>
+      <Flex
+        justifySelf={"center"}
+        mx={"auto"}
+        backgroundColor="#3A4750"
+        justifyContent={"space-evenly"}
+        p={2}
+        mt={4}
+        width={"350px"}
+        borderRadius={"8px"}
+      >
+        <Image src={settings.src} cursor="pointer" />
+        <Image src={video.src} cursor="pointer" />
+        <Image src={mic.src} cursor="pointer" />
+        <Image src={speaker.src} cursor="pointer" />
+        <Image src={notes.src} cursor="pointer" />
       </Flex>
     </>
   );
