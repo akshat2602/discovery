@@ -42,10 +42,10 @@ import {
 
 import {
   randomUserStore,
-  RandomUserAction,
+  RandomUserStoreInterface,
   randomUserAction,
+  RandomUserActionInterface,
 } from "./randomUserStore";
-import { randomUserInterface } from "../types/randomUserType";
 
 export const useBearStore = create<
   userStateInterface &
@@ -60,8 +60,8 @@ export const useBearStore = create<
     fileOrFolderInterface &
     browserPortActionsInterface &
     browserPortInterface &
-    RandomUserAction &
-    randomUserInterface
+    RandomUserStoreInterface &
+    RandomUserActionInterface
 >()(
   devtools((...a) => ({
     ...createUserStore(...a),

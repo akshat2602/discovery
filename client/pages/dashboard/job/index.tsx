@@ -1,25 +1,14 @@
-import {
-  Flex,
-  Text,
-  Button,
-  Divider,
-  Box,
-  Hide,
-  Checkbox,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { useState } from "react";
+import { Flex, Text, Button, Divider } from "@chakra-ui/react";
 import Link from "next/link";
 import Head from "next/head";
 
 import JobCard from "../../../components/JobCard";
 import { DashboardLayout } from "../../../components/Dashboard/DashboardLayout";
 
-const checkBoxes = ["Active", "Inactive"];
+import { useBearStore } from "../../../store/bearStore";
 
 const JobsPage: React.FC = () => {
-  const fg = useColorModeValue("light.200", "dark.200");
-  const [checkedItems, setCheckedItems] = useState([false, false]);
+  const users = useBearStore((state) => state.users);
 
   return (
     <>
@@ -40,46 +29,16 @@ const JobsPage: React.FC = () => {
             <Divider my={2} borderColor={"border"}></Divider>
             <Flex mt={"2%"}>
               <Flex direction={"column"} w="100%" pr={4}>
-                <JobCard />
-                <JobCard />
-                <JobCard />
-                <JobCard />
+                {
+                  // generate a random number of jobs
+                  Array.from(
+                    { length: Math.floor(Math.random() * 6) },
+                    (_, i) => i
+                  ).map((i) => (
+                    <JobCard key={i} />
+                  ))
+                }
               </Flex>
-              <Hide below="sm">
-                <Box
-                  width={"200px"}
-                  rounded={8}
-                  height={"300px"}
-                  bgColor={fg}
-                  p={4}
-                >
-                  <Text fontSize={16} fontWeight={"medium"} noOfLines={1}>
-                    Filter
-                  </Text>
-                  <Divider borderColor={"border"} />
-                  <Flex direction={"column"}>
-                    {checkBoxes.map((name, index) => (
-                      <Checkbox
-                        pt={2}
-                        colorScheme={"primary.400"}
-                        key={name}
-                        isChecked={checkedItems[index]}
-                        onChange={(e) => {
-                          setCheckedItems([
-                            ...checkedItems.slice(0, index),
-                            e.target.checked,
-                            ...checkedItems.slice(index + 1),
-                          ]);
-                        }}
-                      >
-                        <Text fontSize={14} fontWeight={""} noOfLines={1}>
-                          {name}
-                        </Text>
-                      </Checkbox>
-                    ))}
-                  </Flex>
-                </Box>
-              </Hide>
             </Flex>
           </Flex>
         </Flex>
