@@ -42,7 +42,8 @@ const ProfilePage: React.FC = () => {
                 <Center>
                   <VStack>
                     <Text fontSize={"3xl"} textAlign={"center"}>
-                      Looks like this page does not exist!
+                      This page is still under construction! Please come back
+                      later!
                     </Text>
                     <Link href="/">
                       <Button

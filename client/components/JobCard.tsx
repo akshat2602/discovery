@@ -12,36 +12,11 @@ import { BsPeopleFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import Link from "next/link";
 
-const JobCard: React.FC = () => {
+const JobCard: React.FC<jobInterface> = (job) => {
   const fg = useColorModeValue("light.200", "dark.200");
 
-  function randomDate(start: Date, end: Date) {
-    return new Date(
-      start.getTime() + Math.random() * (end.getTime() - start.getTime())
-    );
-  }
-
-  const jobTitles = [
-    "Intern - Product Management Intern",
-    "Senior Software Engineer",
-    "Software Developer - Android",
-    "Software Developer - iOS",
-    "Software Developer - Web",
-    "Software Developer - Backend",
-    "Software Developer - Full Stack",
-    "Software Developer - Machine Learning",
-    "Software Developer - Data Science",
-    "Software Developer - DevOps",
-    "Software Developer - QA",
-    "Software Developer - Security",
-    "Software Developer - UI/UX",
-    "Software Developer - Game Development",
-    "Software Developer - Blockchain",
-    "Software Developer - Embedded Systems",
-  ];
-
   return (
-    <Link href={`/dashboard/job/${1}`}>
+    <Link href={`/dashboard/job/${job.id}`}>
       <Card
         borderRadius="8"
         borderTopColor="primary.400"
@@ -52,7 +27,7 @@ const JobCard: React.FC = () => {
         <Flex direction={"column"}>
           <Flex px={4} py={1} align="center" justify={"space-between"}>
             <Text fontSize={16} fontWeight={"medium"}>
-              {jobTitles[Math.floor(Math.random() * jobTitles.length)]}
+              {job.title}
             </Text>
             <IconButton
               aria-label="Edit"
@@ -74,7 +49,7 @@ const JobCard: React.FC = () => {
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
-                Bangalore, India
+                {job.location}
               </Text>
             </Flex>
             <Flex align={"center"}>
@@ -86,10 +61,7 @@ const JobCard: React.FC = () => {
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
-                {" "}
-                {Math.floor(Math.random() * 100) +
-                  Math.floor(Math.random() * 100)}{" "}
-                Applicants
+                {job.applicants} Applicants
               </Text>
             </Flex>
             <Flex align={"center"}>
@@ -101,8 +73,7 @@ const JobCard: React.FC = () => {
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
-                Posted On{" "}
-                {randomDate(new Date(2023, 1, 1), new Date()).toDateString()}
+                Posted On {job.postedOn.toDateString()}
               </Text>
             </Flex>
           </Flex>

@@ -5,11 +5,10 @@ import Head from "next/head";
 import JobCard from "../../../components/JobCard";
 import { DashboardLayout } from "../../../components/Dashboard/DashboardLayout";
 
-import { useBearStore } from "../../../store/bearStore";
+import { useJobStore } from "../../../store/jobStore";
 
 const JobsPage: React.FC = () => {
-  const users = useBearStore((state) => state.users);
-
+  const jobs = useJobStore((state) => state.jobs);
   return (
     <>
       <Head>
@@ -29,15 +28,9 @@ const JobsPage: React.FC = () => {
             <Divider my={2} borderColor={"border"}></Divider>
             <Flex mt={"2%"}>
               <Flex direction={"column"} w="100%" pr={4}>
-                {
-                  // generate a random number of jobs
-                  Array.from(
-                    { length: Math.floor(Math.random() * 6) },
-                    (_, i) => i
-                  ).map((i) => (
-                    <JobCard key={i} />
-                  ))
-                }
+                {jobs.map((job) => (
+                  <JobCard key={job.id} {...job} />
+                ))}
               </Flex>
             </Flex>
           </Flex>
