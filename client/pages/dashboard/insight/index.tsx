@@ -84,7 +84,7 @@ const AnalyticsPage: React.FC = () => {
           m={5}
           shadow="md"
           textAlign="center"
-          bgColor={"dark.200"}
+          bgColor={fg}
           borderTopWidth={"2px"}
           borderTopColor={"primary.200"}
         >

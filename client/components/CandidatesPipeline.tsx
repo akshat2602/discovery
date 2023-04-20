@@ -4,8 +4,7 @@ import {
   Text,
   VStack,
   HStack,
-  ChakraProvider,
-  extendTheme,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { Divider } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
@@ -93,6 +92,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
   rating,
   daysAgo,
 }) => {
+  const fg = useColorModeValue("light.200", "dark.200");
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
@@ -131,7 +131,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
       shadow="md"
       width="200px"
       textAlign="center"
-      bgColor={"dark.200"}
+      bgColor={fg}
     >
       <Text fontSize="16" fontWeight="semibold" mb={2}>
         {name}
@@ -154,35 +154,39 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
   );
 };
 
-const HiringStagesList: React.FC = () => (
-  <HStack overflowX="auto" spacing={4} align="start">
-    {hiringStages.map(({ stage, candidates }, index) => (
-      <VStack key={stage} alignContent="start">
-        <Box
-          borderRadius="md"
-          p={4}
-          shadow="md"
-          width="200px"
-          textAlign="center"
-          bgColor={"dark.200"}
-          borderTopWidth={"2px"}
-          borderTopColor={colorList[index]}
-        >
-          <Text fontWeight="bold">{stage}</Text>
-        </Box>
+const HiringStagesList: React.FC = () => {
+  const fg = useColorModeValue("light.200", "dark.200");
+  return (
+    <HStack overflowX="auto" spacing={4} align="start">
+      {hiringStages.map(({ stage, candidates }, index) => (
+        <VStack key={stage} alignContent="start">
+          <Box
+            borderRadius="md"
+            p={4}
+            shadow="md"
+            width="200px"
+            textAlign="center"
+            bgColor={fg}
+            borderTopWidth={"2px"}
+            borderTopColor={colorList[index]}
+          >
+            <Text fontWeight="bold">{stage}</Text>
+          </Box>
 
-        {candidates.map(({ name, rating, daysAgo }) => (
-          <CandidateCard
-            key={name}
-            name={name}
-            rating={rating}
-            daysAgo={daysAgo}
-          />
-        ))}
-      </VStack>
-    ))}
-  </HStack>
-);
+          {candidates.map(({ name, rating, daysAgo }) => (
+            <CandidateCard
+              key={name}
+              name={name}
+              rating={rating}
+              daysAgo={daysAgo}
+            />
+          ))}
+        </VStack>
+      ))}
+    </HStack>
+  );
+};
+
 const CandidatePipeline: React.FC = () => {
   return <HiringStagesList />;
 };
