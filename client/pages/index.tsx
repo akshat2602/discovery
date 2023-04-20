@@ -1,22 +1,20 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Flex, Grid, GridItem, Text, VStack } from "@chakra-ui/react";
 
 import Link from "next/link";
 import Head from "next/head";
 
 import LandingLogo from "../public/landing.svg";
-import Logo from "../components/Util/Logo";
-import Discovery from "../components/Util/Discovery";
 import Image from "next/image";
 
+import { useBearStore } from "../store/bearStore";
+import { userGetAPI } from "../api/userGetAPI";
+
 const Home: React.FC = () => {
+  const setUserData = useBearStore((state) => state.setUserData);
+  userGetAPI().then((res) => {
+    setUserData(res);
+  });
+
   return (
     <>
       <Head>
