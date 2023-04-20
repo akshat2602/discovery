@@ -41,6 +41,8 @@ import { useRouter } from "next/router";
 import { DashboardLayout } from "../../../../components/Dashboard/DashboardLayout";
 import CandidatePipeline from "../../../../components/CandidatesPipeline";
 
+import { useJobStore } from "../../../../store/jobStore";
+
 const jobStepUnit = () => {
   return Object.assign(
     {},
@@ -54,6 +56,11 @@ const jobStepUnit = () => {
 const JobEdit: React.FC = () => {
   const fg = useColorModeValue("light.200", "dark.200");
   const router = useRouter();
+  const { jobId } = router.query;
+
+  const jobs = useJobStore((state) => state.jobs);
+  const job = jobs.find((job) => job.id === jobId)!;
+
   const [jobSteps, setJobSteps] = useState([
     {
       roundName: "",
@@ -75,7 +82,7 @@ const JobEdit: React.FC = () => {
       <DashboardLayout>
         <Flex direction={"column"} w="100%" ml={5}>
           <Text fontSize={24} fontWeight={"semibold"} mt={4}>
-            Intern - Product Management Intern
+            {job?.title}
           </Text>
           <Flex height={"10"} justify={"start"} mb={5}>
             <Flex align={"center"}>
@@ -87,7 +94,7 @@ const JobEdit: React.FC = () => {
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
-                San Francisco, CA
+                {job?.location}
               </Text>
             </Flex>
             <Text fontSize={24} fontWeight={"semi-light"} color="grey" mx={4}>
@@ -102,7 +109,7 @@ const JobEdit: React.FC = () => {
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
-                200 Applicants
+                {job?.applicants} Applicants
               </Text>
             </Flex>
             <Text fontSize={24} fontWeight={"semi-light"} color="grey" mx={4}>
@@ -117,7 +124,7 @@ const JobEdit: React.FC = () => {
                 noOfLines={1}
                 textOverflow={"ellipsis"}
               >
-                Posted On Feb 11, 2023
+                Posted On {job?.postedOn.toDateString()}
               </Text>
             </Flex>
           </Flex>
@@ -154,12 +161,12 @@ const JobEdit: React.FC = () => {
               </TabList>
               <TabPanels mt={4}>
                 <TabPanel>
-                  <CandidatePipeline />
+                  <CandidatePipeline job={job} />
                 </TabPanel>
                 <TabPanel>
                   <Flex
                     marginX={5}
-                    marginY={8}
+                    // marginY={8}
                     direction={"column"}
                     align="center"
                   >
@@ -178,7 +185,7 @@ const JobEdit: React.FC = () => {
                         <FormLabel fontSize={20}>Job Title</FormLabel>
                         <Input
                           type={"text"}
-                          placeholder={"Software Development Engineer"}
+                          placeholder={job?.title}
                           size={"md"}
                           _placeholder={{ color: "gray.500" }}
                         />
@@ -188,7 +195,7 @@ const JobEdit: React.FC = () => {
                         <FormLabel fontSize={20}>Job Description</FormLabel>
                         <Textarea
                           borderRadius={6}
-                          placeholder={"This is a placeholder job description."}
+                          placeholder={job?.description}
                           size="md"
                           height={"auto"}
                           rows={10}
@@ -209,6 +216,7 @@ const JobEdit: React.FC = () => {
                             <MenuItem>New York</MenuItem>
                             <MenuItem>Frankfurt</MenuItem>
                             <MenuItem>Manchester</MenuItem>
+                            <MenuItem>Remote</MenuItem>
                           </MenuList>
                         </Menu>
                       </Flex>
@@ -313,7 +321,11 @@ const JobEdit: React.FC = () => {
                     </Flex>
                   </Flex>
                 </TabPanel>
-                <TabPanel></TabPanel>
+                <TabPanel>
+                  <Text>
+                    This page is under construction. Please check back later.
+                  </Text>
+                </TabPanel>
               </TabPanels>
             </Tabs>
           </Box>
