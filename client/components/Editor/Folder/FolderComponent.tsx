@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { Box, Button, Text } from "@chakra-ui/react";
 import { AiFillFile } from "react-icons/ai";
 import { FcCollapse as Collapse, FcExpand as Expand } from "react-icons/fc";
-// import { FileIcons } from "file-icons-js";
+import IconPack from "../../../public/IconPack";
 
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -96,11 +97,16 @@ const Tree: React.FC<TreeProps> = ({
         </Button>
       ) : (
         <Box style={{ display: "flex", alignItems: "center" }}>
-          <AiFillFile
-            color="gray"
-            display="block"
-            style={{ marginTop: "7px" }}
-          />
+          {IconPack.hasOwnProperty(data.name.split(".").pop()!) ? (
+            IconPack[data.name.split(".").pop()!]
+          ) : (
+            <AiFillFile
+              color="gray"
+              display="block"
+              style={{ marginTop: "7px" }}
+            />
+          )}
+
           <Text
             onContextMenu={(e) => handleContextForFiles(e, data.name)}
             onDoubleClick={() => handleDoubleClick(data.name)}
