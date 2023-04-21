@@ -37,6 +37,7 @@ services:
       - "8080:8080"
     volumes:
       - ./dockspawn:/src
+      - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - .env
     command: >
@@ -52,6 +53,8 @@ services:
       - "3000:3000"
     volumes:
       - ./client:/src
+    env_file:
+      - .env
     command: >
       sh -c "npm install -g npm@latest && npm install && npm run build && npm run start"
     depends_on:
