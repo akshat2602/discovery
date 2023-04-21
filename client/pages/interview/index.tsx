@@ -1,4 +1,14 @@
-import { Button, Flex, Heading, Image, Box } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Box,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import Editor from "@monaco-editor/react";
+import { editor } from "monaco-editor/esm/vs/editor/editor.api";
+
 import Discovery from "../../components/Util/Discovery";
 import Logo from "../../components/Util/Logo";
 import calender from "../../public/calender.svg";
@@ -14,19 +24,27 @@ import speaker from "../../public/speaker.svg";
 import { BsDot } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { Select } from "chakra-react-select";
+import { useRouter } from "next/router";
 
 const Interview: React.FC = () => {
+  const fg = useColorModeValue("light.200", "dark.200");
+  const date = new Date();
+  const router = useRouter();
   const [isCamView, setIsCamView] = useState<Boolean>(true);
+  const [activeTheme, setActiveTheme] =
+    useState<editor.IStandaloneThemeData | null>(null);
   const [language, setLanguage] = useState<string>("");
   useEffect(() => {
-    console.log(language);
-  }, [language]);
+    import("monaco-themes/themes/Dracula.json").then((data) => {
+      setActiveTheme(data as editor.IStandaloneThemeData);
+    });
+  }, []);
   return (
     <>
       <Flex flexDirection="row" align="center" justify="space-between" mx={16}>
         <Flex flexDirection="row" align={"center"} justify={"center"} my={4}>
-          <Logo height={35} width={35} />
-          <Discovery fontSize={36} />
+          <Logo height={28} width={28} />
+          <Discovery fontSize={32} />
         </Flex>
         <Flex
           flexDirection="column"
@@ -35,12 +53,14 @@ const Interview: React.FC = () => {
           mt={4}
           mb="2"
         >
-          <Heading fontSize={24}>Interview: Product Management Intern</Heading>
+          <Heading fontSize={24}>
+            Interview: Software Engineer - Backend
+          </Heading>
           <Flex flexDirection="row" align={"center"} justify={"center"}>
             <Flex flexDirection="row" align={"center"} justify={"center"}>
               <Image src={calender.src} height={"12px"} width={"12px"} />
               <Box fontSize={"12px"} marginLeft={1} marginRight={2}>
-                Wednesday, Feb 16, 2023
+                {date.toDateString()}
               </Box>
             </Flex>
             |
@@ -52,12 +72,18 @@ const Interview: React.FC = () => {
             >
               <Image src={time.src} height={"12px"} width={"12px"} />
               <Box fontSize={"12px"} marginLeft={1}>
-                9:30am to 11:30am, 2 hours
+                {date.getHours()}:00 to {date.getHours() + 2}:00, 2 hours
               </Box>
             </Flex>
           </Flex>
         </Flex>
-        <Button>End Interview</Button>
+        <Button
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          End Interview
+        </Button>
       </Flex>
       <Flex
         borderRadius="8px"
@@ -66,7 +92,7 @@ const Interview: React.FC = () => {
         objectFit={"fill"}
         justifyContent={"center"}
         height={"80vh"}
-        backgroundColor={"black"}
+        backgroundColor={fg}
       >
         {isCamView ? (
           <Camera />
@@ -77,7 +103,7 @@ const Interview: React.FC = () => {
             width={"95vw"}
             justifyContent={"center"}
             height={"80vh"}
-            backgroundColor={"black"}
+            backgroundColor={fg}
           >
             <Select
               placeholder="select a language"
@@ -125,7 +151,14 @@ const Interview: React.FC = () => {
             >
               <Image src={focus.src} />
             </Box>
-            coding-environment
+            <Editor
+              height="70vh"
+              language={language}
+              onMount={(editor, monaco) => {
+                monaco.editor.defineTheme("dracula", activeTheme!);
+                monaco.editor.setTheme("dracula");
+              }}
+            />
           </Box>
         )}
         <Flex
