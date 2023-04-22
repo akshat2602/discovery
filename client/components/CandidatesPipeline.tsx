@@ -45,7 +45,6 @@ const CandidateCard: React.FC<CandidateCardProps> = ({
   dob,
   jobId,
 }) => {
-  console.log(dob);
   const fg = useColorModeValue("light.200", "dark.200");
   const rating = Math.random() * 5;
   const router = useRouter();
@@ -132,11 +131,11 @@ const HiringStagesList: React.FC<CandidatesPipelineProps> = (jobObject) => {
             <Text fontWeight="bold">{roundName}</Text>
           </Box>
 
-          {candidates?.map(({ id, name, dob }) => (
+          {candidates?.map(({ login, name, dob }) => (
             <CandidateCard
               jobId={jobObject.job.id}
-              key={id.value}
-              id={id.value}
+              key={login.uuid}
+              id={login.uuid}
               name={name}
               // rating={rating}
               dob={dob}

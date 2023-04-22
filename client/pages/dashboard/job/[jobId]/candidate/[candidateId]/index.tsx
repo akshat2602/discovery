@@ -1,5 +1,14 @@
-import { Flex, Text, Divider, Box, Button } from "@chakra-ui/react";
-
+import { EmailIcon, PhoneIcon } from "@chakra-ui/icons";
+import {
+  Flex,
+  Text,
+  Divider,
+  Box,
+  Button,
+  Image,
+  Heading,
+} from "@chakra-ui/react";
+// import Image from "next/image";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -10,7 +19,12 @@ import { useBearStore } from "../../../../../../store/bearStore";
 const JobEdit: React.FC = () => {
   const router = useRouter();
   const users = useBearStore((state) => state.users);
-  const user = users.find((user) => user.id.value === router.query.candidateId);
+  const candidateId = router.query.candidateId;
+  const user = users.find((user) => {
+    console.log(user.login.uuid === candidateId);
+    return user.login.uuid === candidateId;
+  });
+
   return (
     <>
       <Head>
@@ -24,9 +38,48 @@ const JobEdit: React.FC = () => {
             </Text>
           </Flex>
           <Divider my={2} borderColor={"border"}></Divider>
-          <Box>
-            Please add the candidate's details here. This is a work in progress.
-          </Box>
+
+          <Flex flexDir={"row"} justifyContent={"flex-start"}>
+            <Box>
+              <Image
+                src={user!.picture.thumbnail}
+                alt="profile_picture"
+                width={150}
+                borderRadius={"50%"}
+                height={150}
+              />
+            </Box>
+            <Flex flexDir={"column"} marginLeft="10">
+              <Heading fontSize={24}>
+                {user?.name.title} {user?.name.first} {user?.name.last}
+              </Heading>
+              <Divider />
+              <Flex flexDirection={"row"}>
+                <Box>
+                  <EmailIcon height={10} /> {user?.email}
+                </Box>
+                <Box marginTop={2} marginLeft={4}>
+                  |
+                </Box>
+                <Box marginLeft={5}>
+                  <PhoneIcon height={10} /> {user?.phone}
+                </Box>
+              </Flex>
+
+              <Flex flexDirection={"row"}>
+                <Box>
+                  <EmailIcon height={10} /> {user?.email}
+                </Box>
+                <Box marginTop={2} marginLeft={4}>
+                  |
+                </Box>
+                <Box marginLeft={5}>
+                  <PhoneIcon height={10} /> {user?.phone}
+                </Box>
+              </Flex>
+            </Flex>
+          </Flex>
+
           <Button
             onClick={() => {
               router.push(`/assessment/7cc8f159-cb87-4c76-b282-cc3749622fcc`);
