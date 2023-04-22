@@ -48,7 +48,7 @@ const Home: React.FC = () => {
                 <Text fontSize={"3xl"} textAlign={"center"}>
                   Welcome to Discovery!
                 </Text>
-                <Link href="/dashboard">
+                <Link href="/dashboard/job">
                   <Button size="lg" variant={"outline"} colorScheme="primary">
                     Start hiring today!
                   </Button>

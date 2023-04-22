@@ -64,7 +64,7 @@ const generateJob = async (users: Result[]): Promise<jobInterface> => {
   const salary = Math.floor(Math.random() * 100000);
   const postedOn = randomDate(new Date(2023, 1, 1), new Date(), rand);
   const applicants = Math.floor(Math.random() * 100);
-  const numRounds = rand * 3 + 2;
+  const numRounds = rand * 5 + 2;
   const rounds: jobRoundInterface[] = [];
   let prev = 0;
   for (let i = 1; i <= numRounds; i++) {
