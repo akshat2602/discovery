@@ -68,11 +68,11 @@ const generateJob = async (users: Result[]): Promise<jobInterface> => {
   const rounds: jobRoundInterface[] = [];
   let prev = 0;
   for (let i = 1; i <= numRounds; i++) {
-    const randRound = Math.floor(Math.random() * jobRounds[i].length);
+    const randRound = Math.floor(Math.random() * jobRounds[i%5+1].length);
     const candidateList = Math.floor(Math.random() * 10) + prev;
     rounds.push({
       round: i,
-      roundName: jobRounds[i][randRound],
+      roundName: jobRounds[i%5+1][randRound],
       candidates: users.slice(prev, candidateList),
     });
     prev = candidateList;
