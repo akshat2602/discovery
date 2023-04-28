@@ -41,13 +41,15 @@ const JobEdit: React.FC = () => {
 
           <Flex flexDir={"row"} justifyContent={"flex-start"}>
             <Box>
-              <Image
-                src={user!.picture.thumbnail}
-                alt="profile_picture"
-                width={150}
-                borderRadius={"50%"}
-                height={150}
-              />
+              {user && (
+                <Image
+                  src={user!.picture.thumbnail}
+                  alt="profile_picture"
+                  width={150}
+                  borderRadius={"50%"}
+                  height={150}
+                />
+              )}
             </Box>
             <Flex flexDir={"column"} marginLeft="10">
               <Heading fontSize={24}>
