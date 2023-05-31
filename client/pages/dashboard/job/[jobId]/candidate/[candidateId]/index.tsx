@@ -7,6 +7,7 @@ import {
   Button,
   Image,
   Heading,
+  useColorModeValue,
 } from "@chakra-ui/react";
 // import Image from "next/image";
 import Head from "next/head";
@@ -20,6 +21,7 @@ import { useBearStore } from "../../../../../../store/bearStore";
 
 const JobEdit: React.FC = () => {
   const router = useRouter();
+  const fg = useColorModeValue("light.200", "dark.200");
   const users = useBearStore((state) => state.users);
   const candidateId = router.query.candidateId;
   const user = users.find((user) => {
@@ -43,7 +45,7 @@ const JobEdit: React.FC = () => {
             <Divider my={2} borderColor={"border"}></Divider>
             <Flex
               width={"90%"}
-              backgroundColor="InfoBackground"
+              backgroundColor={fg}
               borderRadius={"8px"}
               padding={5}
               justifyContent="center"
