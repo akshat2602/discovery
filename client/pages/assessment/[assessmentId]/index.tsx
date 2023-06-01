@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
+import Head from "next/head";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 
@@ -28,7 +28,6 @@ import { useGetDirectory } from "../../../api/folderAPI";
 // import { useContainerCreate } from "../../../api/containerAPI";
 
 const Playground: React.FC<{ assessmentId: string }> = ({ assessmentId }) => {
-  const router = useRouter();
   const [
     setActiveTab,
     setEditorWs,
@@ -87,6 +86,9 @@ const Playground: React.FC<{ assessmentId: string }> = ({ assessmentId }) => {
 
   return (
     <>
+      <Head>
+        <title>Discovery | Assessment</title>
+      </Head>
       <FolderModal />
       <FileModal />
       <Box display={"flex"}>

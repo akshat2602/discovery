@@ -1,4 +1,4 @@
-import { Flex, Text, Divider, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Text, Divider } from "@chakra-ui/react";
 import Head from "next/head";
 
 import { DashboardLayout } from "../../components/Dashboard/DashboardLayout";
